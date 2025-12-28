@@ -3,11 +3,12 @@
 #include "player.hpp"
 #include <string>
 #include <array>
+#include <cstddef>
 
-struct PlayerState{
-    Player player;
-    bool isTurn;
-    bool playsFirst;
+const size_t NUM_PLAYERS = 2; 
+
+enum class Slot{
+    ONE, TWO
 };
 
 class GameEvent{
@@ -23,4 +24,18 @@ class GameState{
 class Game{
 
     private:
+        
+    struct PlayerSlot{
+        Player player;
+        Slot slot;
+        PlayerMarker marker;
+    };
+
+    struct PlayerState{
+        PlayerSlot slot;
+        bool isTurn;
+        bool playsFirst;
+        //Owned posiitons?
+    };
+
 };
