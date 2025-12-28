@@ -1,12 +1,18 @@
 #include "board.hpp"
 #include <cstddef>
 #include <iostream>
+#include <string>
 
-const char HASH = '#';
+const char OUTER_GRID = '#';
 const char ROW_LINE = '_';
 const char COL_LINE = '|';
-const size_t XDIM = 65;
+const char SPACE = ' ';
+const size_t OUTER_XDIM = 65;
 const size_t YDIM = 35;
+const size_t INNER_XDIM = 17;
+const size_t NUM_Y_LINES = 2;
+const size_t NUM_X_LINES = 2;
+const size_t NUM_DIM = 3; // 3x3
 
 MarkerPositions::MarkerPositions(){
 
@@ -34,12 +40,15 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
 
         case BoardMarker::CROSS:
             update = PosUpdate::CROSS_TAKEN;
+            break;
 
         case BoardMarker::NOUGHT:
             update = PosUpdate::NOUGHT_TAKEN;
+            break;
 
         case BoardMarker::NONE:
             update = PosUpdate::VALID;
+            break;
     }
 }
 
@@ -61,37 +70,89 @@ const Position& MarkerPositions::getMarkerPositions() const{
 
 Board::Board(){}
 
-void Board::drawOuterRowDivide(){
+void Board::drawOuterRowDivider(){
 
-    for(size_t i=0; i < XDIM; i++){
-        if(i % 2 == 0){
-            std::cout << HASH;
+    for(size_t i=1; i <= OUTER_XDIM; i++){
+        if(i % 2 == 1){
+            std::cout << OUTER_GRID;
         } else{
-            std::cout << " ";
+            std::cout << SPACE;
         }
     }
 
     std::cout << "\n";
 }
 
-void Board::drawOuterSpace(){
+void Board::drawTopBottomGap(){
 
-    for(size_t i=0; i < XDIM; i++){
+    for(size_t i=1; i <= OUTER_XDIM; i++){
         
-        if(i % 22 == 0 && i > 0){
-            std::cout << HASH;
-        }else {
-            std::cout << " ";
+        if(i % 22 == 0){
+            std::cout << OUTER_GRID;
+        } else{
+            std::cout << SPACE;
         }
     }
 
     std::cout << "\n";
+}
+
+void Board::drawSideGap(){
+    
+    const int NUM_SPACES = 2;
+
+    for(size_t j = 0; j < NUM_SPACES; j++){
+        std::cout << SPACE;
+    }
+}
+
+void Board::drawInnerColumnDivider(){
+
+   
+    
+
+    for(size_t i = 0; i < NUM_DIM; i++){
+
+        drawSideGap();
+
+        for(size_t j = 1; j <= INNER_XDIM; j++){
+            
+            if(j % 6 == 0){
+                std::cout << COL_LINE;
+            }else{
+                std::cout << SPACE;
+            }
+        }
+
+        drawSideGap();
+
+        if(i < NUM_Y_LINES) std::cout << OUTER_GRID;
+    }
+
+    std::cout << "\n";
+}
+
+std::string Board::drawPosChar(BoardMarker marker){
+
+    switch(marker){
+
+        case BoardMarker::CROSS:
+        return "x"; //Make custom markers for Cross and Nought later?
+
+        case BoardMarker::NOUGHT:
+        return "o";
+    }
+
+    return " ";
 }
 
 void Board::draw(const Position& pos){
-    drawOuterSpace();
-    drawOuterRowDivide();
-    drawOuterSpace();
+    drawTopBottomGap();
+    drawInnerColumnDivider();
+    drawTopBottomGap();
+    drawOuterRowDivider();
+    
+    
 }
 
 
@@ -110,7 +171,7 @@ void Board::draw(const Position& pos){
     o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     9
        |     |       #       |     |       #       |     |        10
                      #                     #                      11
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 12 DONE
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 12
                      #                     #                      13
        |     |       #       |     |       #       |     |        14
     o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     15
@@ -122,7 +183,7 @@ void Board::draw(const Position& pos){
     o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     21
        |     |       #       |     |       #       |     |        22
                      #                     #                      23
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 24 DONE
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 24
                      #                     #                      25
        |     |       #       |     |       #       |     |        26
     o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     27

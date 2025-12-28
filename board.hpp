@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstddef>
+#include <string>
 
 static constexpr size_t INNER_GRID_CELLS = 9;
 static constexpr size_t OUTER_GRID_CELLS = 9;
@@ -42,7 +43,9 @@ class Board{
     void clear();
     
     private:
-    void drawOuterRowDivide();
-    void drawOuterSpace();
-    
+    void drawOuterRowDivider();
+    void drawTopBottomGap();
+    void drawSideGap();
+    void drawInnerColumnDivider();
+    std::string drawPosChar(BoardMarker marker);
 };
