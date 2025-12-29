@@ -1,6 +1,7 @@
 #pragma once
 
 #include "player.hpp"
+#include "board.hpp"
 #include <string>
 #include <array>
 #include <cstddef>

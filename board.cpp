@@ -8,16 +8,16 @@ const char ROW_LINE = '_';
 const char COL_LINE = '|';
 const char SPACE = ' ';
 const size_t OUTER_XDIM = 65;
-const size_t YDIM = 35;
+const size_t OUTER_YDIM = 35;
 const size_t INNER_XDIM = 17;
-const size_t NUM_Y_LINES = 2;
-const size_t NUM_X_LINES = 2;
-const size_t NUM_DIM = 3; // 3x3
+const size_t INNER_YDIM = 11;
+
+ // 3x3
 
 MarkerPositions::MarkerPositions(){
 
-    for(size_t i=0; i < OUTER_GRID_CELLS; i++){
-        for(size_t j=0; j < INNER_GRID_CELLS; j++){
+    for(size_t i=0; i < NUM_CELLS; i++){
+        for(size_t j=0; j < NUM_CELLS; j++){
             pos[i][j] = BoardMarker::NONE; 
         }
     }
@@ -25,9 +25,9 @@ MarkerPositions::MarkerPositions(){
 
 void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
     
-    if(outer < 0 || outer >= OUTER_GRID_CELLS){
+    if(outer < 0 || outer >= NUM_CELLS){
         update = PosUpdate::OUTER_OOB;
-    }else if(inner < 0 || inner >= INNER_GRID_CELLS){
+    }else if(inner < 0 || inner >= NUM_CELLS){
         update = PosUpdate::INNER_OOB;
     }
 }
@@ -64,73 +64,11 @@ void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker 
     }
 }
 
-const Position& MarkerPositions::getMarkerPositions() const{
+const OuterGrid& MarkerPositions::getMarkerPositions() const{
     return pos;
 }
 
 Board::Board(){}
-
-void Board::drawOuterRowDivider(){
-
-    for(size_t i=1; i <= OUTER_XDIM; i++){
-        if(i % 2 == 1){
-            std::cout << OUTER_GRID;
-        } else{
-            std::cout << SPACE;
-        }
-    }
-
-    std::cout << "\n";
-}
-
-void Board::drawTopBottomGap(){
-
-    for(size_t i=1; i <= OUTER_XDIM; i++){
-        
-        if(i % 22 == 0){
-            std::cout << OUTER_GRID;
-        } else{
-            std::cout << SPACE;
-        }
-    }
-
-    std::cout << "\n";
-}
-
-void Board::drawSideGap(){
-    
-    const int NUM_SPACES = 2;
-
-    for(size_t j = 0; j < NUM_SPACES; j++){
-        std::cout << SPACE;
-    }
-}
-
-void Board::drawInnerColumnDivider(){
-
-   
-    
-
-    for(size_t i = 0; i < NUM_DIM; i++){
-
-        drawSideGap();
-
-        for(size_t j = 1; j <= INNER_XDIM; j++){
-            
-            if(j % 6 == 0){
-                std::cout << COL_LINE;
-            }else{
-                std::cout << SPACE;
-            }
-        }
-
-        drawSideGap();
-
-        if(i < NUM_Y_LINES) std::cout << OUTER_GRID;
-    }
-
-    std::cout << "\n";
-}
 
 std::string Board::drawPosChar(BoardMarker marker){
 
@@ -141,18 +79,17 @@ std::string Board::drawPosChar(BoardMarker marker){
 
         case BoardMarker::NOUGHT:
         return "o";
+
+        default:
+        break;
     }
 
-    return " ";
+    return "T"; //THIS IS T FOR TEST, Change later
 }
 
-void Board::draw(const Position& pos){
-    drawTopBottomGap();
-    drawInnerColumnDivider();
-    drawTopBottomGap();
-    drawOuterRowDivider();
-    
-    
+void Board::draw(const OuterGrid& pos){
+
+
 }
 
 

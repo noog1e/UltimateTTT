@@ -3,9 +3,9 @@
 int main(){
 
     Board board;
-    Position pos;
+    MarkerPositions markers;
 
-    board.draw(pos);
+    board.draw(markers.getMarkerPositions());
 
     return 0;
 }
