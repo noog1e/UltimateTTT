@@ -6,7 +6,12 @@
 
 static constexpr size_t NUM_DIM = 3;
 static constexpr size_t NUM_CELLS = NUM_DIM * NUM_DIM;
-static constexpr size_t NUM_X_LINES = NUM_DIM - 1;
+
+static constexpr size_t U_HEIGHT = 35;
+static constexpr size_t U_WIDTH = 65;
+static constexpr size_t L_HEIGHT = 17;
+static constexpr size_t L_WIDTH = 9;
+using board2DArray = std::array<std::array<char, U_WIDTH>, U_HEIGHT>;
 
 enum class BoardMarker{
     NOUGHT, CROSS, NONE
@@ -38,16 +43,20 @@ class Board{
 
     public:
     Board();
+    //Board(size_t )
 
-    void draw(const OuterGrid& pos);
     void clear();
+
+    const board2DArray& getBoard() const;
+    size_t getHeight() const;
+    size_t getWidth() const;
+
     
     private:
-    void drawOuterRowDivider();
-    void drawTopBottomGap();
-    void drawSideGap();
-    void drawInnerColumnDivider(bool hasRowLine);
-    void drawInnerMarkerLine(const OuterGrid& pos, int outerXLayer, int innerXLayer);
+    board2DArray board;
+    size_t height = U_HEIGHT;
+    size_t width = U_WIDTH;
+    
     std::string drawPosChar(BoardMarker marker);
 };
 

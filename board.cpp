@@ -2,13 +2,13 @@
 #include <cstddef>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 const char OUTER_GRID = '#';
 const char ROW_LINE = '_';
 const char COL_LINE = '|';
 const char SPACE = ' ';
-const size_t OUTER_XDIM = 65;
-const size_t OUTER_YDIM = 35;
+
 const size_t INNER_XDIM = 17;
 const size_t INNER_YDIM = 11;
 
@@ -68,7 +68,25 @@ const OuterGrid& MarkerPositions::getMarkerPositions() const{
     return pos;
 }
 
-Board::Board(){}
+Board::Board(){
+    clear();
+}
+
+void Board::clear(){
+    std::fill(board.begin(), board.end(), ' ');
+}
+
+const board2DArray& Board::getBoard() const{
+    return board;
+}
+
+size_t Board::getHeight() const{
+    return height;
+}
+
+size_t Board::getWidth() const{
+    return width;
+}
 
 std::string Board::drawPosChar(BoardMarker marker){
 
@@ -85,11 +103,6 @@ std::string Board::drawPosChar(BoardMarker marker){
     }
 
     return "T"; //THIS IS T FOR TEST, Change later
-}
-
-void Board::draw(const OuterGrid& pos){
-
-
 }
 
 
@@ -135,4 +148,8 @@ void Board::draw(const OuterGrid& pos){
 
 12345678901234567890123456789012345678901234567890123456789012345
          1         2         3         4         5         6    
+*/
+
+/*
+
 */
