@@ -2,7 +2,6 @@
 #include <cstddef>
 #include <iostream>
 #include <string>
-#include <algorithm>
 
 const char OUTER_GRID = '#';
 const char ROW_LINE = '_';
@@ -64,7 +63,7 @@ void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker 
     }
 }
 
-const OuterGrid& MarkerPositions::getMarkerPositions() const{
+const OuterPos& MarkerPositions::getMarkerPositions() const{
     return pos;
 }
 
@@ -73,7 +72,10 @@ Board::Board(){
 }
 
 void Board::clear(){
-    std::fill(board.begin(), board.end(), ' ');
+
+    for(auto& row : board){
+        row.fill('-');
+    }
 }
 
 const board2DArray& Board::getBoard() const{
@@ -86,6 +88,31 @@ size_t Board::getHeight() const{
 
 size_t Board::getWidth() const{
     return width;
+}
+
+void Board::drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol){
+
+    size_t row = uRow * (U_CELL_HEIGHT + GRID_THICKNESS) + GAP_HEIGHT;
+    size_t col = uCol * (U_CELL_WIDTH + GRID_THICKNESS) + GAP_WIDTH;
+
+    for(row; row < L_HEIGHT; row++){
+
+        for(col; col < L_WIDTH; col++){
+
+            board[row][col] = '+';
+        }
+    }
+
+}
+
+void Board::drawInnerGrids(const OuterPos& pos){
+
+    for(size_t i=0; i < NUM_DIM; i++){
+
+        for(size_t j=0; j < NUM_DIM; j++){
+            drawInnerGrid(pos, i, j);
+        }
+    }
 }
 
 std::string Board::drawPosChar(BoardMarker marker){
@@ -105,49 +132,54 @@ std::string Board::drawPosChar(BoardMarker marker){
     return "T"; //THIS IS T FOR TEST, Change later
 }
 
+void Board::draw(const OuterPos& pos){
+
+        drawInnerGrids(pos);
+}
+
 
 /*
 
 65 x 35
 
-                     #                     #                      1
-       |     |       #       |     |       #       |     |        2
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     3
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   4
-       |     |       #       |     |       #       |     |        5
-    x  |  o  |  x    #    x  |  o  |  x    #    x  |  o  |  x     6
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   7
-       |     |       #       |     |       #       |     |        8
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     9
-       |     |       #       |     |       #       |     |        10
-                     #                     #                      11
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 12
-                     #                     #                      13
-       |     |       #       |     |       #       |     |        14
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     15
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   16
-       |     |       #       |     |       #       |     |        17
-    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     18
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   19
-       |     |       #       |     |       #       |     |        20
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     21
-       |     |       #       |     |       #       |     |        22
-                     #                     #                      23
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 24
-                     #                     #                      25
-       |     |       #       |     |       #       |     |        26
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     27
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   28
-       |     |       #       |     |       #       |     |        29
-    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     30
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   31
+                     #                     #                      0
+       |     |       #       |     |       #       |     |        1
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     2
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   3
+       |     |       #       |     |       #       |     |        4
+    x  |  o  |  x    #    x  |  o  |  x    #    x  |  o  |  x     5
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   6
+       |     |       #       |     |       #       |     |        7
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     8
+       |     |       #       |     |       #       |     |        9
+                     #                     #                      10
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 11
+                     #                     #                      12
+       |     |       #       |     |       #       |     |        13
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     14
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   15
+       |     |       #       |     |       #       |     |        16
+    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     17
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   18
+       |     |       #       |     |       #       |     |        19
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     20
+       |     |       #       |     |       #       |     |        21
+                     #                     #                      22
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 23
+                     #                     #                      24
+       |     |       #       |     |       #       |     |        25
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     26
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   27
+       |     |       #       |     |       #       |     |        28
+    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     29
+  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   30
+       |     |       #       |     |       #       |     |        31
+    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     32
        |     |       #       |     |       #       |     |        32
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     33
-       |     |       #       |     |       #       |     |        34
-                     #                     #                      35
+                     #                     #                      34
 
-12345678901234567890123456789012345678901234567890123456789012345
-         1         2         3         4         5         6    
+01234567890123456789012345678901234567890123456789012345678901234
+          1         2         3         4         5         6    
 */
 
 /*

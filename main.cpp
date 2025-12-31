@@ -9,6 +9,8 @@ void printBoard(const board2DArray& board, size_t height, size_t width){
 
             std::cout << board[i][j];
         }
+
+        std::cout << '\n';
     }
 }
 
@@ -16,6 +18,8 @@ int main(){
 
     Board board;
     MarkerPositions markers;
+
+    board.draw(markers.getMarkerPositions());
 
     printBoard(board.getBoard(), board.getHeight(), board.getWidth());
 
