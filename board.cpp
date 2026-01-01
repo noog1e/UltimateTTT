@@ -92,16 +92,40 @@ size_t Board::getWidth() const{
 
 void Board::drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol){
 
-    size_t row = uRow * (U_CELL_HEIGHT + GRID_THICKNESS) + GAP_HEIGHT;
-    size_t col = uCol * (U_CELL_WIDTH + GRID_THICKNESS) + GAP_WIDTH;
+    size_t xO = uRow * (U_CELL_HEIGHT + U_GRID_THICKNESS) + GAP_HEIGHT;
+    size_t rowCoord = L_HEIGHT + xO;
+    int outer = -1;
 
-    for(row; row < L_HEIGHT; row++){
+    for(xO; xO < rowCoord; xO++){
 
-        for(col; col < L_WIDTH; col++){
+        size_t yO = uCol * (U_CELL_WIDTH + U_GRID_THICKNESS) + GAP_WIDTH;
+        size_t colCoord = L_WIDTH + yO;
+        int inner = 0;
 
-            board[row][col] = '+';
+        outer++;
+
+        for(yO; yO < colCoord; yO++){
+
+            if(inner == L_CELL_WIDTH){
+                board[xO][yO] = COL_LINE;
+                inner = 0;
+            }else{
+                
+                if(outer == L_CELL_HEIGHT && (xO + 1) != rowCoord){
+                    board[xO][yO] = ROW_LINE;
+                }else{
+                    board[xO][yO] = ' ';
+                }
+
+                inner++;
+            }
+
         }
+
+        if(outer == L_CELL_HEIGHT) outer = -1;
     }
+
+    //I think this can be better optimised. Feels wrong initiating inside the loop
 
 }
 
@@ -136,52 +160,3 @@ void Board::draw(const OuterPos& pos){
 
         drawInnerGrids(pos);
 }
-
-
-/*
-
-65 x 35
-
-                     #                     #                      0
-       |     |       #       |     |       #       |     |        1
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     2
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   3
-       |     |       #       |     |       #       |     |        4
-    x  |  o  |  x    #    x  |  o  |  x    #    x  |  o  |  x     5
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   6
-       |     |       #       |     |       #       |     |        7
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     8
-       |     |       #       |     |       #       |     |        9
-                     #                     #                      10
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 11
-                     #                     #                      12
-       |     |       #       |     |       #       |     |        13
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     14
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   15
-       |     |       #       |     |       #       |     |        16
-    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     17
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   18
-       |     |       #       |     |       #       |     |        19
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     20
-       |     |       #       |     |       #       |     |        21
-                     #                     #                      22
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 23
-                     #                     #                      24
-       |     |       #       |     |       #       |     |        25
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     26
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   27
-       |     |       #       |     |       #       |     |        28
-    x  |  o  |  x    #    o  |  x  |  o    #    o  |  x  |  o     29
-  _____|_____|_____  #  _____|_____|_____  #  _____|_____|_____   30
-       |     |       #       |     |       #       |     |        31
-    o  |  x  |  o    #    o  |  x  |  o    #    o  |  x  |  o     32
-       |     |       #       |     |       #       |     |        32
-                     #                     #                      34
-
-01234567890123456789012345678901234567890123456789012345678901234
-          1         2         3         4         5         6    
-*/
-
-/*
-
-*/
