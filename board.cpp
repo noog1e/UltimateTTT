@@ -90,11 +90,13 @@ size_t Board::getWidth() const{
     return width;
 }
 
-void Board::drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol){
+void Board::drawInnerGrid(const InnerPos& pos, size_t uRow, size_t uCol){
 
     size_t xO = uRow * (U_CELL_HEIGHT + U_GRID_THICKNESS) + GAP_HEIGHT;
     size_t rowCoord = L_HEIGHT + xO;
     int outer = -1;
+
+    size_t cell = 0;
 
     for(xO; xO < rowCoord; xO++){
 
@@ -109,11 +111,14 @@ void Board::drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol){
             if(inner == L_CELL_WIDTH){
                 board[xO][yO] = COL_LINE;
                 inner = 0;
-            }else{
+
+            }else {
                 
                 if(outer == L_CELL_HEIGHT && (xO + 1) != rowCoord){
                     board[xO][yO] = ROW_LINE;
-                }else{
+                }else if(inner == ((L_CELL_WIDTH - 1) / 2) && outer == ((L_CELL_HEIGHT - 1))){
+                    board[xO][yO] = drawPosChar(pos[cell++]);
+                } else{
                     board[xO][yO] = ' ';
                 }
 
@@ -125,38 +130,60 @@ void Board::drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol){
         if(outer == L_CELL_HEIGHT) outer = -1;
     }
 
-    //I think this can be better optimised. Feels wrong initiating inside the loop
+    //I think this can be better optimised. Feels wrong initiating inside the loop plus the math
+    //looks criminal, like someone put brisket in a brioche bun and called it a burger.
 
 }
 
 void Board::drawInnerGrids(const OuterPos& pos){
 
+    size_t cell = 0;
+
     for(size_t i=0; i < NUM_DIM; i++){
 
         for(size_t j=0; j < NUM_DIM; j++){
-            drawInnerGrid(pos, i, j);
+            
+            if(cell > pos.size()){
+                throw std::out_of_range("Drawing inner grids - too many positions");
+            }
+                
+            drawInnerGrid(pos[cell++], i, j);
         }
     }
 }
 
-std::string Board::drawPosChar(BoardMarker marker){
+void Board::drawOuterGrid(){
+
+    for(size_t i = 0; i < U_HEIGHT; i++){
+
+        if(i == U_CELL_HEIGHT){
+            
+            for(size_t j = 0; j < U_CELL_WIDTH; j++){
+                board[i][j] == OUTER_GRID;
+            }
+        }
+    }
+}
+
+char Board::drawPosChar(BoardMarker marker){
 
     switch(marker){
 
         case BoardMarker::CROSS:
-        return "x"; //Make custom markers for Cross and Nought later?
+        return 'x'; //Make custom markers for Cross and Nought later?
 
         case BoardMarker::NOUGHT:
-        return "o";
+        return 'o';
 
         default:
         break;
     }
 
-    return "T"; //THIS IS T FOR TEST, Change later
+    return 'T'; //THIS IS T FOR TEST, Change later
 }
 
 void Board::draw(const OuterPos& pos){
 
-        drawInnerGrids(pos);
+    drawOuterGrid();
+    drawInnerGrids(pos);
 }

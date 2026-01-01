@@ -71,9 +71,10 @@ class Board{
     size_t height = U_HEIGHT;
     size_t width = U_WIDTH;
     
-    void drawInnerGrid(const OuterPos& pos, size_t uRow, size_t uCol);
+    void drawInnerGrid(const InnerPos& pos, size_t uRow, size_t uCol);
     void drawInnerGrids(const OuterPos& pos);
-    std::string drawPosChar(BoardMarker marker);
+    void drawOuterGrid();
+    char drawPosChar(BoardMarker marker);
 };
 
 /*
