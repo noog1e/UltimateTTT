@@ -154,13 +154,50 @@ void Board::drawInnerGrids(const OuterPos& pos){
 
 void Board::drawOuterGrid(){
 
+    int xO = 0;
+    int xThickCount = 0;
+
+    int yO = 0;
+    int yThickCount = 0;
+
     for(size_t i = 0; i < U_HEIGHT; i++){
 
-        if(i == U_CELL_HEIGHT){
-            
-            for(size_t j = 0; j < U_CELL_WIDTH; j++){
-                board[i][j] == OUTER_GRID;
+        if(yThickCount == U_GRID_THICKNESS){
+            yO = 0;
+            yThickCount = 0;
+        }
+
+        if(yO == U_CELL_HEIGHT){
+
+            for(size_t j = 0; j < U_WIDTH; j = j+2){
+
+                board[i][j] = OUTER_GRID;
             }
+
+            yThickCount++;
+
+        }else{
+
+            for(size_t j = 0; j < U_WIDTH; j = j+2){
+
+                if(xThickCount == U_GRID_THICKNESS){
+                    xO = 0;
+                    xThickCount = 0;
+                }
+
+                if(xO == U_CELL_WIDTH){
+                    board[i][j] = OUTER_GRID;
+                    xThickCount++;
+                }else{
+                    xO++;
+                }
+            }
+
+
+        }
+
+        if(yThickCount != U_GRID_THICKNESS){
+            yO++;
         }
     }
 }

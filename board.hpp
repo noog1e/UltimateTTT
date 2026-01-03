@@ -74,6 +74,8 @@ class Board{
     void drawInnerGrid(const InnerPos& pos, size_t uRow, size_t uCol);
     void drawInnerGrids(const OuterPos& pos);
     void drawOuterGrid();
+    void drawOuterHorizontalGrid();
+    void drawOuterVerticalGrid();
     char drawPosChar(BoardMarker marker);
 };
 
