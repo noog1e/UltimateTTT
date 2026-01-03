@@ -90,119 +90,39 @@ size_t Board::getWidth() const{
     return width;
 }
 
-void Board::drawInnerGrid(const InnerPos& pos, size_t uRow, size_t uCol){
+void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing){
 
-    size_t xO = uRow * (U_CELL_HEIGHT + U_GRID_THICKNESS) + GAP_HEIGHT;
-    size_t rowCoord = L_HEIGHT + xO;
-    int outer = -1;
+    int increment = spacing + 1;
 
-    size_t cell = 0;
+    for(size_t col = 0; col < height; col = col + increment){
 
-    for(xO; xO < rowCoord; xO++){
-
-        size_t yO = uCol * (U_CELL_WIDTH + U_GRID_THICKNESS) + GAP_WIDTH;
-        size_t colCoord = L_WIDTH + yO;
-        int inner = 0;
-
-        outer++;
-
-        for(yO; yO < colCoord; yO++){
-
-            if(inner == L_CELL_WIDTH){
-                board[xO][yO] = COL_LINE;
-                inner = 0;
-
-            }else {
-                
-                if(outer == L_CELL_HEIGHT && (xO + 1) != rowCoord){
-                    board[xO][yO] = ROW_LINE;
-                }else if(inner == ((L_CELL_WIDTH - 1) / 2) && outer == ((L_CELL_HEIGHT - 1))){
-                    board[xO][yO] = drawPosChar(pos[cell++]);
-                } else{
-                    board[xO][yO] = ' ';
-                }
-
-                inner++;
-            }
-
-        }
-
-        if(outer == L_CELL_HEIGHT) outer = -1;
-    }
-
-    //I think this can be better optimised. Feels wrong initiating inside the loop plus the math
-    //looks criminal, like someone put brisket in a brioche bun and called it a burger.
-
-}
-
-void Board::drawInnerGrids(const OuterPos& pos){
-
-    size_t cell = 0;
-
-    for(size_t i=0; i < NUM_DIM; i++){
-
-        for(size_t j=0; j < NUM_DIM; j++){
-            
-            if(cell > pos.size()){
-                throw std::out_of_range("Drawing inner grids - too many positions");
-            }
-                
-            drawInnerGrid(pos[cell++], i, j);
-        }
+        board[xO][yO++] = unicode;
     }
 }
 
-void Board::drawOuterGrid(){
+void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, size_t spacing){
 
-    int xO = 0;
-    int xThickCount = 0;
+    int increment = spacing + 1;
 
-    int yO = 0;
-    int yThickCount = 0;
+    for(size_t row = 0; row < height; row = row + increment){
 
-    for(size_t i = 0; i < U_HEIGHT; i++){
-
-        if(yThickCount == U_GRID_THICKNESS){
-            yO = 0;
-            yThickCount = 0;
-        }
-
-        if(yO == U_CELL_HEIGHT){
-
-            for(size_t j = 0; j < U_WIDTH; j = j+2){
-
-                board[i][j] = OUTER_GRID;
-            }
-
-            yThickCount++;
-
-        }else{
-
-            for(size_t j = 0; j < U_WIDTH; j = j+2){
-
-                if(xThickCount == U_GRID_THICKNESS){
-                    xO = 0;
-                    xThickCount = 0;
-                }
-
-                if(xO == U_CELL_WIDTH){
-                    board[i][j] = OUTER_GRID;
-                    xThickCount++;
-                }else{
-                    xO++;
-                }
-            }
-
-
-        }
-
-        if(yThickCount != U_GRID_THICKNESS){
-            yO++;
-        }
+        board[xO++][yO] = unicode;
     }
 }
 
-char Board::drawPosChar(BoardMarker marker){
+void Board::drawInnerGrid(){
+
+}
+
+void Board::drawInnerGrids(){
+
+}
+
+void Board::drawCellMarkers(const InnerPos& pos){
+
+}
+
+char Board::drawPositionChar(BoardMarker marker){
 
     switch(marker){
 
@@ -221,6 +141,5 @@ char Board::drawPosChar(BoardMarker marker){
 
 void Board::draw(const OuterPos& pos){
 
-    drawOuterGrid();
-    drawInnerGrids(pos);
+
 }
