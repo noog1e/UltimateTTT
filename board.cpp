@@ -4,8 +4,8 @@
 #include <string>
 
 const char OUTER_GRID = '#';
-const char ROW_LINE = '_';
-const char COL_LINE = '|';
+const char INNER_ROW_LINE = '_';
+const char INNER_COL_LINE = '|';
 const char SPACE = ' ';
 
 
@@ -106,8 +106,28 @@ void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, si
     }
 }
 
+void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
+
+    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+
+        xO = xO + INNER_CELL_WIDTH;
+
+        for(size_t j = 0; j < INNER_CELL_HEIGHT; j++){
+
+            yO = yO + j;
+
+            board[xO][yO] = INNER_ROW_LINE;
+        }
+    }
+}
+
+void Board::drawInnerGridHorizontalLines(size_t xO, size_t yO){
+
+}
+
 void Board::drawInnerGrid(size_t xO, size_t yO){
-    
+    drawInnerGridVerticalLines(xO, yO);
+    drawInnerGridHorizontalLines(xO, yO);
 }
 
 void Board::drawInnerGrids(){
@@ -115,12 +135,14 @@ void Board::drawInnerGrids(){
     size_t xO = 0; 
     size_t yO = 0;
 
-    for(size_t i = 0; i < NUM_CELLS; i++){
+    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
 
-        xO = calculateInnerGrid_XOffset(i);
-        yO = calculateInnerGrid_YOffset(i);
-
-        drawInnerGrid(xO, yO);
+        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+            
+            xO = calculateInnerGrid_XOffset(i);
+            yO = calculateInnerGrid_YOffset(j);
+            drawInnerGrid(xO, yO);
+        }        
     }
 
 }
