@@ -8,10 +8,6 @@ const char ROW_LINE = '_';
 const char COL_LINE = '|';
 const char SPACE = ' ';
 
-const size_t INNER_XDIM = 17;
-const size_t INNER_YDIM = 11;
-
- // 3x3
 
 MarkerPositions::MarkerPositions(){
 
@@ -83,11 +79,11 @@ const board2DArray& Board::getBoard() const{
 }
 
 size_t Board::getHeight() const{
-    return height;
+    return boardHeight;
 }
 
 size_t Board::getWidth() const{
-    return width;
+    return boardWidth;
 }
 
 void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing){
@@ -96,7 +92,7 @@ void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, siz
 
     for(size_t col = 0; col < height; col = col + increment){
 
-        board[xO][yO++] = unicode;
+        board[xO++][yO] = unicode;
     }
 }
 
@@ -104,17 +100,28 @@ void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, si
 
     int increment = spacing + 1;
 
-    for(size_t row = 0; row < height; row = row + increment){
+    for(size_t row = 0; row < width; row = row + increment){
 
-        board[xO++][yO] = unicode;
+        board[xO][yO++] = unicode;
     }
 }
 
-void Board::drawInnerGrid(){
-
+void Board::drawInnerGrid(size_t xO, size_t yO){
+    
 }
 
 void Board::drawInnerGrids(){
+
+    size_t xO = 0; 
+    size_t yO = 0;
+
+    for(size_t i = 0; i < NUM_CELLS; i++){
+
+        xO = calculateInnerGrid_XOffset(i);
+        yO = calculateInnerGrid_YOffset(i);
+
+        drawInnerGrid(xO, yO);
+    }
 
 }
 
@@ -142,4 +149,12 @@ char Board::drawPositionChar(BoardMarker marker){
 void Board::draw(const OuterPos& pos){
 
 
+}
+
+size_t Board::calculateInnerGrid_XOffset(int outerRow) const{
+    return SUBGRID_MARGIN_WIDTH + (outerRow * (INNER_CELL_WIDTH + U_GRID_THICKNESS + SUBGRID_MARGIN_WIDTH));
+}
+
+size_t Board::calculateInnerGrid_YOffset(int outerColumn) const{
+    return SUBGRID_MARGIN_HEIGHT + (outerColumn * (INNER_CELL_HEIGHT + U_GRID_THICKNESS + SUBGRID_MARGIN_HEIGHT));
 }

@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <string>
 
-static constexpr size_t NUM_DIM = 3;
-static constexpr size_t NUM_CELLS = NUM_DIM * NUM_DIM;
+static constexpr int CELLS_PER_AXIS = 3;
+static constexpr int NUM_CELLS = CELLS_PER_AXIS * CELLS_PER_AXIS;
 
 enum class BoardMarker{
     NOUGHT, CROSS, NONE
@@ -33,6 +33,15 @@ class MarkerPositions{
    void checkPosition(size_t outer, size_t inner, PosUpdate& update);
 };
 
+static constexpr int GRID_DIVIDERS = CELLS_PER_AXIS - 1;
+static constexpr int SUBGRID_MARGIN_WIDTH = 2;
+static constexpr int SUBGRID_MARGIN_HEIGHT = 1;
+static constexpr int INNER_CELL_WIDTH = 5;
+static constexpr int INNER_CELL_HEIGHT = 3;
+static constexpr int OUTER_CELL_WIDTH = 21;
+static constexpr int OUTER_CELL_HEIGHT = 11;
+
+
 static constexpr size_t U_HEIGHT = 35;    // Default Outer Height
 static constexpr size_t U_WIDTH = 65;     // Default Outer Width
 
@@ -59,20 +68,26 @@ class Board{
 
    void draw(const OuterPos& pos);
 
-   private:
-
-   board2DArray board;
-   size_t height = U_HEIGHT;
-   size_t width = U_WIDTH;
-   
+   //PRIVATE LATER
    void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing);
    void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, size_t spacing);
-   void drawInnerGrid();
+   void drawInnerGrid(size_t xO, size_t yO);
    void drawInnerGrids();
    void drawMarkerPositions(const OuterPos& pos);
    void drawCellMarkers(const InnerPos& pos);
    void drawOuterGrid();
    char drawPositionChar(BoardMarker marker);
+
+   private:
+
+   board2DArray board;
+   size_t boardHeight = U_HEIGHT;
+   size_t boardWidth = U_WIDTH;
+
+   size_t calculateInnerGrid_XOffset(int outerRow) const;
+   size_t calculateInnerGrid_YOffset(int outerColumn) const;
+   
+   
 };
 
 /*

@@ -19,9 +19,9 @@ int main(){
     Board board;
     MarkerPositions markers;
 
-    board.draw(markers.getMarkerPositions());
-
-    printBoard(board.getBoard(), board.getHeight(), board.getWidth());
+    board.drawHorizontalLine(0, 0, U_WIDTH, '#', 0);
+    board.drawVerticalLine(0, 0, U_HEIGHT, '#', 0);
+    printBoard(board.getBoard(), U_HEIGHT, U_WIDTH);
 
     return 0;
 }
