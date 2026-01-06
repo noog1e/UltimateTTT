@@ -18,11 +18,12 @@ int main(){
 
     Board board;
     MarkerPositions markers;
+    PosUpdate update;
 
-    
+    markers.updateMarkerAtPos(1, 1, BoardMarker::CROSS, update);
+
     board.draw(markers.getMarkerPositions());
-
-    printBoard(board.getBoard(), U_HEIGHT, U_WIDTH);
+    printBoard(board.getBoard(), board.getHeight(), board.getWidth());
 
     return 0;
 }

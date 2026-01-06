@@ -49,6 +49,9 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
 
 void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker marker, PosUpdate& update){
 
+    outer -= 1;
+    inner -= 1;
+
     checkBounds(outer, inner, update);
     if(update != PosUpdate::INNER_OOB && update != PosUpdate::OUTER_OOB){
 
@@ -194,7 +197,8 @@ void Board::drawMarkerPositions(const OuterPos& pos){
 
         for(size_t j = 0; j < CELLS_PER_AXIS; j++){
 
-            outerCell = (CELLS_PER_AXIS * i) + j;
+            outerCell = (CELLS_PER_AXIS * i) + j; 
+
             drawCellMarkers(pos[outerCell], j, i, outerCell);
         }
     }
@@ -212,9 +216,11 @@ void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow, 
             size_t x1O = calculateMarkerPositions_XOffset(xO, j);
             size_t y1O = calculateMarkerPositions_YOffset(yO, i);
 
-            //std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
+            std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
 
             board[y1O][x1O] = drawPositionChar(pos[outerCell]);
+
+            std::cout << "position char " << board[y1O][x1O] << "\n\n";
         }        
     }
 
