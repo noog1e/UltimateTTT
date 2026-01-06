@@ -19,6 +19,7 @@ int main(){
     Board board;
     MarkerPositions markers;
 
+    
     board.draw(markers.getMarkerPositions());
 
     printBoard(board.getBoard(), U_HEIGHT, U_WIDTH);

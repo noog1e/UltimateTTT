@@ -195,22 +195,24 @@ void Board::drawMarkerPositions(const OuterPos& pos){
         for(size_t j = 0; j < CELLS_PER_AXIS; j++){
 
             outerCell = (CELLS_PER_AXIS * i) + j;
-            drawCellMarkers(pos[outerCell], i, j, outerCell);
+            drawCellMarkers(pos[outerCell], j, i, outerCell);
         }
     }
 }
 
-void Board::drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn, int outerCell){
+void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow, int outerCell){
 
-    size_t xO = calculateInnerGrid_XOffset(outerRow); 
-    size_t yO = calculateInnerGrid_YOffset(outerColumn);
+    size_t xO = calculateInnerGrid_XOffset(outerColumn); 
+    size_t yO = calculateInnerGrid_YOffset(outerRow);
 
     for(size_t i = 0; i < CELLS_PER_AXIS; i++){
 
         for(size_t j = 0; j < CELLS_PER_AXIS; j++){
             
-            size_t x1O = calculateMarkerPositions_XOffset(x1O, i);
-            size_t y1O = calculateMarkerPositions_YOffset(y1O, j);
+            size_t x1O = calculateMarkerPositions_XOffset(xO, j);
+            size_t y1O = calculateMarkerPositions_YOffset(yO, i);
+
+            //std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
 
             board[y1O][x1O] = drawPositionChar(pos[outerCell]);
         }        
@@ -232,7 +234,7 @@ char Board::drawPositionChar(BoardMarker marker) const{
         break;
     }
 
-    return 'T'; //THIS IS T FOR TEST, Change later
+    return SPACE;
 }
 
 void Board::draw(const OuterPos& pos){
@@ -250,9 +252,11 @@ size_t Board::calculateInnerGrid_YOffset(int outerRow) const{
 }
 
 size_t Board::calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const{
+    //std::cout << "inner_xO " << inner_xO << " innerCol " << innerCol << "\n";     //DEBUG 
     return inner_xO + INNER_CELL_CENTRE_X + (innerCol * (INNER_CELL_WIDTH + L_GRID_THICKNESS));
 }
 
 size_t Board::calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const{
-    return inner_yO + INNER_CELL_CENTRE_X + (innerRow * (INNER_CELL_HEIGHT + L_GRID_THICKNESS));
+    //std::cout << "inner_yO " << inner_yO << " innerRow " << innerRow << "\n";     //DEBUG 
+    return inner_yO + INNER_CELL_CENTRE_Y + (innerRow * (INNER_CELL_HEIGHT - 1 + L_GRID_THICKNESS));
 }
