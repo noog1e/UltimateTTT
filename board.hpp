@@ -38,6 +38,8 @@ static constexpr int SUBGRID_MARGIN_WIDTH = 2;
 static constexpr int SUBGRID_MARGIN_HEIGHT = 1;
 static constexpr int INNER_CELL_WIDTH = 5;
 static constexpr int INNER_CELL_HEIGHT = 3;
+static constexpr int INNER_CELL_CENTRE_X = (INNER_CELL_WIDTH - 1) / 2;
+static constexpr int INNER_CELL_CENTRE_Y = (INNER_CELL_HEIGHT - 1) / 2;
 static constexpr int OUTER_CELL_WIDTH = 21;
 static constexpr int OUTER_CELL_HEIGHT = 11;
 
@@ -86,11 +88,14 @@ class Board{
    void drawOuterGrid();
    
    void drawMarkerPositions(const OuterPos& pos);
-   void drawCellMarkers(const InnerPos& pos);
-   char drawPositionChar(BoardMarker marker);
+   void drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn, int outerCell);
+   char drawPositionChar(BoardMarker marker) const;
 
-   size_t calculateInnerGrid_XOffset(int outerRow) const;
-   size_t calculateInnerGrid_YOffset(int outerColumn) const;
+   size_t calculateInnerGrid_XOffset(int outerCol) const;
+   size_t calculateInnerGrid_YOffset(int outerRow) const;
+
+   size_t calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const;
+   size_t calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const;
 
    private:
 

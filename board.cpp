@@ -153,10 +153,6 @@ void Board::drawInnerGrids(){
 
 }
 
-void Board::drawCellMarkers(const InnerPos& pos){
-
-}
-
 void Board::drawOuterGridVerticalLines(){
 
     int xO = OUTER_CELL_WIDTH;
@@ -189,7 +185,40 @@ void Board::drawOuterGrid(){
     drawOuterGridHorizontalLines();
 }
 
-char Board::drawPositionChar(BoardMarker marker){
+
+void Board::drawMarkerPositions(const OuterPos& pos){
+    
+    int outerCell = 0;
+
+    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
+
+        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+
+            outerCell = (CELLS_PER_AXIS * i) + j;
+            drawCellMarkers(pos[outerCell], i, j, outerCell);
+        }
+    }
+}
+
+void Board::drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn, int outerCell){
+
+    size_t xO = calculateInnerGrid_XOffset(outerRow); 
+    size_t yO = calculateInnerGrid_YOffset(outerColumn);
+
+    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
+
+        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+            
+            size_t x1O = calculateMarkerPositions_XOffset(x1O, i);
+            size_t y1O = calculateMarkerPositions_YOffset(y1O, j);
+
+            board[y1O][x1O] = drawPositionChar(pos[outerCell]);
+        }        
+    }
+
+}
+
+char Board::drawPositionChar(BoardMarker marker) const{
 
     switch(marker){
 
@@ -209,12 +238,21 @@ char Board::drawPositionChar(BoardMarker marker){
 void Board::draw(const OuterPos& pos){
     drawInnerGrids();
     drawOuterGrid();
+    drawMarkerPositions(pos);
 }
 
-size_t Board::calculateInnerGrid_XOffset(int outerRow) const{
-    return SUBGRID_MARGIN_WIDTH + (outerRow * (OUTER_CELL_WIDTH + U_GRID_THICKNESS));
+size_t Board::calculateInnerGrid_XOffset(int outerCol) const{
+    return SUBGRID_MARGIN_WIDTH + (outerCol * (OUTER_CELL_WIDTH + U_GRID_THICKNESS));
 }
 
-size_t Board::calculateInnerGrid_YOffset(int outerColumn) const{
-    return SUBGRID_MARGIN_HEIGHT + (outerColumn * (OUTER_CELL_HEIGHT + U_GRID_THICKNESS));
+size_t Board::calculateInnerGrid_YOffset(int outerRow) const{
+    return SUBGRID_MARGIN_HEIGHT + (outerRow * (OUTER_CELL_HEIGHT + U_GRID_THICKNESS));
+}
+
+size_t Board::calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const{
+    return inner_xO + INNER_CELL_CENTRE_X + (innerCol * (INNER_CELL_WIDTH + L_GRID_THICKNESS));
+}
+
+size_t Board::calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const{
+    return inner_yO + INNER_CELL_CENTRE_X + (innerRow * (INNER_CELL_HEIGHT + L_GRID_THICKNESS));
 }
