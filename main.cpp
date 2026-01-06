@@ -20,7 +20,8 @@ int main(){
     MarkerPositions markers;
     PosUpdate update;
 
-    markers.updateMarkerAtPos(1, 1, BoardMarker::CROSS, update);
+    markers.updateMarkerAtPos(1, 2, BoardMarker::CROSS, update);
+    markers.updateMarkerAtPos(1, 2, BoardMarker::NOUGHT, update);
 
     board.draw(markers.getMarkerPositions());
     printBoard(board.getBoard(), board.getHeight(), board.getWidth());

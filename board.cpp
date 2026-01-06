@@ -199,15 +199,17 @@ void Board::drawMarkerPositions(const OuterPos& pos){
 
             outerCell = (CELLS_PER_AXIS * i) + j; 
 
-            drawCellMarkers(pos[outerCell], j, i, outerCell);
+            drawCellMarkers(pos[outerCell], j, i);
         }
     }
 }
 
-void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow, int outerCell){
+void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow){
 
     size_t xO = calculateInnerGrid_XOffset(outerColumn); 
     size_t yO = calculateInnerGrid_YOffset(outerRow);
+
+    size_t innerCell = 0;
 
     for(size_t i = 0; i < CELLS_PER_AXIS; i++){
 
@@ -216,11 +218,11 @@ void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow, 
             size_t x1O = calculateMarkerPositions_XOffset(xO, j);
             size_t y1O = calculateMarkerPositions_YOffset(yO, i);
 
-            std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
+            innerCell = (CELLS_PER_AXIS * i) + j;
 
-            board[y1O][x1O] = drawPositionChar(pos[outerCell]);
+            //std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
 
-            std::cout << "position char " << board[y1O][x1O] << "\n\n";
+            board[y1O][x1O] = drawPositionChar(pos[innerCell]);
         }        
     }
 

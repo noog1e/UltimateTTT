@@ -88,7 +88,7 @@ class Board{
    void drawOuterGrid();
    
    void drawMarkerPositions(const OuterPos& pos);
-   void drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn, int outerCell);
+   void drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn);
    char drawPositionChar(BoardMarker marker) const;
 
    size_t calculateInnerGrid_XOffset(int outerCol) const;
