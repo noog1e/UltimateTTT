@@ -54,6 +54,10 @@ static constexpr int L_GRID_THICKNESS = 1;
 
 using board2DArray = std::array<std::array<char, U_WIDTH>, U_HEIGHT>;
 
+enum class Spacing{
+   NONE, SINGLE, DOUBLE
+};
+
 class Board{
 
    public:
@@ -69,21 +73,20 @@ class Board{
    void draw(const OuterPos& pos);
 
    //PRIVATE LATER
-   void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing);
-   void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, size_t spacing);
+   void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing);
+   void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing);
    
    void drawInnerGridVerticalLines(size_t xO, size_t yO);
    void drawInnerGridHorizontalLines(size_t xO, size_t yO);
    void drawInnerGrid(size_t xO, size_t yO);
    void drawInnerGrids();
    
-   void drawMarkerPositions(const OuterPos& pos);
-   void drawCellMarkers(const InnerPos& pos);
-   
    void drawOuterGridVerticalLines();
    void drawOuterGridHorizontalLines();
    void drawOuterGrid();
    
+   void drawMarkerPositions(const OuterPos& pos);
+   void drawCellMarkers(const InnerPos& pos);
    char drawPositionChar(BoardMarker marker);
 
    size_t calculateInnerGrid_XOffset(int outerRow) const;
@@ -94,9 +97,6 @@ class Board{
    board2DArray board;
    size_t boardHeight = U_HEIGHT;
    size_t boardWidth = U_WIDTH;
-
-
-   
    
 };
 
