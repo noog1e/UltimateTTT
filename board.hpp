@@ -71,13 +71,19 @@ class Board{
    //PRIVATE LATER
    void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing);
    void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, size_t spacing);
+   
    void drawInnerGridVerticalLines(size_t xO, size_t yO);
    void drawInnerGridHorizontalLines(size_t xO, size_t yO);
    void drawInnerGrid(size_t xO, size_t yO);
    void drawInnerGrids();
+   
    void drawMarkerPositions(const OuterPos& pos);
    void drawCellMarkers(const InnerPos& pos);
+   
+   void drawOuterGridVerticalLines();
+   void drawOuterGridHorizontalLines();
    void drawOuterGrid();
+   
    char drawPositionChar(BoardMarker marker);
 
    size_t calculateInnerGrid_XOffset(int outerRow) const;

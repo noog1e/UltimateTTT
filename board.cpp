@@ -88,9 +88,9 @@ size_t Board::getWidth() const{
 
 void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, size_t spacing){
 
-    int increment = spacing + 1;
+    int space = spacing + 1;
 
-    for(size_t col = 0; col < height; col = col + increment){
+    for(size_t col = 0; col < height; col++){
 
         board[yO++][xO] = unicode;
     }
@@ -98,9 +98,9 @@ void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, siz
 
 void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, size_t spacing){
 
-    int increment = spacing + 1;
+    int space = spacing + 1;
 
-    for(size_t row = 0; row < width; row = row + increment){
+    for(size_t row = 0; row < width; row++){
 
         board[yO][xO++] = unicode;
     }
@@ -120,11 +120,20 @@ void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
 
 void Board::drawInnerGridHorizontalLines(size_t xO, size_t yO){
 
+    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+
+        yO = yO + (INNER_CELL_HEIGHT - 1);
+
+        drawHorizontalLine(xO, yO, L_WIDTH, INNER_ROW_LINE, 0);
+
+        yO++;
+    }
+
 }
 
 void Board::drawInnerGrid(size_t xO, size_t yO){
-    drawInnerGridVerticalLines(xO, yO);
     drawInnerGridHorizontalLines(xO, yO);
+    drawInnerGridVerticalLines(xO, yO);
 }
 
 void Board::drawInnerGrids(){
@@ -148,6 +157,38 @@ void Board::drawCellMarkers(const InnerPos& pos){
 
 }
 
+void Board::drawOuterGridVerticalLines(){
+
+    int xO = OUTER_CELL_WIDTH;
+    int yO = 0;
+
+    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+
+        drawVerticalLine(xO, yO, U_HEIGHT, OUTER_GRID, 0);
+
+        xO = xO + OUTER_CELL_WIDTH + U_GRID_THICKNESS;
+    }
+}
+
+void Board::drawOuterGridHorizontalLines(){
+
+    int xO = 0;
+    int yO = OUTER_CELL_HEIGHT;
+
+    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+
+        drawHorizontalLine(xO, yO, U_WIDTH, OUTER_GRID, 1);
+
+        yO = yO + OUTER_CELL_HEIGHT + U_GRID_THICKNESS;
+    }
+}
+
+void Board::drawOuterGrid(){
+
+    drawOuterGridVerticalLines();
+    drawOuterGridHorizontalLines();
+}
+
 char Board::drawPositionChar(BoardMarker marker){
 
     switch(marker){
@@ -166,8 +207,8 @@ char Board::drawPositionChar(BoardMarker marker){
 }
 
 void Board::draw(const OuterPos& pos){
-
-
+    drawInnerGrids();
+    drawOuterGrid();
 }
 
 size_t Board::calculateInnerGrid_XOffset(int outerRow) const{
