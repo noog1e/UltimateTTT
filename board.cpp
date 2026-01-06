@@ -92,7 +92,7 @@ void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, siz
 
     for(size_t col = 0; col < height; col = col + increment){
 
-        board[xO++][yO] = unicode;
+        board[yO++][xO] = unicode;
     }
 }
 
@@ -102,7 +102,7 @@ void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, si
 
     for(size_t row = 0; row < width; row = row + increment){
 
-        board[xO][yO++] = unicode;
+        board[yO][xO++] = unicode;
     }
 }
 
@@ -112,12 +112,9 @@ void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
 
         xO = xO + INNER_CELL_WIDTH;
 
-        for(size_t j = 0; j < INNER_CELL_HEIGHT; j++){
+        drawVerticalLine(xO, yO, L_HEIGHT, INNER_COL_LINE, 0);
 
-            yO = yO + j;
-
-            board[xO][yO] = INNER_ROW_LINE;
-        }
+        xO++;
     }
 }
 
@@ -174,9 +171,9 @@ void Board::draw(const OuterPos& pos){
 }
 
 size_t Board::calculateInnerGrid_XOffset(int outerRow) const{
-    return SUBGRID_MARGIN_WIDTH + (outerRow * (INNER_CELL_WIDTH + U_GRID_THICKNESS + SUBGRID_MARGIN_WIDTH));
+    return SUBGRID_MARGIN_WIDTH + (outerRow * (OUTER_CELL_WIDTH + U_GRID_THICKNESS));
 }
 
 size_t Board::calculateInnerGrid_YOffset(int outerColumn) const{
-    return SUBGRID_MARGIN_HEIGHT + (outerColumn * (INNER_CELL_HEIGHT + U_GRID_THICKNESS + SUBGRID_MARGIN_HEIGHT));
+    return SUBGRID_MARGIN_HEIGHT + (outerColumn * (OUTER_CELL_HEIGHT + U_GRID_THICKNESS));
 }

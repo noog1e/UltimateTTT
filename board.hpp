@@ -42,15 +42,15 @@ static constexpr int OUTER_CELL_WIDTH = 21;
 static constexpr int OUTER_CELL_HEIGHT = 11;
 
 
-static constexpr size_t U_HEIGHT = 35;    // Default Outer Height
-static constexpr size_t U_WIDTH = 65;     // Default Outer Width
+static constexpr int U_HEIGHT = 35;    // Default Outer Height
+static constexpr int U_WIDTH = 65;     // Default Outer Width
 
-static constexpr size_t L_HEIGHT = 9;     // Default Inner Height
-static constexpr size_t L_WIDTH = 17;     // Default Inner Width
+static constexpr int L_HEIGHT = 9;     // Default Inner Height
+static constexpr int L_WIDTH = 17;     // Default Inner Width
 
 
-static constexpr size_t U_GRID_THICKNESS = 1;   
-static constexpr size_t L_GRID_THICKNESS = 1;
+static constexpr int U_GRID_THICKNESS = 1;   
+static constexpr int L_GRID_THICKNESS = 1;
 
 using board2DArray = std::array<std::array<char, U_WIDTH>, U_HEIGHT>;
 
@@ -80,14 +80,16 @@ class Board{
    void drawOuterGrid();
    char drawPositionChar(BoardMarker marker);
 
+   size_t calculateInnerGrid_XOffset(int outerRow) const;
+   size_t calculateInnerGrid_YOffset(int outerColumn) const;
+
    private:
 
    board2DArray board;
    size_t boardHeight = U_HEIGHT;
    size_t boardWidth = U_WIDTH;
 
-   size_t calculateInnerGrid_XOffset(int outerRow) const;
-   size_t calculateInnerGrid_YOffset(int outerColumn) const;
+
    
    
 };
