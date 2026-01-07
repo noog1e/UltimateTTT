@@ -1,0 +1,37 @@
+#pragma once
+
+#include "BoardLayout.hpp"
+#include <cstddef>
+#include <array>
+
+enum class BoardMarker{
+    NOUGHT, CROSS, NONE
+};
+
+using InnerPos = std::array<BoardMarker, BoardLayout::NUM_CELLS>;
+using OuterPos = std::array<InnerPos, BoardLayout::NUM_CELLS>;
+
+enum class PosUpdate{
+    VALID, CROSS_TAKEN, NOUGHT_TAKEN, OUTER_OOB, INNER_OOB 
+};
+
+class MarkerPositions{
+
+   public:
+   MarkerPositions();
+
+   void updateMarkerAtPos(
+        size_t outer, 
+        size_t inner, 
+        BoardMarker marker, 
+        PosUpdate& update
+    );
+
+   const OuterPos& getMarkerPositions() const;
+
+   private:
+   OuterPos pos;
+
+   void checkBounds(size_t outer, size_t inner, PosUpdate& update);
+   void checkPosition(size_t outer, size_t inner, PosUpdate& update);
+};

@@ -1,69 +1,18 @@
 #include "board.hpp"
+#include "MarkerPositions.hpp"
+
 #include <cstddef>
 #include <iostream>
 #include <string>
 
-const char OUTER_GRID = '#';
-const char INNER_ROW_LINE = '_';
-const char INNER_COL_LINE = '|';
-const char SPACE = ' ';
-
-MarkerPositions::MarkerPositions(){
-
-    for(size_t i=0; i < NUM_CELLS; i++){
-        for(size_t j=0; j < NUM_CELLS; j++){
-            pos[i][j] = BoardMarker::NONE; 
-        }
-    }
+namespace {
+    constexpr char OUTER_GRID = '#';
+    constexpr char INNER_ROW_LINE = '_';
+    constexpr char INNER_COL_LINE = '|';
+    constexpr char SPACE = ' ';
 }
 
-void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
-    
-    if(outer < 0 || outer >= NUM_CELLS){
-        update = PosUpdate::OUTER_OOB;
-    }else if(inner < 0 || inner >= NUM_CELLS){
-        update = PosUpdate::INNER_OOB;
-    }
-}
-
-void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& update){
-    
-    BoardMarker posMarker = pos[outer][inner];
-    
-    switch (posMarker){
-
-        case BoardMarker::CROSS:
-            update = PosUpdate::CROSS_TAKEN;
-            break;
-
-        case BoardMarker::NOUGHT:
-            update = PosUpdate::NOUGHT_TAKEN;
-            break;
-
-        case BoardMarker::NONE:
-            update = PosUpdate::VALID;
-            break;
-    }
-}
-
-void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker marker, PosUpdate& update){
-
-    outer -= 1;
-    inner -= 1;
-
-    checkBounds(outer, inner, update);
-    if(update != PosUpdate::INNER_OOB && update != PosUpdate::OUTER_OOB){
-
-        checkPosition(outer, inner, update);
-        if(update == PosUpdate::VALID){
-            pos[outer][inner] = marker;
-        }
-    }
-}
-
-const OuterPos& MarkerPositions::getMarkerPositions() const{
-    return pos;
-}
+namespace BL = BoardLayout;
 
 Board::Board(){
     clear();
@@ -76,7 +25,7 @@ void Board::clear(){
     }
 }
 
-const board2DArray& Board::getBoard() const{
+const Board2DArray& Board::getBoard() const{
     return board;
 }
 
@@ -89,6 +38,8 @@ size_t Board::getWidth() const{
 }
 
 void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing){
+
+    if(height > board.size()) 
 
     //int space = static_cast<int>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
@@ -110,11 +61,11 @@ void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Sp
 
 void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
 
-    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+    for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        xO = xO + INNER_CELL_WIDTH;
+        xO = xO + BL::INNER_CELL_WIDTH;
 
-        drawVerticalLine(xO, yO, L_HEIGHT, INNER_COL_LINE, Spacing::NONE);
+        drawVerticalLine(xO, yO, BL::L_HEIGHT, INNER_COL_LINE, Spacing::NONE);
 
         xO++;
     }
@@ -122,11 +73,11 @@ void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
 
 void Board::drawInnerGridHorizontalLines(size_t xO, size_t yO){
 
-    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+    for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        yO = yO + (INNER_CELL_HEIGHT - 1);
+        yO = yO + (BL::INNER_CELL_HEIGHT - 1);
 
-        drawHorizontalLine(xO, yO, L_WIDTH, INNER_ROW_LINE, Spacing::NONE);
+        drawHorizontalLine(xO, yO, BL::L_WIDTH, INNER_ROW_LINE, Spacing::NONE);
 
         yO++;
     }
@@ -143,9 +94,9 @@ void Board::drawInnerGrids(){
     size_t xO = 0; 
     size_t yO = 0;
 
-    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
+    for(size_t i = 0; i < BL::CELLS_PER_AXIS; i++){
 
-        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+        for(size_t j = 0; j < BL::CELLS_PER_AXIS; j++){
             
             xO = calculateInnerGrid_XOffset(i);
             yO = calculateInnerGrid_YOffset(j);
@@ -157,27 +108,27 @@ void Board::drawInnerGrids(){
 
 void Board::drawOuterGridVerticalLines(){
 
-    int xO = OUTER_CELL_WIDTH;
+    int xO = BL::OUTER_CELL_WIDTH;
     int yO = 0;
 
-    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+    for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        drawVerticalLine(xO, yO, U_HEIGHT, OUTER_GRID, Spacing::NONE);
+        drawVerticalLine(xO, yO, BL::U_HEIGHT, OUTER_GRID, Spacing::NONE);
 
-        xO = xO + OUTER_CELL_WIDTH + U_GRID_THICKNESS;
+        xO = xO + BL::OUTER_CELL_WIDTH + BL::U_GRID_THICKNESS;
     }
 }
 
 void Board::drawOuterGridHorizontalLines(){
 
     int xO = 0;
-    int yO = OUTER_CELL_HEIGHT;
+    int yO = BL::OUTER_CELL_HEIGHT;
 
-    for(size_t i = 0; i < GRID_DIVIDERS; i++){
+    for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        drawHorizontalLine(xO, yO, U_WIDTH, OUTER_GRID, Spacing::SINGLE);
+        drawHorizontalLine(xO, yO, BL::U_WIDTH, OUTER_GRID, Spacing::SINGLE);
 
-        yO = yO + OUTER_CELL_HEIGHT + U_GRID_THICKNESS;
+        yO = yO + BL::OUTER_CELL_HEIGHT + BL::U_GRID_THICKNESS;
     }
 }
 
@@ -192,11 +143,11 @@ void Board::drawMarkerPositions(const OuterPos& pos){
     
     int outerCell = 0;
 
-    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
+    for(size_t i = 0; i < BL::CELLS_PER_AXIS; i++){
 
-        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+        for(size_t j = 0; j < BL::CELLS_PER_AXIS; j++){
 
-            outerCell = (CELLS_PER_AXIS * i) + j; 
+            outerCell = (BL::CELLS_PER_AXIS * i) + j; 
 
             drawCellMarkers(pos[outerCell], j, i);
         }
@@ -210,14 +161,14 @@ void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow){
 
     size_t innerCell = 0;
 
-    for(size_t i = 0; i < CELLS_PER_AXIS; i++){
+    for(size_t i = 0; i < BL::CELLS_PER_AXIS; i++){
 
-        for(size_t j = 0; j < CELLS_PER_AXIS; j++){
+        for(size_t j = 0; j < BL::CELLS_PER_AXIS; j++){
             
             size_t x1O = calculateMarkerPositions_XOffset(xO, j);
             size_t y1O = calculateMarkerPositions_YOffset(yO, i);
 
-            innerCell = (CELLS_PER_AXIS * i) + j;
+            innerCell = (BL::CELLS_PER_AXIS * i) + j;
 
             //std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
 
@@ -251,19 +202,19 @@ void Board::draw(const OuterPos& pos){
 }
 
 size_t Board::calculateInnerGrid_XOffset(int outerCol) const{
-    return SUBGRID_MARGIN_WIDTH + (outerCol * (OUTER_CELL_WIDTH + U_GRID_THICKNESS));
+    return BL::SUBGRID_MARGIN_WIDTH + (outerCol * (BL::OUTER_CELL_WIDTH + BL::U_GRID_THICKNESS));
 }
 
 size_t Board::calculateInnerGrid_YOffset(int outerRow) const{
-    return SUBGRID_MARGIN_HEIGHT + (outerRow * (OUTER_CELL_HEIGHT + U_GRID_THICKNESS));
+    return BL::SUBGRID_MARGIN_HEIGHT + (outerRow * (BL::OUTER_CELL_HEIGHT + BL::U_GRID_THICKNESS));
 }
 
 size_t Board::calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const{
     //std::cout << "inner_xO " << inner_xO << " innerCol " << innerCol << "\n";     //DEBUG 
-    return inner_xO + INNER_CELL_CENTRE_X + (innerCol * (INNER_CELL_WIDTH + L_GRID_THICKNESS));
+    return inner_xO + BL::INNER_CELL_CENTRE_X + (innerCol * (BL::INNER_CELL_WIDTH + BL::L_GRID_THICKNESS));
 }
 
 size_t Board::calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const{
     //std::cout << "inner_yO " << inner_yO << " innerRow " << innerRow << "\n";     //DEBUG 
-    return inner_yO + INNER_CELL_CENTRE_Y + (innerRow * (INNER_CELL_HEIGHT - 1 + L_GRID_THICKNESS));
+    return inner_yO + BL::INNER_CELL_CENTRE_Y + (innerRow * (BL::INNER_CELL_HEIGHT - 1 + BL::L_GRID_THICKNESS));
 }
