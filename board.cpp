@@ -8,7 +8,6 @@ const char INNER_ROW_LINE = '_';
 const char INNER_COL_LINE = '|';
 const char SPACE = ' ';
 
-
 MarkerPositions::MarkerPositions(){
 
     for(size_t i=0; i < NUM_CELLS; i++){
@@ -91,7 +90,7 @@ size_t Board::getWidth() const{
 
 void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing){
 
-    int space = static_cast<int>(spacing) + 1;
+    //int space = static_cast<int>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
     for(size_t row = 0; row < height; row++){
 
@@ -101,7 +100,7 @@ void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spa
 
 void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing){
 
-    int space = static_cast<int>(spacing) + 1;
+    //int space = static_cast<int>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
     for(size_t col = 0; col < width; col++){
 

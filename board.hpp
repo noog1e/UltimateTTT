@@ -2,7 +2,6 @@
 
 #include <array>
 #include <cstddef>
-#include <string>
 
 static constexpr int CELLS_PER_AXIS = 3;
 static constexpr int NUM_CELLS = CELLS_PER_AXIS * CELLS_PER_AXIS;
@@ -74,7 +73,12 @@ class Board{
 
    void draw(const OuterPos& pos);
 
-   //PRIVATE LATER
+   private:
+
+   board2DArray board;
+   size_t boardHeight = U_HEIGHT;
+   size_t boardWidth = U_WIDTH;
+
    void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing);
    void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing);
    
@@ -96,12 +100,6 @@ class Board{
 
    size_t calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const;
    size_t calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const;
-
-   private:
-
-   board2DArray board;
-   size_t boardHeight = U_HEIGHT;
-   size_t boardWidth = U_WIDTH;
    
 };
 
