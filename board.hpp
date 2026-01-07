@@ -5,7 +5,7 @@
 #include <array>
 #include <cstddef>
 
-enum class BoundsCheck{
+enum class DrawBoundsCheck{
    IN_BOUNDS, OO_BOUNDS
 };
 
@@ -26,7 +26,7 @@ class Board{
    size_t getHeight() const;
    size_t getWidth() const;
 
-   void draw(const OuterPos& pos);
+   DrawBoundsCheck draw(const OuterPos& pos);
 
    private:
 
@@ -35,21 +35,21 @@ class Board{
    size_t boardWidth = BoardLayout::U_WIDTH;
 
    //Line drawing
-   void drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing);
-   void drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing);  
-   void drawInnerGridVerticalLines(size_t xO, size_t yO);
-   void drawInnerGridHorizontalLines(size_t xO, size_t yO);
-   void drawOuterGridVerticalLines();
-   void drawOuterGridHorizontalLines();
+   DrawBoundsCheck drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing);
+   DrawBoundsCheck drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing);  
+   DrawBoundsCheck drawInnerGridVerticalLines(size_t xO, size_t yO);
+   DrawBoundsCheck drawInnerGridHorizontalLines(size_t xO, size_t yO);
+   DrawBoundsCheck drawOuterGridVerticalLines();
+   DrawBoundsCheck drawOuterGridHorizontalLines();
    
    //Grid drawing
-   void drawInnerGrid(size_t xO, size_t yO);
-   void drawInnerGrids();
-   void drawOuterGrid();
+   DrawBoundsCheck drawInnerGrid(size_t xO, size_t yO);
+   DrawBoundsCheck drawInnerGrids();
+   DrawBoundsCheck drawOuterGrid();
    
    //Marker drawing
-   void drawMarkerPositions(const OuterPos& pos);
-   void drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn);
+   DrawBoundsCheck drawMarkerPositions(const OuterPos& pos);
+   DrawBoundsCheck drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn);
    char drawPositionChar(BoardMarker marker) const;
 
    //Geometry

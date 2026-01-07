@@ -1,7 +1,7 @@
 #include "board.hpp"
 #include <iostream>
 
-void printBoard(const board2DArray& board, size_t height, size_t width){
+void printBoard(const Board2DArray& board, size_t height, size_t width){
 
     for(size_t i=0; i < height; i++){
 
@@ -20,11 +20,8 @@ int main(){
     MarkerPositions markers;
     PosUpdate update;
 
-    markers.updateMarkerAtPos(1, 2, BoardMarker::CROSS, update);
-    markers.updateMarkerAtPos(1, 2, BoardMarker::NOUGHT, update);
-
-    board.draw(markers.getMarkerPositions());
-    printBoard(board.getBoard(), board.getHeight(), board.getWidth());
+    if(board.draw(markers.getMarkerPositions()) == DrawBoundsCheck::IN_BOUNDS);
+        printBoard(board.getBoard(), board.getHeight(), board.getWidth());
 
     return 0;
 }

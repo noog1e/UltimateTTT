@@ -37,9 +37,9 @@ size_t Board::getWidth() const{
     return boardWidth;
 }
 
-void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing){
+DrawBoundsCheck Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing){
 
-    if(height > board.size()) 
+    if(height > boardHeight || height < 0) return DrawBoundsCheck::OO_BOUNDS;
 
     //int space = static_cast<int>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
@@ -47,49 +47,64 @@ void Board::drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spa
 
         board[yO++][xO] = unicode;
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing){
+DrawBoundsCheck Board::drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing){
 
+    if(width > boardWidth || width < 0) return DrawBoundsCheck::OO_BOUNDS;
     //int space = static_cast<int>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
     for(size_t col = 0; col < width; col++){
 
         board[yO][xO++] = unicode;
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
+DrawBoundsCheck Board::drawInnerGridVerticalLines(size_t xO, size_t yO){
 
     for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
         xO = xO + BL::INNER_CELL_WIDTH;
 
-        drawVerticalLine(xO, yO, BL::L_HEIGHT, INNER_COL_LINE, Spacing::NONE);
+        if(drawVerticalLine(xO, yO, BL::L_HEIGHT, INNER_COL_LINE, Spacing::NONE) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
 
         xO++;
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawInnerGridHorizontalLines(size_t xO, size_t yO){
+DrawBoundsCheck Board::drawInnerGridHorizontalLines(size_t xO, size_t yO){
 
     for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
         yO = yO + (BL::INNER_CELL_HEIGHT - 1);
 
-        drawHorizontalLine(xO, yO, BL::L_WIDTH, INNER_ROW_LINE, Spacing::NONE);
+        if(drawHorizontalLine(xO, yO, BL::L_WIDTH, INNER_ROW_LINE, Spacing::NONE) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;;
 
         yO++;
     }
 
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawInnerGrid(size_t xO, size_t yO){
-    drawInnerGridHorizontalLines(xO, yO);
-    drawInnerGridVerticalLines(xO, yO);
+DrawBoundsCheck Board::drawInnerGrid(size_t xO, size_t yO){
+    if(drawInnerGridHorizontalLines(xO, yO) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    if(drawInnerGridVerticalLines(xO, yO) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;;
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawInnerGrids(){
+DrawBoundsCheck Board::drawInnerGrids(){
 
     size_t xO = 0; 
     size_t yO = 0;
@@ -100,46 +115,60 @@ void Board::drawInnerGrids(){
             
             xO = calculateInnerGrid_XOffset(i);
             yO = calculateInnerGrid_YOffset(j);
-            drawInnerGrid(xO, yO);
+            if(drawInnerGrid(xO, yO) ==
+                DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
         }        
     }
 
+    return DrawBoundsCheck::IN_BOUNDS;
+
 }
 
-void Board::drawOuterGridVerticalLines(){
+DrawBoundsCheck Board::drawOuterGridVerticalLines(){
 
     int xO = BL::OUTER_CELL_WIDTH;
     int yO = 0;
 
     for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        drawVerticalLine(xO, yO, BL::U_HEIGHT, OUTER_GRID, Spacing::NONE);
+        if(drawVerticalLine(xO, yO, BL::U_HEIGHT, OUTER_GRID, Spacing::NONE) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
 
         xO = xO + BL::OUTER_CELL_WIDTH + BL::U_GRID_THICKNESS;
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawOuterGridHorizontalLines(){
+DrawBoundsCheck Board::drawOuterGridHorizontalLines(){
 
     int xO = 0;
     int yO = BL::OUTER_CELL_HEIGHT;
 
     for(size_t i = 0; i < BL::GRID_DIVIDERS; i++){
 
-        drawHorizontalLine(xO, yO, BL::U_WIDTH, OUTER_GRID, Spacing::SINGLE);
+        if(drawHorizontalLine(xO, yO, BL::U_WIDTH, OUTER_GRID, Spacing::SINGLE) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;;
 
         yO = yO + BL::OUTER_CELL_HEIGHT + BL::U_GRID_THICKNESS;
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawOuterGrid(){
+DrawBoundsCheck Board::drawOuterGrid(){
 
-    drawOuterGridVerticalLines();
-    drawOuterGridHorizontalLines();
+    if(drawOuterGridVerticalLines() ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    if(drawOuterGridHorizontalLines()==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
 
-void Board::drawMarkerPositions(const OuterPos& pos){
+DrawBoundsCheck Board::drawMarkerPositions(const OuterPos& pos){
     
     int outerCell = 0;
 
@@ -149,12 +178,23 @@ void Board::drawMarkerPositions(const OuterPos& pos){
 
             outerCell = (BL::CELLS_PER_AXIS * i) + j; 
 
-            drawCellMarkers(pos[outerCell], j, i);
+            if(drawCellMarkers(pos[outerCell], j, i) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
         }
     }
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
-void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow){
+DrawBoundsCheck Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow){
+
+    if(outerColumn >= BL::CELLS_PER_AXIS ||
+       outerRow >= BL::CELLS_PER_AXIS) 
+       return DrawBoundsCheck::OO_BOUNDS;
+
+    if(outerColumn < 0 ||
+       outerRow < 0)
+       return DrawBoundsCheck::OO_BOUNDS;
 
     size_t xO = calculateInnerGrid_XOffset(outerColumn); 
     size_t yO = calculateInnerGrid_YOffset(outerRow);
@@ -176,6 +216,7 @@ void Board::drawCellMarkers(const InnerPos& pos, int outerColumn, int outerRow){
         }        
     }
 
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
 char Board::drawPositionChar(BoardMarker marker) const{
@@ -195,10 +236,18 @@ char Board::drawPositionChar(BoardMarker marker) const{
     return SPACE;
 }
 
-void Board::draw(const OuterPos& pos){
-    drawInnerGrids();
-    drawOuterGrid();
-    drawMarkerPositions(pos);
+DrawBoundsCheck Board::draw(const OuterPos& pos){
+    
+    if(drawInnerGrids() ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+    
+    if(drawOuterGrid() ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    if(drawMarkerPositions(pos) ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    return DrawBoundsCheck::IN_BOUNDS;
 }
 
 size_t Board::calculateInnerGrid_XOffset(int outerCol) const{
