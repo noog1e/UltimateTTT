@@ -2,6 +2,7 @@
 
 #include "player.hpp"
 #include "board.hpp"
+#include "WinConditions.hpp"
 #include <string>
 #include <array>
 #include <cstddef>
@@ -29,8 +30,27 @@ class GameEvent{
     
 };
 
+enum class OuterCellState{
+    ONGOING,
+    NOUGHT_WON,
+    CROSS_WON,
+    DRAW
+};
+
 //TODO add some win condition struct 
 class GameState{
+
+    public:
+    GameState(const MarkerPositions& positions);
+
+    void checkInnerWinState(size_t outerCell);
+    void checkOuterWinState();
+
+    private:
+    MarkerPositions markerPositions;
+    std::array<OuterCellState, BoardLayout::NUM_CELLS> state;
+
+    bool matchPosition(BoardMarker m1, BoardMarker m2);
 
 };
 
