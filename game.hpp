@@ -12,6 +12,18 @@ enum class Slot{
     ONE, TWO
 };
 
+struct PlayerSlot{
+    Player player;
+    Slot slot;
+    PlayerMarker marker;
+};
+
+struct PlayerState{
+    PlayerSlot slot;
+    bool isTurn;
+    bool playsFirst;
+};
+
 class GameEvent{
 
     
@@ -24,19 +36,10 @@ class GameState{
 
 class Game{
 
+    public:
+
     private:
         
-    struct PlayerSlot{
-        Player player;
-        Slot slot;
-        PlayerMarker marker;
-    };
 
-    struct PlayerState{
-        PlayerSlot slot;
-        bool isTurn;
-        bool playsFirst;
-        //Owned posiitons?
-    };
 
 };
