@@ -11,6 +11,8 @@ enum class MatchState{
     DRAW
 };
 
+using OuterStates = std::array<MatchState, BoardLayout::NUM_CELLS>; 
+
 class GameState{
 
     public:
@@ -19,10 +21,12 @@ class GameState{
     void updateOuterState(const OuterPos& outerPos, size_t outerCell);
     void updateMatchState();
 
+
     MatchState getMatchState() const;
+    const OuterStates& getOuterStates() const;
 
     private:
-    std::array<MatchState, BoardLayout::NUM_CELLS> outerStates;
+    OuterStates outerStates;
     MatchState matchState = MatchState::ONGOING;
 
     MatchState checkDraw(const InnerPos& inner) const;

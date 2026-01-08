@@ -39,9 +39,22 @@ void GameState::updateMatchState(){
     matchState = cellState;
 }
 
+const OuterStates& GameState::getOuterStates() const{
+    return outerStates;
+}
+
+MatchState GameState::getMatchState() const{
+    return matchState;
+}
+
 bool GameState::matchPosition(BoardMarker m1, BoardMarker m2) const{
 
     return m1 == m2 && m1 != BoardMarker::NONE && m2 != BoardMarker::NONE;
+}
+
+bool GameState::matchPosition(MatchState s1, MatchState s2) const{
+
+    return s1 == s2 && s1 != MatchState::ONGOING && s2 != MatchState::ONGOING;
 }
 
 MatchState GameState::checkWinState(const InnerPos& inner) const{
@@ -100,6 +113,8 @@ MatchState GameState::checkWinState() const{
             return state1;
         }
     }
+
+    return MatchState::ONGOING;
 }
 
 MatchState GameState::checkDraw(const InnerPos& inner) const{
