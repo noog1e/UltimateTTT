@@ -30,30 +30,37 @@ class GameEvent{
     
 };
 
-enum class OuterCellState{
+enum class MatchState{
     ONGOING,
     NOUGHT_WON,
     CROSS_WON,
     DRAW
 };
 
-//TODO add some win condition struct 
 class GameState{
 
     public:
-    GameState(const MarkerPositions& positions);
+    GameState();
 
-    void checkInnerState(size_t outerCell);
-    void checkOuterState();
+    void updateOuterState(const OuterPos& outerPos, size_t outerCell);
+    void updateMatchState();
+
+    MatchState getMatchState() const;
 
     private:
-    MarkerPositions markerPositions;
-    std::array<OuterCellState, BoardLayout::NUM_CELLS> state;
+    std::array<MatchState, BoardLayout::NUM_CELLS> outerStates;
+    MatchState matchState = MatchState::ONGOING;
 
+    MatchState checkDraw(const InnerPos& inner) const;
+    MatchState checkWinState(const InnerPos& inner) const;
+
+    MatchState checkDraw() const;
+    MatchState checkWinState() const;
+    
     bool matchPosition(BoardMarker m1, BoardMarker m2) const;
-    OuterCellState checkInnerDraw(const InnerPos& inner) const;
-    OuterCellState checkInnerWinState(const InnerPos& inner) const;
-    OuterCellState assignWinner(BoardMarker marker) const;
+    bool matchPosition(MatchState m1, MatchState m2) const;
+
+    MatchState assignOuterWinner(BoardMarker marker) const;
 
 };
 

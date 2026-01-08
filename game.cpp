@@ -1,30 +1,50 @@
 #include "game.hpp"
 #include "WinConditions.hpp"
 
-GameState::GameState(const MarkerPositions& positions) : markerPositions(positions){
-    state.fill(OuterCellState::ONGOING);
+GameState::GameState(){
+    outerStates.fill(MatchState::ONGOING);
 }
 
-void GameState::checkInnerState(size_t outerCell){
+void GameState::updateOuterState(const OuterPos& outerPos, size_t outerCell){
 
-    const InnerPos& inner = markerPositions.getMarkerPositions()[outerCell];
+    const InnerPos& innerPos = outerPos[outerCell];
 
-    OuterCellState cellState = OuterCellState::ONGOING;
+    MatchState cellState = MatchState::ONGOING;
 
-    cellState = checkInnerDraw(inner);
+    cellState = checkDraw(innerPos);
 
-    if(cellState != OuterCellState::DRAW){
+    if(cellState != MatchState::DRAW){
 
-        cellState = checkInnerWinState(inner);
+        cellState = checkWinState(innerPos);
 
     }
 
-    state[outerCell] = cellState;
+    outerStates[outerCell] = cellState;
 }
 
-OuterCellState GameState::checkInnerWinState(const InnerPos& inner) const{
+void GameState::updateMatchState(){
 
-    OuterCellState cellState = OuterCellState::ONGOING;
+    MatchState cellState = MatchState::ONGOING;
+
+    cellState = checkDraw();
+
+    if(cellState != MatchState::DRAW){
+
+        cellState = checkWinState();
+
+    }
+
+    matchState = cellState;
+}
+
+bool GameState::matchPosition(BoardMarker m1, BoardMarker m2) const{
+
+    return m1 == m2 && m1 != BoardMarker::NONE && m2 != BoardMarker::NONE;
+}
+
+MatchState GameState::checkWinState(const InnerPos& inner) const{
+
+    MatchState cellState = MatchState::ONGOING;
 
     BoardMarker marker1 = BoardMarker::NONE;
     BoardMarker marker2 = BoardMarker::NONE;
@@ -46,34 +66,67 @@ OuterCellState GameState::checkInnerWinState(const InnerPos& inner) const{
         }
 
         if(matchCount == BoardLayout::CELLS_PER_AXIS){
-            cellState = assignWinner(marker1);
+            cellState = assignOuterWinner(marker1);
         }
     }
 
     return cellState;
 }
 
-bool GameState::matchPosition(BoardMarker m1, BoardMarker m2) const{
+MatchState GameState::checkWinState() const{
+    
+    MatchState state1 = MatchState::ONGOING;
+    MatchState state2 = MatchState::ONGOING;
 
-    return m1 == m2 && m1 != BoardMarker::NONE && m2 != BoardMarker::NONE;
+    for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
+    
+        int matchCount = 1;
+
+        for(size_t j = 0; j < BoardLayout::CELLS_PER_AXIS - 1; j++){
+
+            state1 = outerStates[WIN_CONDITIONS[i][j]];
+            state2 = outerStates[WIN_CONDITIONS[i][j+1]];
+
+            if(matchPosition(state1, state2)){
+                matchCount++;
+            }else{
+                break;
+            }
+        }
+
+        if(matchCount == BoardLayout::CELLS_PER_AXIS){
+            return state1;
+        }
+    }
 }
 
-OuterCellState GameState::assignWinner(BoardMarker marker) const{
-
-    OuterCellState winner = OuterCellState::ONGOING;
-
-    if(marker == BoardMarker::CROSS) winner = OuterCellState::CROSS_WON;
-    if(marker == BoardMarker::NOUGHT) winner = OuterCellState::NOUGHT_WON;
-
-    return winner;
-}
-
-OuterCellState GameState::checkInnerDraw(const InnerPos& inner) const{
+MatchState GameState::checkDraw(const InnerPos& inner) const{
 
     for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
 
-        if(inner[i] == BoardMarker::NONE) return OuterCellState::DRAW;
+        if(inner[i] == BoardMarker::NONE) return MatchState::ONGOING;
     }
 
-    return OuterCellState::ONGOING;
+    return MatchState::DRAW;
+}
+
+MatchState GameState::checkDraw() const{
+
+    for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+
+        if(outerStates[i] == MatchState::ONGOING) return MatchState::ONGOING;
+    }
+
+    return MatchState::DRAW;
+
+}
+
+MatchState GameState::assignOuterWinner(BoardMarker marker) const{
+
+    MatchState winner = MatchState::ONGOING;
+
+    if(marker == BoardMarker::CROSS) winner = MatchState::CROSS_WON;
+    if(marker == BoardMarker::NOUGHT) winner = MatchState::NOUGHT_WON;
+
+    return winner;
 }
