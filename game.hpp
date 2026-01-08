@@ -43,14 +43,17 @@ class GameState{
     public:
     GameState(const MarkerPositions& positions);
 
-    void checkInnerWinState(size_t outerCell);
-    void checkOuterWinState();
+    void checkInnerState(size_t outerCell);
+    void checkOuterState();
 
     private:
     MarkerPositions markerPositions;
     std::array<OuterCellState, BoardLayout::NUM_CELLS> state;
 
-    bool matchPosition(BoardMarker m1, BoardMarker m2);
+    bool matchPosition(BoardMarker m1, BoardMarker m2) const;
+    OuterCellState checkInnerDraw(const InnerPos& inner) const;
+    OuterCellState checkInnerWinState(const InnerPos& inner) const;
+    OuterCellState assignWinner(BoardMarker marker) const;
 
 };
 
