@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"F:/Programming/UltimateTTT/build/cmake_install.cmake",
+		"F:/Programming/UltimateTTT/build/_deps/catch2-build/cmake_install.cmake",
+		"F:/Programming/UltimateTTT/build/_deps/catch2-build/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

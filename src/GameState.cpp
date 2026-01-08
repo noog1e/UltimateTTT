@@ -1,5 +1,7 @@
-#include "game.hpp"
 #include "WinConditions.hpp"
+#include "MarkerPositions.hpp"
+#include "GameState.hpp"
+#include <cstddef>
 
 GameState::GameState(){
     outerStates.fill(MatchState::ONGOING);

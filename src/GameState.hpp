@@ -1,34 +1,8 @@
 #pragma once
 
-#include "player.hpp"
-#include "board.hpp"
-#include "WinConditions.hpp"
-#include <string>
-#include <array>
+#include "BoardLayout.hpp"
+#include "MarkerPositions.hpp"
 #include <cstddef>
-
-const size_t NUM_PLAYERS = 2; 
-
-enum class Slot{
-    ONE, TWO
-};
-
-struct PlayerSlot{
-    Player player;
-    Slot slot;
-    PlayerMarker marker;
-};
-
-struct PlayerState{
-    PlayerSlot slot;
-    bool isTurn;
-    bool playsFirst;
-};
-
-class GameEvent{
-
-    
-};
 
 enum class MatchState{
     ONGOING,
@@ -61,15 +35,5 @@ class GameState{
     bool matchPosition(MatchState m1, MatchState m2) const;
 
     MatchState assignOuterWinner(BoardMarker marker) const;
-
-};
-
-class Game{
-
-    public:
-
-    private:
-        
-
 
 };

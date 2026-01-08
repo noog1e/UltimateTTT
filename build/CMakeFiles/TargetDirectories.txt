@@ -1,0 +1,10 @@
+F:/Programming/UltimateTTT/build/CMakeFiles/my_lib.dir
+F:/Programming/UltimateTTT/build/CMakeFiles/tests.dir
+F:/Programming/UltimateTTT/build/CMakeFiles/edit_cache.dir
+F:/Programming/UltimateTTT/build/CMakeFiles/rebuild_cache.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/CMakeFiles/edit_cache.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/CMakeFiles/rebuild_cache.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/src/CMakeFiles/Catch2.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/src/CMakeFiles/edit_cache.dir
+F:/Programming/UltimateTTT/build/_deps/catch2-build/src/CMakeFiles/rebuild_cache.dir
