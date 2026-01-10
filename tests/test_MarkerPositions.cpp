@@ -71,7 +71,7 @@ TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){
         size_t inner = 1;
         positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
 
-        REQUIRE(update == PosUpdate::OUTER_OOB);
+        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
     }
 
     SECTION("Update Outer; buffer underflow check"){
@@ -80,7 +80,7 @@ TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){
         size_t inner = 1;
         positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
 
-        REQUIRE(update == PosUpdate::OUTER_OOB);
+        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
     }
 
     SECTION("Update Inner; buffer overflow check"){
@@ -89,7 +89,7 @@ TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){
         size_t inner = 10;
         positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
 
-        REQUIRE(update == PosUpdate::INNER_OOB);
+        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
     }
 
     SECTION("Update Inner; buffer underflow check"){
@@ -98,15 +98,36 @@ TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){
         size_t inner = 0;
         positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
 
-        REQUIRE(update == PosUpdate::INNER_OOB);
+        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
+    }
+}
+
+TEST_CASE("Update Marker position states", "[marker][vacancy]"){
+
+    MarkerPositions positions;
+    PosUpdate update;
+
+    size_t outer = 1;
+    size_t inner = 1;
+
+    SECTION("Position occupied; CROSS"){
+        positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
+        positions.updateMarkerAtPos(outer, inner, BoardMarker::NOUGHT, update);
+
+        REQUIRE(update == PosUpdate::OCCUPIED);
     }
 
-    SECTION("Outer out of bounds triggers first"){
-
-        size_t outer = 0;
-        size_t inner = 0;
+    SECTION("Position occupied; NOUGHT"){
+        positions.updateMarkerAtPos(outer, inner, BoardMarker::NOUGHT, update);
         positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
 
-        REQUIRE(update == PosUpdate::OUTER_OOB);
+        REQUIRE(update == PosUpdate::OCCUPIED);
+    }
+
+    SECTION("Reseting position to NONE"){
+        positions.updateMarkerAtPos(outer, inner, BoardMarker::NOUGHT, update);
+        positions.updateMarkerAtPos(outer, inner, BoardMarker::NONE, update);
+
+        REQUIRE(update == PosUpdate::VALID);
     }
 }

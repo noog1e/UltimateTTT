@@ -16,9 +16,9 @@ MarkerPositions::MarkerPositions(){
 void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
     
     if(outer < 0 || outer >= BL::NUM_CELLS){
-        update = PosUpdate::OUTER_OOB;
+        update = PosUpdate::OUT_OF_BOUNDS;
     }else if(inner < 0 || inner >= BL::NUM_CELLS){
-        update = PosUpdate::INNER_OOB;
+        update = PosUpdate::OUT_OF_BOUNDS;
     }
 }
 
@@ -26,19 +26,10 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
     
     BoardMarker posMarker = pos[outer][inner];
     
-    switch (posMarker){
-
-        case BoardMarker::CROSS:
-            update = PosUpdate::CROSS_TAKEN;
-            break;
-
-        case BoardMarker::NOUGHT:
-            update = PosUpdate::NOUGHT_TAKEN;
-            break;
-
-        case BoardMarker::NONE:
-            update = PosUpdate::VALID;
-            break;
+    if(posMarker != BoardMarker::NONE){
+        update = PosUpdate::OCCUPIED;
+    }else{
+        update = PosUpdate::VALID;
     }
 }
 
@@ -48,9 +39,9 @@ void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker 
     inner -= 1;
 
     checkBounds(outer, inner, update);
-    if(update != PosUpdate::INNER_OOB && update != PosUpdate::OUTER_OOB){
+    if(update != PosUpdate::OUT_OF_BOUNDS){
 
-        checkPosition(outer, inner, update);
+        if(marker != BoardMarker::NONE) checkPosition(outer, inner, update); //May implement a version where a placement takeback exists
         if(update == PosUpdate::VALID){
             pos[outer][inner] = marker;
         }

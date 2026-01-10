@@ -12,7 +12,7 @@ using InnerPos = std::array<BoardMarker, BoardLayout::NUM_CELLS>;
 using OuterPos = std::array<InnerPos, BoardLayout::NUM_CELLS>;
 
 enum class PosUpdate{
-    VALID, CROSS_TAKEN, NOUGHT_TAKEN, OUTER_OOB, INNER_OOB 
+    VALID, OCCUPIED, OUT_OF_BOUNDS
 };
 
 class MarkerPositions{
