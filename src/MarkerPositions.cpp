@@ -60,3 +60,10 @@ void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker 
 const OuterPos& MarkerPositions::getMarkerPositions() const{
     return pos;
 }
+
+void MarkerPositions::resetPositions(){
+
+    for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+        pos[i].fill(BoardMarker::NONE);
+    }
+}

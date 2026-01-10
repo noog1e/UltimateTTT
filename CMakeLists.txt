@@ -26,6 +26,7 @@ FetchContent_MakeAvailable(Catch2)
 # Tests
 add_executable(tests
     tests/test_GameState.cpp
+    tests/test_MarkerPositions.cpp
 )
 
 target_link_libraries(tests

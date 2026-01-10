@@ -3,7 +3,7 @@
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
 
-TEST_CASE("Initialise Game State Object"){
+TEST_CASE("Initialise Game State Object", "[state][init]"){
 
     GameState gameState;
 
@@ -14,3 +14,4 @@ TEST_CASE("Initialise Game State Object"){
         REQUIRE(outerStates[i] == MatchState::ONGOING);
     }
 }
+

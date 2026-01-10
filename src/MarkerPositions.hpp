@@ -28,6 +28,7 @@ class MarkerPositions{
     );
 
    const OuterPos& getMarkerPositions() const;
+   void resetPositions();
 
    private:
    OuterPos pos;
