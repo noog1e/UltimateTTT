@@ -35,8 +35,8 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
 
 void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker marker, PosUpdate& update){
 
-    outer -= 1;
-    inner -= 1;
+    outer--;
+    inner--;
 
     checkBounds(outer, inner, update);
     if(update != PosUpdate::OUT_OF_BOUNDS){

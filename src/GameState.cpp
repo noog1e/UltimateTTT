@@ -1,19 +1,28 @@
-#include "WinConditions.hpp"
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
 #include <cstddef>
+#include <array>
 
 GameState::GameState(){
     outerStates.fill(MatchState::ONGOING);
+    
+    for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+        lineStates[i].fill(LineState::ALIVE);
+    }
 }
 
-void GameState::updateOuterState(const OuterPos& outerPos, size_t outerCell){
+void GameState::updateOuterState(const OuterPos& outerPos, size_t outerCellUpdated, size_t innerCellUpdated){
 
-    const InnerPos& innerPos = outerPos[outerCell];
+    outerCellUpdated--;
+    innerCellUpdated--;
+
+    //BOUNDS CHECKING NEEDED
+
+    const InnerPos& innerPos = outerPos[outerCellUpdated];
 
     MatchState cellState = MatchState::ONGOING;
 
-    cellState = checkDraw(innerPos);
+    cellState = checkDrawState(innerPos);
 
     if(cellState != MatchState::DRAW){
 
@@ -21,14 +30,14 @@ void GameState::updateOuterState(const OuterPos& outerPos, size_t outerCell){
 
     }
 
-    outerStates[outerCell] = cellState;
+    outerStates[outerCellUpdated] = cellState;
 }
 
 void GameState::updateMatchState(){
 
     MatchState checkState = MatchState::ONGOING;
 
-    checkState = checkDraw();
+    checkState = checkDrawState();
 
     if(checkState != MatchState::DRAW){
 
@@ -37,6 +46,30 @@ void GameState::updateMatchState(){
     }
 
     matchState = checkState;
+}
+
+void GameState::updateLineState(size_t outerCellUpdated, size_t innerCellUpdated){
+
+   const std::array<LineState, NUM_CELL_COMBOS>& lines = lineStates[outerCellUpdated];
+   
+}
+
+void GameState::findLineStateIndexes(LineIndexes& lineIndexes, size_t outerCellUpdated, size_t innerCellUpdated){
+
+
+   for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
+
+        if(lineStates[outerCellUpdated][i] == LineState::ALIVE){
+            for(size_t j = 0; j < BoardLayout::CELLS_PER_AXIS; j++){
+
+                if(WIN_CONDITIONS[i][j] == innerCellUpdated){
+                    lineIndexes.push_back(i);
+
+                    
+                }
+            }
+        }
+   }
 }
 
 const OuterStates& GameState::getOuterStates() const{
@@ -49,16 +82,24 @@ MatchState GameState::getMatchState() const{
 
 bool GameState::matchPosition(BoardMarker m1, BoardMarker m2) const{
 
-    if(m1 == BoardMarker::NONE || m2 == BoardMarker::NONE) return false;
+    if(boardMarkersNone(m1, m2)) return false;
 
     return m1 == m2;
 }
 
 bool GameState::matchPosition(MatchState s1, MatchState s2) const{
 
-    if(s1 == MatchState::ONGOING || s2 == MatchState::ONGOING) return false;
+    if(matchStatesOngoing(s1, s2)) return false;
 
     return s1 == s2;
+}
+
+bool GameState::boardMarkersNone(BoardMarker m1, BoardMarker m2) const{
+    return m1 == BoardMarker::NONE || m2 == BoardMarker::NONE;
+}
+
+bool GameState::matchStatesOngoing(MatchState s1, MatchState s2) const{
+    return s1 == MatchState::ONGOING || s2 == MatchState::ONGOING;
 }
 
 MatchState GameState::checkWinState(const InnerPos& inner) const{
@@ -121,21 +162,21 @@ MatchState GameState::checkWinState() const{
     return MatchState::ONGOING;
 }
 
-MatchState GameState::checkDraw(const InnerPos& inner) const{
+MatchState GameState::checkDrawState(const InnerPos& inner) const{
 
     for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
 
-        if(inner[i] == BoardMarker::NONE) return MatchState::ONGOING;
+        
     }
 
     return MatchState::DRAW;
 }
 
-MatchState GameState::checkDraw() const{
+MatchState GameState::checkDrawState() const{
 
     for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
 
-        if(outerStates[i] == MatchState::ONGOING) return MatchState::ONGOING;
+        
     }
 
     return MatchState::DRAW;

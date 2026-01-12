@@ -56,8 +56,6 @@ TEST_CASE("Update All Marker Positions", "[marker]"){
         requireAllPositionsAs(positions, BoardMarker::NONE);
     }
 
-
-
 }
 
 TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){

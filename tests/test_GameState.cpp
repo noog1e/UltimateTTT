@@ -14,4 +14,3 @@ TEST_CASE("Initialise Game State Object", "[state][init]"){
         REQUIRE(outerStates[i] == MatchState::ONGOING);
     }
 }
-
