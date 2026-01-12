@@ -7,17 +7,50 @@
 #include <array>
 
 constexpr int NUM_CELL_COMBOS = 8;
-constexpr int MAX_LINES = 4;
+constexpr int MAX_LINES_PER_CELL = 4;
 
 using CellCombination = std::array<size_t, BoardLayout::CELLS_PER_AXIS>;
 using WinConditions = std::array<CellCombination, NUM_CELL_COMBOS>;
 
+
+
 constexpr WinConditions WIN_CONDITIONS = {{
 
-    {0, 1, 2}, {3, 4, 5}, {6, 7, 8},    //Horizontal Wins
-    {0, 3, 6}, {1, 4, 7}, {2, 5, 8},    //Vertical Wins
-    {0, 4, 8}, {2, 4, 6}                //Diagonal Wins
+    {0, 1, 2}, {3, 4, 5}, {6, 7, 8},    //ROW Wins (0 - 2)
+    {0, 3, 6}, {1, 4, 7}, {2, 5, 8},    //COL Wins (3 - 5)
+    {0, 4, 8}, {2, 4, 6}                //Diagonal Wins (6 & 7)
 }};
+
+using CellWinConditionIndexes = std::array<size_t, MAX_LINES_PER_CELL>;
+
+struct CellWinConditions{
+    
+    CellWinConditionIndexes cellLines;
+    size_t count;
+};
+
+using CellWinLines = std::array<CellWinConditions, BoardLayout::NUM_CELLS>;
+
+constexpr size_t ROW_0INDEX = 0;
+constexpr size_t COL_0INDEX = 3;
+constexpr size_t DIAG_0INDEX = 6;
+
+constexpr CellWinLines CELL_WIN_LINES ={{
+
+    /*0*/ {{ROW_0INDEX, COL_0INDEX, DIAG_0INDEX, 0}, MAX_LINES_PER_CELL - 1}, 
+    /*1*/ {{ROW_0INDEX, COL_0INDEX + 1, 0, 0}, MAX_LINES_PER_CELL - 2}, 
+    /*2*/ {{ROW_0INDEX, COL_0INDEX + 2, DIAG_0INDEX + 1, 0}, MAX_LINES_PER_CELL - 1},
+    /*3*/ {{ROW_0INDEX + 1, COL_0INDEX, 0, 0}, MAX_LINES_PER_CELL - 2},
+    /*4*/ {{ROW_0INDEX + 1, COL_0INDEX + 1, DIAG_0INDEX, DIAG_0INDEX + 1}, MAX_LINES_PER_CELL},
+    /*5*/ {{ROW_0INDEX + 1, COL_0INDEX + 2, 0, 0}, MAX_LINES_PER_CELL - 2},
+    /*6*/ {{ROW_0INDEX + 2, COL_0INDEX, DIAG_0INDEX + 1, 0}, MAX_LINES_PER_CELL - 1},
+    /*7*/ {{ROW_0INDEX + 2, COL_0INDEX + 1, 0, 0}, MAX_LINES_PER_CELL - 2},
+    /*8*/ {{ROW_0INDEX + 2, COL_0INDEX + 2, DIAG_0INDEX, 0}, MAX_LINES_PER_CELL - 1}
+}};
+
+enum class WinState{
+    ALIVE, BLOCKED
+};
 
 enum class MatchState{
     ONGOING,
@@ -26,13 +59,8 @@ enum class MatchState{
     DRAW
 };
 
-enum class LineState{
-    ALIVE, BLOCKED
-};
-
 using OuterStates = std::array<MatchState, BoardLayout::NUM_CELLS>; 
-using LineStates = std::array<std::array<LineState, NUM_CELL_COMBOS>, BoardLayout::NUM_CELLS>;
-using LineIndexes = std::vector<size_t>;
+using WinStates = std::array<std::array<WinState, NUM_CELL_COMBOS>, BoardLayout::NUM_CELLS>;
 
 class GameState{
 
@@ -48,22 +76,7 @@ class GameState{
     private:
     MatchState matchState = MatchState::ONGOING;
     OuterStates outerStates;
-    LineStates lineStates;
+    WinStates winStates;
 
-    void findLineStateIndexes(LineIndexes& lineIndexes, size_t outerCellUpdated, size_t innerCellUpdated);
-    void updateLineState(size_t outerCellUpdated, size_t innerCellUpdated);
-
-    MatchState checkDrawState(const InnerPos& inner) const;
-    MatchState checkWinState(const InnerPos& inner) const;
-
-    MatchState checkDrawState() const;
-    MatchState checkWinState() const;
-    
-    bool matchPosition(BoardMarker m1, BoardMarker m2) const;
-    bool matchPosition(MatchState s1, MatchState s2) const;
-    bool boardMarkersNone(BoardMarker m1, BoardMarker m2) const;
-    bool matchStatesOngoing(MatchState s1, MatchState s2) const;
-
-    MatchState assignOuterWinner(BoardMarker marker) const;
 
 };
