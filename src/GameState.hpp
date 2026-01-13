@@ -45,9 +45,12 @@ constexpr CellWinLines CELL_WIN_LINES ={{
     /*8*/ {{ROW_0INDEX + 2, COL_0INDEX + 2, DIAG_0INDEX, 0}, MAX_LINES_PER_CELL - 1}
 }};
 
-enum class WinState{ 
+enum class LineWinState{ 
     ALIVE, BLOCKED
 };
+
+using LineWinStates = std::array<LineWinState, NUM_CELL_COMBOS>;
+using OuterLWS = std::array<LineWinStates, BoardLayout::NUM_CELLS>;
 
 enum class MatchState{
     ONGOING,
@@ -56,24 +59,28 @@ enum class MatchState{
     DRAW
 };
 
-using OuterStates = std::array<MatchState, BoardLayout::NUM_CELLS>; 
-using WinStates = std::array<std::array<WinState, NUM_CELL_COMBOS>, BoardLayout::NUM_CELLS>;
+using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>; 
 
 class GameState{
 
     public:
     GameState();
 
-    void updateOuterState(const OuterPos& outerPos, size_t outerCellUpdated, size_t innerCellUpdated);
-    void updateMatchState();
+    void reset();
 
-    MatchState getMatchState() const;
-    const OuterStates& getOuterStates() const;
+    void updateOuterMatchState();
+
+
+    MatchState getOverallMatchState() const;
+    const OuterMS& getOuterMatchStates() const;
+    const OuterLWS& getOuterLineWinStates() const;
 
     private:
-    MatchState matchState = MatchState::ONGOING;
-    OuterStates outerStates;
-    WinStates winStates;
+    MatchState overallMS = MatchState::ONGOING;
+    OuterMS outerMS;
+    OuterLWS outerLWS;
 
-
+    void updateOverallMatchState();
+    void initOuterMS();
+    void initOuterLWS();
 };
