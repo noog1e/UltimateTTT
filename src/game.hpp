@@ -2,7 +2,6 @@
 
 #include "player.hpp"
 #include "board.hpp"
-#include "WinConditions.hpp"
 #include <string>
 #include <array>
 #include <cstddef>

@@ -3,7 +3,6 @@
 #include "BoardLayout.hpp"
 #include "MarkerPositions.hpp"
 #include <cstddef>
-#include <vector>
 #include <array>
 
 constexpr int NUM_CELL_COMBOS = 8;
@@ -11,8 +10,6 @@ constexpr int MAX_LINES_PER_CELL = 4;
 
 using CellCombination = std::array<size_t, BoardLayout::CELLS_PER_AXIS>;
 using WinConditions = std::array<CellCombination, NUM_CELL_COMBOS>;
-
-
 
 constexpr WinConditions WIN_CONDITIONS = {{
 
@@ -48,7 +45,7 @@ constexpr CellWinLines CELL_WIN_LINES ={{
     /*8*/ {{ROW_0INDEX + 2, COL_0INDEX + 2, DIAG_0INDEX, 0}, MAX_LINES_PER_CELL - 1}
 }};
 
-enum class WinState{
+enum class WinState{ 
     ALIVE, BLOCKED
 };
 
