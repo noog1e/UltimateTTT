@@ -59,7 +59,14 @@ enum class MatchState{
     DRAW
 };
 
-using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>; 
+using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>;  
+
+struct MatchEvaluation{
+    MatchState overallMatchState = MatchState::ONGOING;
+    LineWinStates overallLineWinStates;
+    OuterMS outerMatchStates;
+    OuterLWS outerLineWinStates;
+};
 
 class GameState{
 
@@ -68,19 +75,24 @@ class GameState{
 
     void reset();
 
-    void updateOuterMatchState();
+        /**
+         * The idea is to import the marker that was changed at the specific outer cell, inner cell
+         * location so that the object can decide whether that outer cell has ruled out all
+         * possible moves, eventually deciding the overall state of the match.
+         */
+    void updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell);
 
-
-    MatchState getOverallMatchState() const;
-    const OuterMS& getOuterMatchStates() const;
-    const OuterLWS& getOuterLineWinStates() const;
+    const MatchEvaluation& getMatchEvaluation() const;
 
     private:
-    MatchState overallMS = MatchState::ONGOING;
-    OuterMS outerMS;
-    OuterLWS outerLWS;
+    MatchEvaluation eval;
 
-    void updateOverallMatchState();
+    void initOverallLWS();
     void initOuterMS();
     void initOuterLWS();
+
+    void updateOverallMatchState();
+    void updateOverallLineWinStates();
+    void updateOuterMatchStates(size_t outerCell);
+    void updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell);
 };

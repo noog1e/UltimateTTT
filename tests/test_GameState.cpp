@@ -5,15 +5,16 @@
 TEST_CASE("Initialise Game State Object", "[state][init]"){
 
     GameState gs;
+    const MatchEvaluation& eval = gs.getMatchEvaluation(); 
 
     SECTION("Overall Match State is ONGOING"){
 
-        REQUIRE(gs.getOverallMatchState() == MatchState::ONGOING);
+        REQUIRE(eval.overallMatchState == MatchState::ONGOING);
     }
 
     SECTION("All Outer Match States are ONGOING"){
         
-        const OuterMS& outerMS = gs.getOuterMatchStates();
+        const OuterMS& outerMS = eval.outerMatchStates;
 
         for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
 
@@ -21,9 +22,18 @@ TEST_CASE("Initialise Game State Object", "[state][init]"){
         }
     }
 
+    SECTION("All Overall Line Win States are ALIVE"){
+        
+        const LineWinStates& lws = eval.overallLineWinStates;
+        
+        for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
+            REQUIRE(lws[i] == LineWinState::ALIVE);
+        }
+    }
+
     SECTION("All Outer Line Win States are ALIVE"){
 
-        const OuterLWS& outerLWS = gs.getOuterLineWinStates();
+        const OuterLWS& outerLWS = eval.outerLineWinStates;
 
         for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
         
@@ -32,4 +42,16 @@ TEST_CASE("Initialise Game State Object", "[state][init]"){
             }
         }
     }
+}
+
+TEST_CASE("Reset Game State object"){
+
+}
+
+TEST_CASE("Line Win State Updates to BLOCK"){
+
+    MarkerPositions positions;
+    GameState gs;
+    const MatchEvaluation& eval = gs.getMatchEvaluation(); 
+
 }

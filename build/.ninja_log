@@ -122,3 +122,15 @@
 6	905	7899963180659293	F:/Programming/UltimateTTT/build/_deps/catch2-build/src/cmake_install.cmake	6662cfa1d2f172a8
 33	1166	7899963181666280	CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj	f46527cb001c9e36
 1166	1953	7899963192911574	tests.exe	40b8c25ec1e4d26f
+73	639	7900032911462353	CMakeFiles/my_lib.dir/src/GameState.cpp.obj	343c21bdedc45ccc
+639	913	7900032917155231	libmy_lib.a	5b8fb70534277cfd
+171	1817	7900032912558600	CMakeFiles/tests.dir/tests/test_GameState.cpp.obj	be88a6fa9ed3916
+179	1865	7900032912642476	CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj	f46527cb001c9e36
+1866	3419	7900032929453703	tests.exe	40b8c25ec1e4d26f
+31	1227	7900050294640121	CMakeFiles/tests.dir/tests/test_GameState.cpp.obj	be88a6fa9ed3916
+34	1269	7900050294677801	CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj	f46527cb001c9e36
+26	191	7900050390782054	CMakeFiles/my_lib.dir/src/GameState.cpp.obj	343c21bdedc45ccc
+192	273	7900050392502674	libmy_lib.a	5b8fb70534277cfd
+30	1246	7900050390782054	CMakeFiles/tests.dir/tests/test_GameState.cpp.obj	be88a6fa9ed3916
+33	1303	7900050390782054	CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj	f46527cb001c9e36
+1303	2115	7900050403564834	tests.exe	40b8c25ec1e4d26f
