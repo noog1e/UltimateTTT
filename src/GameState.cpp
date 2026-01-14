@@ -46,14 +46,47 @@ const MatchEvaluation& GameState::getMatchEvaluation() const{
     return eval;
 }
 
-void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell){
+LineWinState GameState::updateCellLineWinState(const InnerPos& ipos, size_t lineIndex){
 
-    LineWinStates& outerCellLWS = eval.outerLineWinStates[outerCell];
     const WinConditions& wc = WIN_CONDITIONS;
-    const CellWinConditions& cwc = CELL_WIN_LINES[innerCell];
-
     BoardMarker m1 = BoardMarker::NONE;
     BoardMarker m2 = BoardMarker::NONE;
+
+    int matchCount = 1;
+
+    for(size_t j = 0; j < BL::CELLS_PER_AXIS - 1; j++){
+
+        m1 = ipos[wc[lineIndex][j]];
+
+        if(m1 == BoardMarker::NONE) continue;
+
+        m2 = ipos[wc[lineIndex][j+1]];
+
+        if(m1 != m2 && m2 != BoardMarker::NONE){
+            return LineWinState::BLOCKED;
+        }else{
+            matchCount++;
+        }
+    }
+
+    if(matchCount == BL::CELLS_PER_AXIS){
+        return confirmBoardMarker(m1);
+    }
+}
+
+LineWinState GameState::confirmBoardMarker(BoardMarker marker){
+    return marker == BoardMarker::NOUGHT ? LineWinState::NOUGHT_CAP : LineWinState::CROSS_CAP;
+}
+
+void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell){
+
+    outerCell--;
+    innerCell--;
+
+    //if(outerCell < 0 || innerCell < 0 ) Need enum
+
+    LineWinStates& outerCellLWS = eval.outerLineWinStates[outerCell];
+    const CellWinConditions& cwc = CELL_WIN_LINES[innerCell];
 
     for(size_t i = 0; i < cwc.count; i++){
 
@@ -61,18 +94,29 @@ void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell,
 
         if(outerCellLWS[lineIndex] == LineWinState::ALIVE){
             
-            for(size_t j = 0; j < BL::CELLS_PER_AXIS - 1; i++){
-
-                m1 = ipos[wc[lineIndex][j]];
-
-                if(m1 == BoardMarker::NONE) continue;
-
-                m2 = ipos[wc[lineIndex][j+1]];
-
-                if(m1 != m2 && m2 != BoardMarker::NONE)
-                    outerCellLWS[lineIndex] = LineWinState::BLOCKED;
-
-            }
+            outerCellLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
         }
     }
+}
+
+void GameState::updateOuterMatchStates(size_t outerCell){
+
+    const LineWinStates& outerCellLWS = eval.outerLineWinStates[outerCell];
+    
+    bool linesBlocked = true;
+
+    for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
+
+        if(outerCellLWS[i] == LineWinState::ALIVE){
+            linesBlocked = false;
+            break;
+        }
+    }
+
+    if(linesBlocked) eval.outerMatchStates[outerCell] = 
+}
+
+void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
+
+    updateOuterLineWinStates(ipos, outerCell, innerCell);
 }

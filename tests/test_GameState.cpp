@@ -48,10 +48,14 @@ TEST_CASE("Reset Game State object"){
 
 }
 
+
+
 TEST_CASE("Line Win State Updates to BLOCK"){
 
-    MarkerPositions positions;
     GameState gs;
-    const MatchEvaluation& eval = gs.getMatchEvaluation(); 
+    const MatchEvaluation& eval = gs.getMatchEvaluation();
+    MarkerPositions positions;
+
+    
 
 }

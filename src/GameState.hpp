@@ -46,7 +46,10 @@ constexpr CellWinLines CELL_WIN_LINES ={{
 }};
 
 enum class LineWinState{ 
-    ALIVE, BLOCKED
+    ALIVE, 
+    NOUGHT_CAP, 
+    CROSS_CAP, 
+    BLOCKED
 };
 
 using LineWinStates = std::array<LineWinState, NUM_CELL_COMBOS>;
@@ -95,4 +98,7 @@ class GameState{
     void updateOverallLineWinStates();
     void updateOuterMatchStates(size_t outerCell);
     void updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell);
+
+    LineWinState updateCellLineWinState(const InnerPos& ipos, size_t lineIndex);
+    LineWinState confirmBoardMarker(BoardMarker marker);
 };
