@@ -50,12 +50,50 @@ TEST_CASE("Reset Game State object"){
 
 
 
-TEST_CASE("Line Win State Updates to BLOCK"){
+TEST_CASE("Line Win State Updates to BLOCK", "[state]"){
+
+    GameState gs;
+    const MatchEvaluation& eval = gs.getMatchEvaluation();
+    const OuterLWS& olws = eval.outerLineWinStates;
+    MarkerPositions positions;
+    PosUpdate update;
+
+    positions.updateMarkerAtPos(0, 0, BoardMarker::CROSS, update);
+    gs.updateGameState(positions.getMarkerPositions()[0], 0, 0);
+
+    REQUIRE(olws[0][0] == LineWinState::ALIVE);
+
+    positions.updateMarkerAtPos(0, 1, BoardMarker::NOUGHT, update);
+    gs.updateGameState(positions.getMarkerPositions()[0], 0, 1);
+
+    REQUIRE(olws[0][0] == LineWinState::BLOCKED);
+
+}
+
+TEST_CASE("Draw (tie) in an outer cell", "[state]"){
 
     GameState gs;
     const MatchEvaluation& eval = gs.getMatchEvaluation();
     MarkerPositions positions;
+    PosUpdate update;
+    BoardMarker marker = BoardMarker::NONE;
 
-    
+    size_t outerCell = 0;
 
+    for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+
+        if(i % 2 == 0){
+            marker = BoardMarker::CROSS;
+        } else {
+            marker = BoardMarker::NOUGHT;
+        }
+
+        positions.updateMarkerAtPos(outerCell, i, marker, update);
+
+        gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, i);
+    }
+
+    const OuterMS& ms = eval.outerMatchStates;
+
+    REQUIRE(ms[outerCell] == MatchState::DRAW);
 }

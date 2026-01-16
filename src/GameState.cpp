@@ -72,6 +72,8 @@ LineWinState GameState::updateCellLineWinState(const InnerPos& ipos, size_t line
     if(matchCount == BL::CELLS_PER_AXIS){
         return confirmBoardMarker(m1);
     }
+
+    return LineWinState::ALIVE;
 }
 
 LineWinState GameState::confirmBoardMarker(BoardMarker marker){
@@ -79,9 +81,6 @@ LineWinState GameState::confirmBoardMarker(BoardMarker marker){
 }
 
 void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell){
-
-    outerCell--;
-    innerCell--;
 
     //if(outerCell < 0 || innerCell < 0 ) Need enum
 
@@ -95,6 +94,8 @@ void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell,
         if(outerCellLWS[lineIndex] == LineWinState::ALIVE){
             
             outerCellLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
+
+            
         }
     }
 }
@@ -113,7 +114,8 @@ void GameState::updateOuterMatchStates(size_t outerCell){
         }
     }
 
-    if(linesBlocked) eval.outerMatchStates[outerCell] = 
+
+
 }
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){

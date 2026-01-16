@@ -4,14 +4,7 @@
 
 namespace BL = BoardLayout;
 
-MarkerPositions::MarkerPositions(){
-
-    for(size_t i=0; i < BL::NUM_CELLS; i++){
-        for(size_t j=0; j < BL::NUM_CELLS; j++){
-            pos[i][j] = BoardMarker::NONE; 
-        }
-    }
-}
+MarkerPositions::MarkerPositions(){}
 
 void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
     
@@ -34,9 +27,6 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
 }
 
 void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker marker, PosUpdate& update){
-
-    outer--;
-    inner--;
 
     checkBounds(outer, inner, update);
     if(update != PosUpdate::OUT_OF_BOUNDS){

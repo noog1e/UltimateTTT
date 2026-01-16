@@ -31,7 +31,13 @@ class MarkerPositions{
    void resetPositions();
 
    private:
-   OuterPos pos;
+   OuterPos pos = []{
+        OuterPos o{};
+        InnerPos i{};
+        i.fill(BoardMarker::NONE);
+        o.fill(i);
+        return o;
+   }();
 
    void checkBounds(size_t outer, size_t inner, PosUpdate& update);
    void checkPosition(size_t outer, size_t inner, PosUpdate& update);

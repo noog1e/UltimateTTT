@@ -10,7 +10,7 @@ void fillMarkerPositions(MarkerPositions& positions, BoardMarker marker){
 
         for(size_t j=0; j < BoardLayout::NUM_CELLS; j++){
 
-            positions.updateMarkerAtPos(i+1, j+1, marker, update);
+            positions.updateMarkerAtPos(i, j, marker, update);
         }
     }
 }

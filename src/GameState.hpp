@@ -54,21 +54,30 @@ enum class LineWinState{
 
 using LineWinStates = std::array<LineWinState, NUM_CELL_COMBOS>;
 using OuterLWS = std::array<LineWinStates, BoardLayout::NUM_CELLS>;
+using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>;  
 
-enum class MatchState{
+enum class MatchOutcome{
     ONGOING,
     NOUGHT_WON,
     CROSS_WON,
     DRAW
 };
 
-using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>;  
+struct MatchEvaluationState{
+
+    MatchOutcome matchState = MatchOutcome::ONGOING;
+    
+    LineWinStates lineWinStates = []{
+        LineWinStates s{};
+        s.fill(LineWinState::ALIVE);
+        return s;
+    }();
+};
 
 struct MatchEvaluation{
-    MatchState overallMatchState = MatchState::ONGOING;
-    LineWinStates overallLineWinStates;
-    OuterMS outerMatchStates;
-    OuterLWS outerLineWinStates;
+
+    MatchEvaluationState overall;
+    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS> cells;
 };
 
 class GameState{
