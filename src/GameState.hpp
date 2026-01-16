@@ -72,10 +72,12 @@ struct MatchEvaluationState{
     }();
 };
 
+using OuterMES = std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>;
+
 struct MatchEvaluation{
 
     MatchEvaluationState overall;
-    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS> outer;
+    OuterMES outer;
 };
 
 class GameState{

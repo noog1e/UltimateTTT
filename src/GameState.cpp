@@ -27,7 +27,7 @@ void GameState::resetOverallLWS(){
 
 void GameState::resetOuterMS(){
 
-    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>& outer = eval.outer;
+    OuterMES& outer = eval.outer;
     
     for(auto& me : outer){
         me.matchOutcome = MatchOutcome::ONGOING;
@@ -36,7 +36,7 @@ void GameState::resetOuterMS(){
 
 void GameState::resetOuterLWS(){
     
-    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>& cells = eval.outer;
+    OuterMES& cells = eval.outer;
     
     for(auto& me : cells){
         LineWinStates& lws = me.lineWinStates;
