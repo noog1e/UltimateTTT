@@ -5,40 +5,42 @@
 
 namespace BL = BoardLayout;
 
-GameState::GameState(){
-    reset();
-}
+GameState::GameState(){}
 
 void GameState::reset(){
     
-    if(eval.overallMatchState != MatchState::ONGOING) eval.overallMatchState = MatchState::ONGOING;
-
-    initOverallLWS();
-    initOuterMS();
-    initOuterLWS();
+    MatchEvaluationState& overall = eval.overall;
+    overall.matchOutcome = MatchOutcome::ONGOING;
+    resetOverallLWS();
+    resetOuterMS();
+    resetOuterLWS();
 }
 
-void GameState::initOverallLWS(){
+void GameState::resetOverallLWS(){
 
-    for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
-        eval.overallLineWinStates[i] = LineWinState::ALIVE;
-    }
-}
-
-void GameState::initOuterMS(){
-
-    for(size_t i = 0; i < BL::NUM_CELLS; i++){
-        eval.outerMatchStates[i] = MatchState::ONGOING;
-    }
-}
-
-void GameState::initOuterLWS(){
+    MatchEvaluationState& overall = eval.overall;
+    LineWinStates& lws = overall.lineWinStates;
     
-    for(size_t i = 0; i < BL::NUM_CELLS; i++){
-        
-        for(size_t j = 0; j < NUM_CELL_COMBOS; j++){
-            eval.outerLineWinStates[i][j] = LineWinState::ALIVE;
-        }
+    lws.fill(LineWinState::ALIVE);
+
+}
+
+void GameState::resetOuterMS(){
+
+    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>& outer = eval.outer;
+    
+    for(auto& me : outer){
+        me.matchOutcome = MatchOutcome::ONGOING;
+    }
+}
+
+void GameState::resetOuterLWS(){
+    
+    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>& cells = eval.outer;
+    
+    for(auto& me : cells){
+        LineWinStates& lws = me.lineWinStates;
+        lws.fill(LineWinState::ALIVE);
     }
 }
 
@@ -84,31 +86,34 @@ void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell,
 
     //if(outerCell < 0 || innerCell < 0 ) Need enum
 
-    LineWinStates& outerCellLWS = eval.outerLineWinStates[outerCell];
+    MatchEvaluationState& outerMatch = eval.outer[outerCell];
+
+    LineWinStates& outerLWS = outerMatch.lineWinStates;
     const CellWinConditions& cwc = CELL_WIN_LINES[innerCell];
 
     for(size_t i = 0; i < cwc.count; i++){
 
         size_t lineIndex = cwc.cellLines[i];
 
-        if(outerCellLWS[lineIndex] == LineWinState::ALIVE){
+        if(outerLWS[lineIndex] == LineWinState::ALIVE){
             
-            outerCellLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
+            outerLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
 
             
         }
     }
 }
 
-void GameState::updateOuterMatchStates(size_t outerCell){
+void GameState::updateOuterMatchState(size_t outerCell){
 
-    const LineWinStates& outerCellLWS = eval.outerLineWinStates[outerCell];
+    const MatchEvaluationState& outerMatch = eval.outer[outerCell];
+    const LineWinStates& outerLWS = outerMatch.lineWinStates;
     
     bool linesBlocked = true;
 
     for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
 
-        if(outerCellLWS[i] == LineWinState::ALIVE){
+        if(outerLWS[i] == LineWinState::ALIVE){
             linesBlocked = false;
             break;
         }

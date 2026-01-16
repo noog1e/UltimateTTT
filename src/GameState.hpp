@@ -53,8 +53,6 @@ enum class LineWinState{
 };
 
 using LineWinStates = std::array<LineWinState, NUM_CELL_COMBOS>;
-using OuterLWS = std::array<LineWinStates, BoardLayout::NUM_CELLS>;
-using OuterMS = std::array<MatchState, BoardLayout::NUM_CELLS>;  
 
 enum class MatchOutcome{
     ONGOING,
@@ -65,7 +63,7 @@ enum class MatchOutcome{
 
 struct MatchEvaluationState{
 
-    MatchOutcome matchState = MatchOutcome::ONGOING;
+    MatchOutcome matchOutcome = MatchOutcome::ONGOING;
     
     LineWinStates lineWinStates = []{
         LineWinStates s{};
@@ -77,7 +75,7 @@ struct MatchEvaluationState{
 struct MatchEvaluation{
 
     MatchEvaluationState overall;
-    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS> cells;
+    std::array<MatchEvaluationState, BoardLayout::NUM_CELLS> outer;
 };
 
 class GameState{
@@ -99,13 +97,13 @@ class GameState{
     private:
     MatchEvaluation eval;
 
-    void initOverallLWS();
-    void initOuterMS();
-    void initOuterLWS();
+    void resetOverallLWS();
+    void resetOuterMS();
+    void resetOuterLWS();
 
     void updateOverallMatchState();
     void updateOverallLineWinStates();
-    void updateOuterMatchStates(size_t outerCell);
+    void updateOuterMatchState(size_t outerCell);
     void updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell);
 
     LineWinState updateCellLineWinState(const InnerPos& ipos, size_t lineIndex);
