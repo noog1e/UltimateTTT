@@ -1,5 +1,6 @@
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
+#include <iostream>
 #include <cstddef>
 #include <array>
 
@@ -82,7 +83,7 @@ LineWinState GameState::confirmBoardMarker(BoardMarker marker){
     return marker == BoardMarker::NOUGHT ? LineWinState::NOUGHT_CAP : LineWinState::CROSS_CAP;
 }
 
-void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell){
+void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, size_t innerCell){
 
     //if(outerCell < 0 || innerCell < 0 ) Need enum
 
@@ -99,31 +100,47 @@ void GameState::updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell,
             
             outerLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
 
-            
+            //if(outerLWS[lineIndex] == LineWinState::ALIVE) break;
+
+            updateOuterMatchOutcome(outerCell, lineIndex);
         }
     }
 }
 
-void GameState::updateOuterMatchState(size_t outerCell){
+void GameState::updateOuterMatchOutcome(size_t outerCell, size_t lineIndex){
 
-    const MatchEvaluationState& outerMatch = eval.outer[outerCell];
-    const LineWinStates& outerLWS = outerMatch.lineWinStates;
-    
-    bool linesBlocked = true;
+    MatchEvaluationState& outerMatch = eval.outer[outerCell];
 
-    for(size_t i = 0; i < NUM_CELL_COMBOS; i++){
+    LineWinStates& outerLWS = outerMatch.lineWinStates;
 
-        if(outerLWS[i] == LineWinState::ALIVE){
-            linesBlocked = false;
-            break;
-        }
-    }
+            if(outerLWS[lineIndex] == LineWinState::BLOCKED){
+                outerMatch.blockedLines++; //Increase the number of blocked lines
+                
+                std::cout << "block lines: " << outerMatch.blockedLines << "\n";
 
+                if(outerMatch.blockedLines == NUM_CELL_COMBOS){
+                    outerMatch.matchOutcome = MatchOutcome::DRAW;
+                }
 
-
+            }else if(checkLineCaptured(outerLWS[lineIndex])){
+                outerMatch.matchOutcome = confirmMatchWinner(outerLWS[lineIndex]);
+            }
 }
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
 
-    updateOuterLineWinStates(ipos, outerCell, innerCell);
+    const MatchEvaluationState& outerMatch = eval.outer[outerCell];
+
+    if(outerMatch.matchOutcome == MatchOutcome::ONGOING){
+        updateOuterMatchEval(ipos, outerCell, innerCell);
+
+    } //Else some error through enum maybe?
+}
+
+bool GameState::checkLineCaptured(LineWinState lw){
+    return lw == LineWinState::NOUGHT_CAP || lw == LineWinState::NOUGHT_CAP;
+}
+
+MatchOutcome GameState::confirmMatchWinner(LineWinState lw){
+    return lw == LineWinState::NOUGHT_CAP ? MatchOutcome::NOUGHT_WON : MatchOutcome::CROSS_WON; 
 }

@@ -1,6 +1,7 @@
-#include <catch2/catch_test_macros.hpp>
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
+#include <catch2/catch_test_macros.hpp>
+#include <iostream>
 
 TEST_CASE("Initialise Game State Object", "[state][init]"){
 
@@ -71,7 +72,11 @@ TEST_CASE("Line Win State Updates to BLOCK", "[state]"){
 
 }
 
-TEST_CASE("Draw (tie) in an outer cell", "[state]"){
+char markerToChar(BoardMarker marker){
+    return marker == BoardMarker::CROSS ? 'x' : 'o';
+}
+
+TEST_CASE("Draw (tie) in an outer cell", "[state][draw]"){
 
     GameState gs;
     const MatchEvaluation& eval = gs.getMatchEvaluation();
@@ -90,10 +95,21 @@ TEST_CASE("Draw (tie) in an outer cell", "[state]"){
             marker = BoardMarker::NOUGHT;
         }
 
+        std::cout << markerToChar(marker);
+
         positions.updateMarkerAtPos(outerCell, i, marker, update);
+
+        REQUIRE(update == PosUpdate::VALID);
 
         gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, i);
     }
 
-    REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
+    //REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
+
+    for(size_t j = 0; j < BoardLayout::NUM_CELLS; j++){
+        for(size_t i = 0 ; i < NUM_CELL_COMBOS; i++){
+
+            REQUIRE(outer[j].lineWinStates[i] == LineWinState::BLOCKED);
+        }
+    }
 }

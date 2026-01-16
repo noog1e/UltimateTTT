@@ -70,6 +70,8 @@ struct MatchEvaluationState{
         s.fill(LineWinState::ALIVE);
         return s;
     }();
+
+    int blockedLines = 0;
 };
 
 using OuterMES = std::array<MatchEvaluationState, BoardLayout::NUM_CELLS>;
@@ -103,11 +105,14 @@ class GameState{
     void resetOuterMS();
     void resetOuterLWS();
 
-    void updateOverallMatchState();
-    void updateOverallLineWinStates();
-    void updateOuterMatchState(size_t outerCell);
-    void updateOuterLineWinStates(const InnerPos& ipos, size_t outerCell, size_t innerCell);
+    void updateOverallMatchOutcome();
+    void updateOverallMatchEval();
+    void updateOuterMatchOutcome(size_t outerCell, size_t lineIndex);
+    void updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, size_t innerCell);
 
     LineWinState updateCellLineWinState(const InnerPos& ipos, size_t lineIndex);
     LineWinState confirmBoardMarker(BoardMarker marker);
+    MatchOutcome confirmMatchWinner(LineWinState lw);
+
+    bool checkLineCaptured(LineWinState lw);
 };
