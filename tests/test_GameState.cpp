@@ -76,6 +76,19 @@ char markerToChar(BoardMarker marker){
     return marker == BoardMarker::CROSS ? 'x' : 'o';
 }
 
+void printInnerPos(const InnerPos& inner){
+
+    for(size_t i = 0; i < BoardLayout::CELLS_PER_AXIS; i++){
+
+        for(size_t j = 0; j < BoardLayout::CELLS_PER_AXIS; j++){
+            
+            std::cout << markerToChar(inner[i+j]);
+        }
+
+        std::cout << "\n";
+    }
+}
+
 TEST_CASE("Draw (tie) in an outer cell", "[state][draw]"){
 
     GameState gs;
@@ -90,26 +103,23 @@ TEST_CASE("Draw (tie) in an outer cell", "[state][draw]"){
     for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
 
         if(i % 2 == 0){
-            marker = BoardMarker::CROSS;
-        } else {
             marker = BoardMarker::NOUGHT;
+        }else{
+            marker = BoardMarker::CROSS;
         }
-
-        std::cout << markerToChar(marker);
 
         positions.updateMarkerAtPos(outerCell, i, marker, update);
 
         REQUIRE(update == PosUpdate::VALID);
 
         gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, i);
+
     }
 
-    //REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
+    printInnerPos(positions.getMarkerPositions()[outerCell]);
 
-    for(size_t j = 0; j < BoardLayout::NUM_CELLS; j++){
-        for(size_t i = 0 ; i < NUM_CELL_COMBOS; i++){
+    std::cout << "\nBlocked lines: " << outer[outerCell].blockedLines << "\n";
 
-            REQUIRE(outer[j].lineWinStates[i] == LineWinState::BLOCKED);
-        }
-    }
+    REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
+
 }

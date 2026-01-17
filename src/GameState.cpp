@@ -51,32 +51,46 @@ const MatchEvaluation& GameState::getMatchEvaluation() const{
 
 LineWinState GameState::updateCellLineWinState(const InnerPos& ipos, size_t lineIndex){
 
-    const WinConditions& wc = WIN_CONDITIONS;
     BoardMarker m1 = BoardMarker::NONE;
-    BoardMarker m2 = BoardMarker::NONE;
+    int foundIndex = findMarkerIndex(ipos, lineIndex, m1);
 
-    int matchCount = 1;
+    if(foundIndex >= 0 && foundIndex < BoardLayout::CELLS_PER_AXIS - 1){
+        
+        const WinConditions& wc = WIN_CONDITIONS;
+        BoardMarker m2 = BoardMarker::NONE;
+        int matchCount = 1;
 
-    for(size_t j = 0; j < BL::CELLS_PER_AXIS - 1; j++){
-
-        m1 = ipos[wc[lineIndex][j]];
-
-        if(m1 == BoardMarker::NONE) continue;
-
-        m2 = ipos[wc[lineIndex][j+1]];
-
-        if(m1 != m2 && m2 != BoardMarker::NONE){
-            return LineWinState::BLOCKED;
-        }else{
-            matchCount++;
+        for(size_t i = foundIndex + 1; i < BoardLayout::CELLS_PER_AXIS; i++){
+            m2 = ipos[wc[lineIndex][i]];
+            if(m2 == BoardMarker::NONE) continue;
+            if(m1 != m2){ 
+                return LineWinState::BLOCKED;
+            }else {
+                matchCount++;
+            }
+        }
+        
+        if(matchCount == BoardLayout::CELLS_PER_AXIS){
+            return confirmBoardMarker(m1);
         }
     }
 
-    if(matchCount == BL::CELLS_PER_AXIS){
-        return confirmBoardMarker(m1);
+    return LineWinState::ALIVE;
+}
+
+int GameState::findMarkerIndex(const InnerPos& ipos, size_t lineIndex, BoardMarker& marker){
+
+    const WinConditions& wc = WIN_CONDITIONS;
+
+    for(size_t i = 0; i < BoardLayout::CELLS_PER_AXIS; i++){
+
+        marker = ipos[wc[lineIndex][i]];
+        if(marker != BoardMarker::NONE){
+            return i;
+        }
     }
 
-    return LineWinState::ALIVE;
+    return -1;
 }
 
 LineWinState GameState::confirmBoardMarker(BoardMarker marker){
@@ -88,7 +102,6 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
     //if(outerCell < 0 || innerCell < 0 ) Need enum
 
     MatchEvaluationState& outerMatch = eval.outer[outerCell];
-
     LineWinStates& outerLWS = outerMatch.lineWinStates;
     const CellWinConditions& cwc = CELL_WIN_LINES[innerCell];
 
@@ -100,7 +113,7 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
             
             outerLWS[lineIndex] = updateCellLineWinState(ipos, lineIndex);
 
-            //if(outerLWS[lineIndex] == LineWinState::ALIVE) break;
+            if(outerLWS[lineIndex] == LineWinState::ALIVE) break;
 
             updateOuterMatchOutcome(outerCell, lineIndex);
         }
@@ -113,18 +126,18 @@ void GameState::updateOuterMatchOutcome(size_t outerCell, size_t lineIndex){
 
     LineWinStates& outerLWS = outerMatch.lineWinStates;
 
-            if(outerLWS[lineIndex] == LineWinState::BLOCKED){
-                outerMatch.blockedLines++; //Increase the number of blocked lines
-                
-                std::cout << "block lines: " << outerMatch.blockedLines << "\n";
+    if(checkLineCaptured(outerLWS[lineIndex])){
+        outerMatch.matchOutcome = confirmMatchWinner(outerLWS[lineIndex]);
+    }
 
-                if(outerMatch.blockedLines == NUM_CELL_COMBOS){
-                    outerMatch.matchOutcome = MatchOutcome::DRAW;
-                }
+    if(outerLWS[lineIndex] == LineWinState::BLOCKED){
+        outerMatch.blockedLines++; //Increase the number of blocked lines
 
-            }else if(checkLineCaptured(outerLWS[lineIndex])){
-                outerMatch.matchOutcome = confirmMatchWinner(outerLWS[lineIndex]);
-            }
+        if(outerMatch.blockedLines == NUM_CELL_COMBOS){
+            outerMatch.matchOutcome = MatchOutcome::DRAW;
+        }
+
+    }
 }
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
@@ -138,7 +151,7 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
 }
 
 bool GameState::checkLineCaptured(LineWinState lw){
-    return lw == LineWinState::NOUGHT_CAP || lw == LineWinState::NOUGHT_CAP;
+    return lw == LineWinState::NOUGHT_CAP || lw == LineWinState::CROSS_CAP;
 }
 
 MatchOutcome GameState::confirmMatchWinner(LineWinState lw){

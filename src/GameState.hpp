@@ -113,6 +113,7 @@ class GameState{
     LineWinState updateCellLineWinState(const InnerPos& ipos, size_t lineIndex);
     LineWinState confirmBoardMarker(BoardMarker marker);
     MatchOutcome confirmMatchWinner(LineWinState lw);
+    int findMarkerIndex(const InnerPos& ipos, size_t lineIndex, BoardMarker& marker);
 
     bool checkLineCaptured(LineWinState lw);
 };
