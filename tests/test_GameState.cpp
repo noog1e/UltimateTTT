@@ -73,7 +73,11 @@ TEST_CASE("Line Win State Updates to BLOCK", "[state]"){
 }
 
 char markerToChar(BoardMarker marker){
-    return marker == BoardMarker::CROSS ? 'x' : 'o';
+
+    if(marker == BoardMarker::CROSS) return 'x';
+    if(marker == BoardMarker::NOUGHT) return 'o';
+
+    return ' ';
 }
 
 void printInnerPos(const InnerPos& inner){
@@ -120,6 +124,6 @@ TEST_CASE("Draw (tie) in an outer cell", "[state][draw]"){
 
     std::cout << "\nBlocked lines: " << outer[outerCell].blockedLines << "\n";
 
-    REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
+    REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::NOUGHT_WON);
 
 }

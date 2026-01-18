@@ -109,11 +109,11 @@ class GameState{
     void updateOverallMatchEval();
     void updateOuterMatchOutcome(size_t outerCell, size_t lineIndex);
     void updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, size_t innerCell);
+    LineWinState updateInnerCellLWS(const InnerPos& ipos, size_t lineIndex);
 
-    LineWinState updateCellLineWinState(const InnerPos& ipos, size_t lineIndex);
     LineWinState confirmBoardMarker(BoardMarker marker);
     MatchOutcome confirmMatchWinner(LineWinState lw);
-    int findMarkerIndex(const InnerPos& ipos, size_t lineIndex, BoardMarker& marker);
+    bool findNoneBoardMarker(const InnerPos& ipos, size_t lineIndex);
 
     bool checkLineCaptured(LineWinState lw);
 };
