@@ -109,9 +109,7 @@ void GameState::updateOuterMatchOutcome(size_t outerCell, size_t lineIndex){
 
     if(checkLineCaptured(outerLWS[lineIndex])){
         outerMatch.matchOutcome = confirmMatchWinner(outerLWS[lineIndex]);
-    }
-
-    if(outerLWS[lineIndex] == LineWinState::BLOCKED){
+    }else if(outerLWS[lineIndex] == LineWinState::BLOCKED){
         outerMatch.blockedLines++; //Increase the number of blocked lines
 
         if(outerMatch.blockedLines == NUM_CELL_COMBOS){
@@ -137,8 +135,6 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
             
             outerLWS[lineIndex] = updateInnerCellLWS(ipos, lineIndex);
 
-            if(outerLWS[lineIndex] == LineWinState::ALIVE) break;
-
             updateOuterMatchOutcome(outerCell, lineIndex);
         }
     }
@@ -150,6 +146,13 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
 
     if(outerMatch.matchOutcome == MatchOutcome::ONGOING){
         updateOuterMatchEval(ipos, outerCell, innerCell);
+
+        const MatchEvaluationState& outerMES = eval.outer[outerCell];
+
+        if(outerMES.matchOutcome != MatchOutcome::ONGOING){
+
+            updateOverallMatchEval();
+        }
 
     } //Else some error through enum maybe?
 }
