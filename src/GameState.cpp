@@ -136,8 +136,14 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
             outerLWS[lineIndex] = updateInnerCellLWS(ipos, lineIndex);
 
             updateOuterMatchOutcome(outerCell, lineIndex);
+
+            if(outerMatch.matchOutcome != MatchOutcome::ONGOING) break;
         }
     }
+}
+
+void GameState::updateOverallMatchEval(){
+
 }
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
@@ -147,9 +153,7 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
     if(outerMatch.matchOutcome == MatchOutcome::ONGOING){
         updateOuterMatchEval(ipos, outerCell, innerCell);
 
-        const MatchEvaluationState& outerMES = eval.outer[outerCell];
-
-        if(outerMES.matchOutcome != MatchOutcome::ONGOING){
+        if(outerMatch.matchOutcome != MatchOutcome::ONGOING){
 
             updateOverallMatchEval();
         }
