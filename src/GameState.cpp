@@ -67,6 +67,10 @@ LineWinState GameState::confirmBoardMarker(BoardMarker marker){
     return marker == BoardMarker::NOUGHT ? LineWinState::NOUGHT_CAP : LineWinState::CROSS_CAP;
 }
 
+LineWinState GameState::confirmBoardMarker(MatchOutcome marker){
+    return marker == MatchOutcome::NOUGHT_WON ? LineWinState::NOUGHT_CAP : LineWinState::CROSS_CAP;
+}
+
 LineWinState GameState::updateInnerCellLWS(const InnerPos& ipos, size_t lineIndex){
 
     if(!findNoneBoardMarker(ipos, lineIndex)){
@@ -95,6 +99,10 @@ LineWinState GameState::updateInnerCellLWS(const InnerPos& ipos, size_t lineInde
 
 bool GameState::checkLineCaptured(LineWinState lw){
     return lw == LineWinState::NOUGHT_CAP || lw == LineWinState::CROSS_CAP;
+}
+
+bool GameState::checkLineCaptured(MatchOutcome mo){
+    return mo == MatchOutcome::NOUGHT_WON || mo == MatchOutcome::CROSS_WON;
 }
 
 MatchOutcome GameState::confirmMatchWinner(LineWinState lw){
@@ -142,8 +150,78 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
     }
 }
 
-void GameState::updateOverallMatchEval(){
+LineWinState GameState::updateOuterCellLWS(size_t lineIndex){
 
+    const WinConditions& wc = WIN_CONDITIONS;
+    MatchOutcome m1 = MatchOutcome::ONGOING;
+    MatchOutcome m2 = MatchOutcome::ONGOING;
+    int matchCount = 1;
+
+    int m1i = 0;
+
+    for(m1i; m1i < BoardLayout::CELLS_PER_AXIS; m1i++){
+        m1 = eval.outer[wc[lineIndex][m1i]].matchOutcome;
+    }
+
+    if(m1 != MatchOutcome::ONGOING){
+
+        for(size_t i = m1i + 1; BoardLayout::CELLS_PER_AXIS - 1; i++){
+
+            m2 = eval.outer[wc[lineIndex][i+1]].matchOutcome;
+            
+            if(m2 != MatchOutcome::ONGOING){
+                if(m1 == m2){
+                    matchCount++;
+                }else{
+                    return LineWinState::BLOCKED;
+                }
+            }
+        }
+    }
+
+    if(matchCount == BoardLayout::CELLS_PER_AXIS){
+        return confirmBoardMarker(m1);
+    } //Else some sort of error?
+    
+    return LineWinState::ALIVE;
+}
+
+void GameState::updateOverallMatchOutcome(size_t lineIndex){
+    MatchEvaluationState& overallMatch = eval.overall;
+
+    LineWinStates& overallMatchLWS = overallMatch.lineWinStates;
+
+    if(checkLineCaptured(overallMatchLWS[lineIndex])){
+        overallMatch.matchOutcome = confirmMatchWinner(overallMatchLWS[lineIndex]);
+    }else if(overallMatchLWS[lineIndex] == LineWinState::BLOCKED){
+        overallMatch.blockedLines++; //Increase the number of blocked lines
+
+        if(overallMatch.blockedLines == NUM_CELL_COMBOS){
+            overallMatch.matchOutcome = MatchOutcome::DRAW;
+        }
+
+    }
+}
+
+void GameState::updateOverallMatchEval(size_t outerCell){
+
+    MatchEvaluationState& overallMatch = eval.overall;
+    LineWinStates& overallLWS = overallMatch.lineWinStates;
+    const CellWinConditions& cwc = CELL_WIN_LINES[outerCell];
+
+    for(size_t i = 0; i < cwc.count; i++){
+
+        size_t lineIndex = cwc.cellLines[i];
+
+        if(overallLWS[lineIndex] == LineWinState::ALIVE){
+            
+            overallLWS[lineIndex] = updateOuterCellLWS(lineIndex);
+
+            updateOverallMatchOutcome(lineIndex);
+
+            if(overallMatch.matchOutcome != MatchOutcome::ONGOING) break;
+        }
+    }
 }
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
@@ -155,7 +233,7 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
 
         if(outerMatch.matchOutcome != MatchOutcome::ONGOING){
 
-            updateOverallMatchEval();
+            updateOverallMatchEval(outerCell);
         }
 
     } //Else some error through enum maybe?

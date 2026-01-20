@@ -105,15 +105,18 @@ class GameState{
     void resetOuterMS();
     void resetOuterLWS();
 
-    void updateOverallMatchOutcome();
-    void updateOverallMatchEval();
+    void updateOverallMatchOutcome(size_t lineIndex);
+    void updateOverallMatchEval(size_t outerCell);
     void updateOuterMatchOutcome(size_t outerCell, size_t lineIndex);
     void updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, size_t innerCell);
     LineWinState updateInnerCellLWS(const InnerPos& ipos, size_t lineIndex);
+    LineWinState updateOuterCellLWS(size_t lineIndex);
 
     LineWinState confirmBoardMarker(BoardMarker marker);
+    LineWinState confirmBoardMarker(MatchOutcome marker);
     MatchOutcome confirmMatchWinner(LineWinState lw);
     bool findNoneBoardMarker(const InnerPos& ipos, size_t lineIndex);
 
     bool checkLineCaptured(LineWinState lw);
+    bool checkLineCaptured(MatchOutcome mo);
 };
