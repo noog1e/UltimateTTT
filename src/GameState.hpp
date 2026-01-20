@@ -89,11 +89,6 @@ class GameState{
 
     void reset();
 
-        /**
-         * The idea is to import the marker that was changed at the specific outer cell, inner cell
-         * location so that the object can decide whether that outer cell has ruled out all
-         * possible moves, eventually deciding the overall state of the match.
-         */
     void updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell);
 
     const MatchEvaluation& getMatchEvaluation() const;
@@ -119,4 +114,6 @@ class GameState{
 
     bool checkLineCaptured(LineWinState lw);
     bool checkLineCaptured(MatchOutcome mo);
+
+    void convertAllCellLinesToBlocked(size_t outerCell);
 };

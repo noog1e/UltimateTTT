@@ -105,7 +105,83 @@ void setMarkerPosition(MarkerPositions& positions, GameState& gs, size_t outerCe
     gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell);
 }
 
-TEST_CASE("Match Outcome Tests", "[state][outcome]"){
+void tieMatch(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::NOUGHT);
+}
+
+void winRow1(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
+}
+
+void winRow2(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
+}
+
+void winRow3(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+}
+
+void winCol1(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+}
+
+void winCol2(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
+}
+
+void winCol3(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+}
+
+void winDiag1(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+}
+
+void winDiag2(MarkerPositions& positions, GameState& gs, size_t outerCell){
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+}
+
+TEST_CASE("Outer Cell Match Outcome Tests", "[state][outcome]"){
 
     GameState gs;
     MarkerPositions positions;
@@ -117,105 +193,69 @@ TEST_CASE("Match Outcome Tests", "[state][outcome]"){
 
     SECTION("Draw (tie)"){
         
-        setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::NOUGHT);
+        tieMatch(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::DRAW);
     }
 
     SECTION("WIN Row 1"){
         
-        setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
+        winRow1(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Row 2"){
         
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
+        winRow2(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Row 3"){
         
-        setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+        winRow3(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Col 1"){
         
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+        winCol1(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Col 2"){
         
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
+        winCol2(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Col 3"){
         
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+        winCol3(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Diag 1"){
         
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 8, BoardMarker::CROSS);
+        winDiag1(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
 
     SECTION("WIN Diag 2"){
         
-        setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::NOUGHT);
-        setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
-        setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+        winDiag2(positions, gs, outerCell);
 
         REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
     }
+
+}
+
+TEST_CASE("Overall Match Outcome Tests", "[state][outcome]"){
 
 }
