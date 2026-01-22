@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstddef>
 #include <array>
+#include <cassert>
 
 namespace BL = BoardLayout;
 
@@ -160,8 +161,11 @@ LineWinState GameState::updateOuterCellLWS(size_t lineIndex){
 
     for(m1i; m1i < BoardLayout::CELLS_PER_AXIS; m1i++){
         m1 = eval.outer[wc[lineIndex][m1i]].matchOutcome;
+
+        //Pretty sure this is missing an if statement
     }
 
+    //THIS LOOP IS THE BUG CULPRIT
     if(m1 != MatchOutcome::ONGOING){
 
         for(size_t i = m1i + 1; BoardLayout::CELLS_PER_AXIS - 1; i++){
@@ -177,6 +181,8 @@ LineWinState GameState::updateOuterCellLWS(size_t lineIndex){
             }
         }
     }
+
+    std::cout << "At this point?\n";
 
     if(matchCount == BoardLayout::CELLS_PER_AXIS){
         return confirmBoardMarker(m1);
@@ -211,14 +217,20 @@ void GameState::updateOverallMatchEval(size_t outerCell){
 
         size_t lineIndex = cwc.cellLines[i];
 
+        LineWinState test = overallLWS[lineIndex]; //DEBUG
+
         if(overallLWS[lineIndex] == LineWinState::ALIVE){
-            
+                
+            std::cout << "LWS " << static_cast<int>(test) << " " << 
+            outerCell << " " << lineIndex << " Crashing?\n"; //DEBUG
+
             overallLWS[lineIndex] = updateOuterCellLWS(lineIndex);
 
             updateOverallMatchOutcome(lineIndex);
 
             if(overallMatch.matchOutcome != MatchOutcome::ONGOING) break;
         }
+
     }
 }
 
@@ -232,7 +244,10 @@ void GameState::convertAllCellLinesToBlocked(size_t outerCell){
 
         size_t lineIndex = cwc.cellLines[i];
 
-        overallLWS[lineIndex] = LineWinState::BLOCKED;
+            if(overallLWS[lineIndex] != LineWinState::BLOCKED)
+            overallLWS[lineIndex] = LineWinState::BLOCKED;
+
+            updateOverallMatchOutcome(lineIndex);
     }
 }
 
@@ -242,6 +257,7 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
 
     if(outerMatch.matchOutcome == MatchOutcome::ONGOING){
         updateOuterMatchEval(ipos, outerCell, innerCell);
+        
 
         if(outerMatch.matchOutcome != MatchOutcome::ONGOING){
 

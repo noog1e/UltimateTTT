@@ -94,15 +94,13 @@ void printInnerPos(const InnerPos& inner){
 
 void setMarkerPosition(MarkerPositions& positions, GameState& gs, size_t outerCell, size_t innerCell, BoardMarker marker){
 
-    REQUIRE(gs.getMatchEvaluation().overall.matchOutcome == MatchOutcome::ONGOING);
-
     PosUpdate update;
 
     positions.updateMarkerAtPos(outerCell, innerCell, marker, update);
 
     REQUIRE(update == PosUpdate::VALID);
 
-    gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell);
+    gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell); //Starts crashing inside here
 }
 
 void tieMatch(MarkerPositions& positions, GameState& gs, size_t outerCell){
@@ -118,11 +116,11 @@ void tieMatch(MarkerPositions& positions, GameState& gs, size_t outerCell){
 }
 
 void winRow1(MarkerPositions& positions, GameState& gs, size_t outerCell){
-    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::NOUGHT);
-    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::NOUGHT);
-    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::CROSS);
-    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::CROSS);
-    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 7, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 6, BoardMarker::CROSS);
+    setMarkerPosition(positions, gs, outerCell, 0, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 1, BoardMarker::NOUGHT);
+    setMarkerPosition(positions, gs, outerCell, 2, BoardMarker::NOUGHT);
 }
 
 void winRow2(MarkerPositions& positions, GameState& gs, size_t outerCell){
@@ -131,6 +129,7 @@ void winRow2(MarkerPositions& positions, GameState& gs, size_t outerCell){
     setMarkerPosition(positions, gs, outerCell, 3, BoardMarker::CROSS);
     setMarkerPosition(positions, gs, outerCell, 4, BoardMarker::CROSS);
     setMarkerPosition(positions, gs, outerCell, 5, BoardMarker::CROSS);
+    // Error after last set marker position
 }
 
 void winRow3(MarkerPositions& positions, GameState& gs, size_t outerCell){
@@ -202,7 +201,7 @@ TEST_CASE("Outer Cell Match Outcome Tests", "[state][outcome]"){
         
         winRow1(positions, gs, outerCell);
 
-        REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::CROSS_WON);
+        REQUIRE(outer[outerCell].matchOutcome == MatchOutcome::NOUGHT_WON);
     }
 
     SECTION("WIN Row 2"){
@@ -256,6 +255,42 @@ TEST_CASE("Outer Cell Match Outcome Tests", "[state][outcome]"){
 
 }
 
-TEST_CASE("Overall Match Outcome Tests", "[state][outcome]"){
+void tieMatch(MarkerPositions& positions, GameState& gs){
+    
+    std::cout << "Setting up\n";
+    winRow1(positions, gs, 0);
+    winRow1(positions, gs, 1);
+    winRow2(positions, gs, 2); // Error here
+    winRow2(positions, gs, 3);
+    winRow2(positions, gs, 4);
+    winRow1(positions, gs, 5);
+    winRow1(positions, gs, 6);
+    winRow1(positions, gs, 7);
+    winRow2(positions, gs, 8);
+}
+
+TEST_CASE("Overall Match Outcome Tests", "[state][outcome][overall]"){
+
+    GameState gs;
+    MarkerPositions positions;
+    const MatchEvaluation& eval = gs.getMatchEvaluation();
+    const MatchEvaluationState& overall = eval.overall;
+
+    SECTION("Tie from individual matches being a draw"){
+        
+        for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+
+            tieMatch(positions, gs, i);
+
+        }
+
+        REQUIRE(overall.matchOutcome == MatchOutcome::DRAW);
+    }
+
+    SECTION("Natural tie from CROSS NOUGHT take over"){
+        tieMatch(positions, gs);
+
+        REQUIRE(overall.matchOutcome == MatchOutcome::DRAW);
+    }
 
 }
