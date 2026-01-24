@@ -153,41 +153,35 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
 LineWinState GameState::updateOuterCellLWS(size_t lineIndex){
 
     const WinConditions& wc = WIN_CONDITIONS;
-    MatchOutcome m1 = MatchOutcome::ONGOING;
+    MatchOutcome m1 = eval.outer[wc[lineIndex][0]].matchOutcome;
     MatchOutcome m2 = MatchOutcome::ONGOING;
-    int matchCount = 1;
+    
+    size_t found = 1;
 
-    int m1i = 0;
+    for(size_t i = 0; i < BL::CELLS_PER_AXIS; i++){
+        m1 = eval.outer[wc[lineIndex][i]].matchOutcome;
+        if(m1 == MatchOutcome::CROSS_WON || m1 == MatchOutcome::NOUGHT_WON){
 
-    for(m1i; m1i < BoardLayout::CELLS_PER_AXIS; m1i++){
-        m1 = eval.outer[wc[lineIndex][m1i]].matchOutcome;
+            i++;
+            for(size_t j = i; j < BL::CELLS_PER_AXIS; j++){
 
-        //Pretty sure this is missing an if statement
-    }
+                m2 = eval.outer[wc[lineIndex][j]].matchOutcome;
 
-    //THIS LOOP IS THE BUG CULPRIT
-    if(m1 != MatchOutcome::ONGOING){
-
-        for(size_t i = m1i + 1; BoardLayout::CELLS_PER_AXIS - 1; i++){
-
-            m2 = eval.outer[wc[lineIndex][i+1]].matchOutcome;
-            
-            if(m2 != MatchOutcome::ONGOING){
-                if(m1 == m2){
-                    matchCount++;
-                }else{
+                if(m2 == MatchOutcome::ONGOING){
+                    break;
+                } else if(m2 != m1){
                     return LineWinState::BLOCKED;
+                } else if(m2 == m1){
+                    found++;
                 }
             }
+
+            break;
         }
     }
 
-    std::cout << "At this point?\n";
+    if(found == BL::CELLS_PER_AXIS) return confirmBoardMarker(m1);
 
-    if(matchCount == BoardLayout::CELLS_PER_AXIS){
-        return confirmBoardMarker(m1);
-    } //Else some sort of error?
-    
     return LineWinState::ALIVE;
 }
 
@@ -217,12 +211,7 @@ void GameState::updateOverallMatchEval(size_t outerCell){
 
         size_t lineIndex = cwc.cellLines[i];
 
-        LineWinState test = overallLWS[lineIndex]; //DEBUG
-
         if(overallLWS[lineIndex] == LineWinState::ALIVE){
-                
-            std::cout << "LWS " << static_cast<int>(test) << " " << 
-            outerCell << " " << lineIndex << " Crashing?\n"; //DEBUG
 
             overallLWS[lineIndex] = updateOuterCellLWS(lineIndex);
 

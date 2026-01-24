@@ -257,10 +257,9 @@ TEST_CASE("Outer Cell Match Outcome Tests", "[state][outcome]"){
 
 void tieMatch(MarkerPositions& positions, GameState& gs){
     
-    std::cout << "Setting up\n";
     winRow1(positions, gs, 0);
     winRow1(positions, gs, 1);
-    winRow2(positions, gs, 2); // Error here
+    winRow2(positions, gs, 2);
     winRow2(positions, gs, 3);
     winRow2(positions, gs, 4);
     winRow1(positions, gs, 5);
