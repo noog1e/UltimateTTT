@@ -292,4 +292,12 @@ TEST_CASE("Overall Match Outcome Tests", "[state][outcome][overall]"){
         REQUIRE(overall.matchOutcome == MatchOutcome::DRAW);
     }
 
+    SECTION("Game Win"){
+        winRow1(positions, gs, 0);
+        winRow1(positions, gs, 1);
+        winRow1(positions, gs, 2);
+        
+        REQUIRE(overall.matchOutcome == MatchOutcome::NOUGHT_WON);
+    }
+
 }

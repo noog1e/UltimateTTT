@@ -3,7 +3,6 @@
 #include <iostream>
 #include <cstddef>
 #include <array>
-#include <cassert>
 
 namespace BL = BoardLayout;
 
@@ -153,7 +152,7 @@ void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, siz
 LineWinState GameState::updateOuterCellLWS(size_t lineIndex){
 
     const WinConditions& wc = WIN_CONDITIONS;
-    MatchOutcome m1 = eval.outer[wc[lineIndex][0]].matchOutcome;
+    MatchOutcome m1 = MatchOutcome::ONGOING;
     MatchOutcome m2 = MatchOutcome::ONGOING;
     
     size_t found = 1;
