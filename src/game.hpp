@@ -6,18 +6,6 @@
 #include <array>
 #include <cstddef>
 
-const size_t NUM_PLAYERS = 2; 
-
-enum class Slot{
-    ONE, TWO
-};
-
-struct PlayerSlot{
-    Player player;
-    Slot slot;
-    PlayerMarker marker;
-};
-
 struct PlayerState{
     PlayerSlot slot;
     bool isTurn;

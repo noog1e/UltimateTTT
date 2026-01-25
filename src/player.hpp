@@ -14,10 +14,12 @@ struct Player{
     //AI / Human flag
 };
 
-class PlayerManager{
+enum class Slot{
+    ONE, TWO
+};
 
-    public:
-
-    private:
-
+struct PlayerSlot{
+    Player player;
+    Slot slot;
+    PlayerMarker marker;
 };
