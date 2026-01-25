@@ -10,12 +10,11 @@ enum class PlayerMarker{
 struct Player{
     
     std::string name;
-    
     //AI / Human flag
 };
 
 enum class Slot{
-    ONE, TWO
+    ONE, TWO, COUNT
 };
 
 struct PlayerSlot{
