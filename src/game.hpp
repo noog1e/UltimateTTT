@@ -6,11 +6,7 @@
 #include <array>
 #include <cstddef>
 
-struct PlayerState{
-    PlayerSlot slot;
-    bool isTurn;
-    bool playsFirst;
-};
+constexpr int NUM_PLAYERS = 2;
 
 class GameEvent{
 
@@ -24,6 +20,7 @@ class Game{
     public:
 
     private:
+
         
 
 

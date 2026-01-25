@@ -11,10 +11,6 @@ enum class BoardMarker{
 using InnerPos = std::array<BoardMarker, BoardLayout::NUM_CELLS>;
 using OuterPos = std::array<InnerPos, BoardLayout::NUM_CELLS>;
 
-enum class PosUpdate{
-    VALID, OCCUPIED, OUT_OF_BOUNDS
-};
-
 class MarkerPositions{
 
    public:

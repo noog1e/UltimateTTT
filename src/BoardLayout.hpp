@@ -26,7 +26,10 @@ namespace BoardLayout{
     inline constexpr int L_HEIGHT = 9;     // Default Inner Height
     inline constexpr int L_WIDTH = 17;     // Default Inner Width
 
-
     inline constexpr int U_GRID_THICKNESS = 1;   
     inline constexpr int L_GRID_THICKNESS = 1;
 }
+
+enum class PosUpdate{
+    VALID, OCCUPIED, OUT_OF_BOUNDS
+};
