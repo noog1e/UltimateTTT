@@ -31,5 +31,5 @@ namespace BoardLayout{
 }
 
 enum class PosUpdate{
-    VALID, OCCUPIED, OUT_OF_BOUNDS
+    VALID, OCCUPIED
 };

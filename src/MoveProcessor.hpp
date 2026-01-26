@@ -13,7 +13,7 @@ class MoveProcessor{
     public:
     MoveProcessor(size_t startingOuterCell);
 
-    void setCurrentOuterCell(size_t cell, PosUpdate& update, const OuterMES& outerMES);
+    void setCurrentOuterCell(size_t cell, const OuterMES& outerMES);
 
     size_t getCurrentOuterCell() const;
     MoveConstraint getMoveConstraint() const;
@@ -22,12 +22,10 @@ class MoveProcessor{
         const BoardMarker marker, 
         MarkerPositions& positions, 
         GameState& gs, 
-        size_t innerCell,
-        PosUpdate& update
+        size_t innerCell
     );
 
     private:
     size_t currentOuterCell;
     MoveConstraint constraint = MoveConstraint::FORCED_OUTER_CELL;
-    
 };

@@ -11,11 +11,11 @@ MoveProcessor::MoveProcessor(size_t startingOuterCell){
     currentOuterCell = startingOuterCell;
 }
 
-void MoveProcessor::setCurrentOuterCell(size_t cell, PosUpdate& update, const OuterMES& outerMES){
+void MoveProcessor::setCurrentOuterCell(size_t cell, const OuterMES& outerMES){
 
-    if(cell >= BoardLayout::NUM_CELLS){
-        update = PosUpdate::OUT_OF_BOUNDS;
-    } else if(outerMES[cell].matchOutcome != MatchOutcome::ONGOING){
+    assert(cell < BoardLayout::NUM_CELLS);
+
+    if(outerMES[cell].matchOutcome != MatchOutcome::ONGOING){
         constraint = MoveConstraint::ANY;
     } else{
         currentOuterCell = cell;
@@ -35,21 +35,21 @@ MoveConstraint MoveProcessor::getMoveConstraint() const{
     return pm == PlayerMarker::CROSS ? BoardMarker::CROSS : BoardMarker::NOUGHT;
 } MOVE THIS*/ 
 
-void MoveProcessor::applyPlayerMove(const BoardMarker marker, MarkerPositions& positions, GameState& gs, size_t innerCell, PosUpdate& update){
+void MoveProcessor::applyPlayerMove(const BoardMarker marker, MarkerPositions& positions, GameState& gs, size_t innerCell){
     
-    if(constraint == MoveConstraint::FORCED_OUTER_CELL){
-        positions.updateMarkerAtPos(currentOuterCell, innerCell, marker, update);
+    assert(constraint == MoveConstraint::FORCED_OUTER_CELL);
 
-        if(update == PosUpdate::VALID){
+    PosUpdate update;
 
-            const InnerPos& innerPos = positions.getMarkerPositions()[currentOuterCell];
-            gs.updateGameState(innerPos, currentOuterCell, innerCell);
+    positions.updateMarkerAtPos(currentOuterCell, innerCell, marker, update);
 
-            const MatchEvaluation& eval = gs.getMatchEvaluation();
-            setCurrentOuterCell(innerCell, update, eval.outer);
-        }
-    } else{
-        update = PosUpdate::OCCUPIED;
+    if(update == PosUpdate::VALID){
+
+        const InnerPos& innerPos = positions.getMarkerPositions()[currentOuterCell];
+        gs.updateGameState(innerPos, currentOuterCell, innerCell);
+
+        const MatchEvaluation& eval = gs.getMatchEvaluation();
+        setCurrentOuterCell(innerCell, eval.outer);
     }
 
 }

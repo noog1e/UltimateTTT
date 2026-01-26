@@ -1,19 +1,11 @@
 #include "MarkerPositions.hpp"
 #include "BoardLayout.hpp"
 #include <array>
+#include <cassert>
 
 namespace BL = BoardLayout;
 
 MarkerPositions::MarkerPositions(){}
-
-void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
-    
-    if(outer >= BL::NUM_CELLS){
-        update = PosUpdate::OUT_OF_BOUNDS;
-    }else if(inner >= BL::NUM_CELLS){
-        update = PosUpdate::OUT_OF_BOUNDS;
-    }
-}
 
 void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& update){
     
@@ -28,13 +20,12 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
 
 void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker marker, PosUpdate& update){
 
-    checkBounds(outer, inner, update);
-    if(update != PosUpdate::OUT_OF_BOUNDS){
-
-        if(marker != BoardMarker::NONE) checkPosition(outer, inner, update); //May implement a version where a placement takeback exists
-        if(update == PosUpdate::VALID){
-            pos[outer][inner] = marker;
-        }
+    assert(outer < BL::NUM_CELLS);
+    assert(inner < BL::NUM_CELLS);
+    
+    if(marker != BoardMarker::NONE) checkPosition(outer, inner, update); //May implement a version where a placement takeback exists
+    if(update == PosUpdate::VALID){
+        pos[outer][inner] = marker;
     }
 }
 

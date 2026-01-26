@@ -131,3 +131,8 @@
 208	298	7910991252470138	libmy_lib.a	c53553e7cb59af2e
 42	1260	7910991250808560	CMakeFiles/tests.dir/tests/test_MoveProcessor.cpp.obj	806735247cc544f0
 1260	2211	7910991262995825	tests.exe	c3c5eeaac17708a4
+10	181	7911041234265178	CMakeFiles/my_lib.dir/src/MarkerPositions.cpp.obj	a49c13c517db0276
+15	202	7911041234295548	CMakeFiles/my_lib.dir/src/MoveProcessor.cpp.obj	351c94ed16472b5c
+202	309	7911041236179896	libmy_lib.a	c53553e7cb59af2e
+19	1217	7911041234333541	CMakeFiles/tests.dir/tests/test_MoveProcessor.cpp.obj	806735247cc544f0
+1217	2048	7911041246331710	tests.exe	c3c5eeaac17708a4
