@@ -51,5 +51,4 @@ void MoveProcessor::applyPlayerMove(const BoardMarker marker, MarkerPositions& p
         const MatchEvaluation& eval = gs.getMatchEvaluation();
         setCurrentOuterCell(innerCell, eval.outer);
     }
-
 }

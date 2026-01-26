@@ -37,6 +37,18 @@ TEST_CASE("Apply Player Move Test", "[move][apply]"){
 
     SECTION("Position Taken"){
         
+        size_t innerCell = 0;
+        PosUpdate update;
+
+        position.updateMarkerAtPos(outerCell, innerCell, nought, update);
+
+        move.applyPlayerMove(cross, position, gs, innerCell);
+
+        REQUIRE(move.getCurrentOuterCell() == outerCell);
+    }
+
+    SECTION("Inner Cell move correlates with Occupied Outer Cell"){
+        
     }
 
 }
