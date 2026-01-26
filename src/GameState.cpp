@@ -3,6 +3,7 @@
 #include <iostream>
 #include <cstddef>
 #include <array>
+#include <cassert>
 
 namespace BL = BoardLayout;
 
@@ -73,7 +74,9 @@ LineWinState GameState::confirmBoardMarker(MatchOutcome marker){
 
 LineWinState GameState::updateInnerCellLWS(const InnerPos& ipos, size_t lineIndex){
 
-    if(!findNoneBoardMarker(ipos, lineIndex)){
+    bool found = findNoneBoardMarker(ipos, lineIndex);
+
+    if(!found){
 
         const WinConditions& wc = WIN_CONDITIONS;
         BoardMarker m1 = ipos[wc[lineIndex][0]];
@@ -110,6 +113,8 @@ MatchOutcome GameState::confirmMatchWinner(LineWinState lw){
 }
 
 void GameState::updateOuterMatchOutcome(size_t outerCell, size_t lineIndex){
+    
+    assert(outerCell < BL::NUM_CELLS);
 
     MatchEvaluationState& outerMatch = eval.outer[outerCell];
 
@@ -128,7 +133,8 @@ void GameState::updateOuterMatchOutcome(size_t outerCell, size_t lineIndex){
 
 void GameState::updateOuterMatchEval(const InnerPos& ipos, size_t outerCell, size_t innerCell){
 
-    //if(outerCell < 0 || innerCell < 0 ) Need enum
+    assert(outerCell < BL::NUM_CELLS);
+    assert(innerCell < BL::NUM_CELLS);
 
     MatchEvaluationState& outerMatch = eval.outer[outerCell];
     LineWinStates& outerLWS = outerMatch.lineWinStates;
@@ -224,6 +230,8 @@ void GameState::updateOverallMatchEval(size_t outerCell){
 
 void GameState::convertAllCellLinesToBlocked(size_t outerCell){
 
+    assert(outerCell < BL::NUM_CELLS);
+
     MatchEvaluationState& overallMatch = eval.overall;
     LineWinStates& overallLWS = overallMatch.lineWinStates;
     const CellWinConditions& cwc = CELL_WIN_LINES[outerCell];
@@ -241,12 +249,14 @@ void GameState::convertAllCellLinesToBlocked(size_t outerCell){
 
 void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t innerCell){
 
+    assert(outerCell < BL::NUM_CELLS);
+    assert(innerCell < BL::NUM_CELLS);
+
     const MatchEvaluationState& outerMatch = eval.outer[outerCell];
 
     if(outerMatch.matchOutcome == MatchOutcome::ONGOING){
         updateOuterMatchEval(ipos, outerCell, innerCell);
         
-
         if(outerMatch.matchOutcome != MatchOutcome::ONGOING){
 
             if(outerMatch.matchOutcome == MatchOutcome::DRAW){
@@ -256,5 +266,5 @@ void GameState::updateGameState(const InnerPos& ipos, size_t outerCell, size_t i
             }
         }
 
-    } //Else some error through enum maybe?
+    }
 }

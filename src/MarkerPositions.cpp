@@ -11,10 +11,10 @@ void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& updat
     
     BoardMarker posMarker = pos[outer][inner];
     
-    if(posMarker != BoardMarker::NONE){
-        update = PosUpdate::OCCUPIED;
-    }else{
+    if(posMarker == BoardMarker::NONE){
         update = PosUpdate::VALID;
+    }else{
+        update = PosUpdate::OCCUPIED;
     }
 }
 

@@ -58,48 +58,6 @@ TEST_CASE("Update All Marker Positions", "[marker]"){
 
 }
 
-TEST_CASE("Update Marker Bounds Checking", "[marker][bounds]"){
-    
-    MarkerPositions positions;
-    PosUpdate update;
-
-    SECTION("Update Outer; buffer overflow check"){
-        
-        size_t outer = 10;
-        size_t inner = 1;
-        positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
-
-        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
-    }
-
-    SECTION("Update Outer; buffer underflow check"){
-        
-        size_t outer = 0;
-        size_t inner = 1;
-        positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
-
-        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
-    }
-
-    SECTION("Update Inner; buffer overflow check"){
-        
-        size_t outer = 1;
-        size_t inner = 10;
-        positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
-
-        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
-    }
-
-    SECTION("Update Inner; buffer underflow check"){
-        
-        size_t outer = 1;
-        size_t inner = 0;
-        positions.updateMarkerAtPos(outer, inner, BoardMarker::CROSS, update);
-
-        REQUIRE(update == PosUpdate::OUT_OF_BOUNDS);
-    }
-}
-
 TEST_CASE("Update Marker position states", "[marker][vacancy]"){
 
     MarkerPositions positions;

@@ -52,28 +52,6 @@ TEST_CASE("Reset Game State object"){
 
 }
 
-
-
-TEST_CASE("Line Win State Updates to BLOCK", "[state]"){
-
-    GameState gs;
-    const MatchEvaluation& eval = gs.getMatchEvaluation();
-    const OuterMES& outer = eval.outer;
-    MarkerPositions positions;
-    PosUpdate update;
-
-    positions.updateMarkerAtPos(0, 0, BoardMarker::CROSS, update);
-    gs.updateGameState(positions.getMarkerPositions()[0], 0, 0);
-
-    REQUIRE(outer[0].lineWinStates[0] == LineWinState::ALIVE);
-
-    positions.updateMarkerAtPos(0, 1, BoardMarker::NOUGHT, update);
-    gs.updateGameState(positions.getMarkerPositions()[0], 0, 1);
-
-    REQUIRE(outer[0].lineWinStates[0] == LineWinState::BLOCKED);
-
-}
-
 char markerToChar(BoardMarker marker){
 
     if(marker == BoardMarker::CROSS) return 'x';
@@ -81,6 +59,40 @@ char markerToChar(BoardMarker marker){
 
     return ' ';
 }
+
+TEST_CASE("Line Win State Updates to BLOCK", "[state][block]"){
+
+    GameState gs;
+    const MatchEvaluation& eval = gs.getMatchEvaluation();
+    const OuterMES& outer = eval.outer;
+    MarkerPositions positions;
+    PosUpdate update;
+
+    size_t outerCell = 0;
+    size_t innerCell = 0;
+
+    positions.updateMarkerAtPos(outerCell, innerCell, BoardMarker::CROSS, update);
+    REQUIRE(update == PosUpdate::VALID);
+    gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell);
+
+    REQUIRE(outer[outerCell].lineWinStates[0] == LineWinState::ALIVE);
+
+    innerCell = 1;
+
+    positions.updateMarkerAtPos(outerCell, innerCell, BoardMarker::NOUGHT, update);
+    REQUIRE(update == PosUpdate::VALID);
+    gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell);
+
+    innerCell = 2;
+
+    positions.updateMarkerAtPos(outerCell, innerCell, BoardMarker::NOUGHT, update);
+    REQUIRE(update == PosUpdate::VALID);
+    gs.updateGameState(positions.getMarkerPositions()[outerCell], outerCell, innerCell);
+
+    REQUIRE(outer[outerCell].lineWinStates[0] == LineWinState::BLOCKED);
+}
+
+
 
 void printInnerPos(const InnerPos& inner){
 

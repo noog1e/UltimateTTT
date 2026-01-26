@@ -35,6 +35,8 @@ TEST_CASE("Apply Player Move Test", "[move][apply]"){
         REQUIRE(move.getMoveConstraint() == MoveConstraint::FORCED_OUTER_CELL);
     }
 
-    SECTION("Position Taken")
+    SECTION("Position Taken"){
+        
+    }
 
 }
