@@ -1,7 +1,5 @@
 #pragma once
 
-#include "player.hpp"
-
 enum class TurnOutcome{
     NORMAL, STAY, SKIP, ENDGAME
 };
@@ -9,11 +7,15 @@ enum class TurnOutcome{
 class TurnManager{
 
     public:
-    TurnManager(Slot startingPlayer);
+    TurnManager(size_t startingPlayer, size_t numPlayers);
 
-    Slot currentPlayer() const;
+    size_t currentPlayer() const;
     void nextPlayer(const TurnOutcome outcome);
 
+    void setPlayerCount(size_t numPlayers);
+    size_t getPlayerCount() const;
+
     private:
-    Slot currentTurn;
+    size_t currentTurn;
+    size_t playerCount;
 };

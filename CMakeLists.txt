@@ -28,6 +28,7 @@ add_executable(tests
     tests/test_GameState.cpp
     tests/test_MarkerPositions.cpp
     tests/test_WinConditions.cpp
+    tests/test_TurnManager.cpp
 )
 
 target_link_libraries(tests
