@@ -84,6 +84,14 @@ build CMakeFiles/my_lib.dir/src/TurnManager.cpp.obj: CXX_COMPILER__my_lib_unscan
   OBJECT_FILE_DIR = CMakeFiles\my_lib.dir\src
   TARGET_SUPPORT_DIR = CMakeFiles\my_lib.dir
 
+build CMakeFiles/my_lib.dir/src/MoveProcessor.cpp.obj: CXX_COMPILER__my_lib_unscanned_ F$:/Programming/UltimateTTT/src/MoveProcessor.cpp || cmake_object_order_depends_target_my_lib
+  DEP_FILE = CMakeFiles\my_lib.dir\src\MoveProcessor.cpp.obj.d
+  FLAGS = -std=gnu++20
+  INCLUDES = -IF:/Programming/UltimateTTT/src
+  OBJECT_DIR = CMakeFiles\my_lib.dir
+  OBJECT_FILE_DIR = CMakeFiles\my_lib.dir\src
+  TARGET_SUPPORT_DIR = CMakeFiles\my_lib.dir
+
 
 # =============================================================================
 # Link build statements for STATIC_LIBRARY target my_lib
@@ -92,7 +100,7 @@ build CMakeFiles/my_lib.dir/src/TurnManager.cpp.obj: CXX_COMPILER__my_lib_unscan
 #############################################
 # Link the static library libmy_lib.a
 
-build libmy_lib.a: CXX_STATIC_LIBRARY_LINKER__my_lib_ CMakeFiles/my_lib.dir/src/board.cpp.obj CMakeFiles/my_lib.dir/src/game.cpp.obj CMakeFiles/my_lib.dir/src/GameState.cpp.obj CMakeFiles/my_lib.dir/src/MarkerPositions.cpp.obj CMakeFiles/my_lib.dir/src/TurnManager.cpp.obj
+build libmy_lib.a: CXX_STATIC_LIBRARY_LINKER__my_lib_ CMakeFiles/my_lib.dir/src/board.cpp.obj CMakeFiles/my_lib.dir/src/game.cpp.obj CMakeFiles/my_lib.dir/src/GameState.cpp.obj CMakeFiles/my_lib.dir/src/MarkerPositions.cpp.obj CMakeFiles/my_lib.dir/src/TurnManager.cpp.obj CMakeFiles/my_lib.dir/src/MoveProcessor.cpp.obj
   OBJECT_DIR = CMakeFiles\my_lib.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
@@ -141,6 +149,14 @@ build CMakeFiles/tests.dir/tests/test_TurnManager.cpp.obj: CXX_COMPILER__tests_u
   OBJECT_FILE_DIR = CMakeFiles\tests.dir\tests
   TARGET_SUPPORT_DIR = CMakeFiles\tests.dir
 
+build CMakeFiles/tests.dir/tests/test_MoveProcessor.cpp.obj: CXX_COMPILER__tests_unscanned_ F$:/Programming/UltimateTTT/tests/test_MoveProcessor.cpp || cmake_object_order_depends_target_tests
+  DEP_FILE = CMakeFiles\tests.dir\tests\test_MoveProcessor.cpp.obj.d
+  FLAGS = -std=gnu++20
+  INCLUDES = -IF:/Programming/UltimateTTT/src -IF:/Programming/UltimateTTT/build/_deps/catch2-src/src/catch2/.. -IF:/Programming/UltimateTTT/build/_deps/catch2-build/generated-includes
+  OBJECT_DIR = CMakeFiles\tests.dir
+  OBJECT_FILE_DIR = CMakeFiles\tests.dir\tests
+  TARGET_SUPPORT_DIR = CMakeFiles\tests.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target tests
@@ -149,7 +165,7 @@ build CMakeFiles/tests.dir/tests/test_TurnManager.cpp.obj: CXX_COMPILER__tests_u
 #############################################
 # Link the executable tests.exe
 
-build tests.exe: CXX_EXECUTABLE_LINKER__tests_ CMakeFiles/tests.dir/tests/test_GameState.cpp.obj CMakeFiles/tests.dir/tests/test_MarkerPositions.cpp.obj CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj CMakeFiles/tests.dir/tests/test_TurnManager.cpp.obj | libmy_lib.a _deps/catch2-build/src/libCatch2Main.a _deps/catch2-build/src/libCatch2.a || _deps/catch2-build/src/libCatch2.a _deps/catch2-build/src/libCatch2Main.a libmy_lib.a
+build tests.exe: CXX_EXECUTABLE_LINKER__tests_ CMakeFiles/tests.dir/tests/test_GameState.cpp.obj CMakeFiles/tests.dir/tests/test_MarkerPositions.cpp.obj CMakeFiles/tests.dir/tests/test_WinConditions.cpp.obj CMakeFiles/tests.dir/tests/test_TurnManager.cpp.obj CMakeFiles/tests.dir/tests/test_MoveProcessor.cpp.obj | libmy_lib.a _deps/catch2-build/src/libCatch2Main.a _deps/catch2-build/src/libCatch2.a || _deps/catch2-build/src/libCatch2.a _deps/catch2-build/src/libCatch2Main.a libmy_lib.a
   LINK_LIBRARIES = libmy_lib.a  _deps/catch2-build/src/libCatch2Main.a  _deps/catch2-build/src/libCatch2.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\tests.dir
   POST_BUILD = cd .

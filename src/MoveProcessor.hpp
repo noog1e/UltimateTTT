@@ -2,7 +2,6 @@
 
 #include "GameState.hpp"
 #include "MarkerPositions.hpp"
-#include "Player.hpp"
 #include <cstddef>
 
 enum class MoveConstraint{
@@ -15,7 +14,8 @@ class MoveProcessor{
     MoveProcessor();
 
     void setCurrentOuterCell(size_t cell, PosUpdate& update, const OuterMES& outerMES);
-    
+    void setMoveConstraint(MoveConstraint setConstraint);
+
     size_t getCurrentOuterCell() const;
     MoveConstraint getMoveConstraint() const;
 
@@ -30,6 +30,5 @@ class MoveProcessor{
     private:
     size_t currentOuterCell = 0;
     MoveConstraint constraint = MoveConstraint::FORCED_OUTER_CELL;
-    void checkOuterCellTaken();
     
 };

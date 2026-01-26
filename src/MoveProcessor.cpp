@@ -18,9 +18,21 @@ void MoveProcessor::setCurrentOuterCell(size_t cell, PosUpdate& update, const Ou
 
 }
 
-BoardMarker convertPlayerMarker(PlayerMarker pm){
-    return pm == PlayerMarker::CROSS ? BoardMarker::CROSS : BoardMarker::NOUGHT;
+void MoveProcessor::setMoveConstraint(MoveConstraint setConstraint){
+    constraint = setConstraint;
 }
+
+size_t MoveProcessor::getCurrentOuterCell() const{
+    return currentOuterCell;
+}
+
+MoveConstraint MoveProcessor::getMoveConstraint() const{
+    return constraint;
+}
+
+/*BoardMarker convertPlayerMarker(PlayerMarker pm){
+    return pm == PlayerMarker::CROSS ? BoardMarker::CROSS : BoardMarker::NOUGHT;
+} MOVE THIS*/ 
 
 void MoveProcessor::applyPlayerMove(const BoardMarker marker, MarkerPositions& positions, GameState& gs, size_t innerCell, PosUpdate& update){
     
