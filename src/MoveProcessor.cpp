@@ -3,12 +3,17 @@
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
 #include <cstddef>
+#include <cassert>
 
-MoveProcessor::MoveProcessor(){}
+MoveProcessor::MoveProcessor(size_t startingOuterCell){
+
+    assert(startingOuterCell < BoardLayout::NUM_CELLS);
+    currentOuterCell = startingOuterCell;
+}
 
 void MoveProcessor::setCurrentOuterCell(size_t cell, PosUpdate& update, const OuterMES& outerMES){
 
-    if(cell < 0 || cell >= BoardLayout::NUM_CELLS){
+    if(cell >= BoardLayout::NUM_CELLS){
         update = PosUpdate::OUT_OF_BOUNDS;
     } else if(outerMES[cell].matchOutcome != MatchOutcome::ONGOING){
         constraint = MoveConstraint::ANY;
@@ -16,10 +21,6 @@ void MoveProcessor::setCurrentOuterCell(size_t cell, PosUpdate& update, const Ou
         currentOuterCell = cell;
     }
 
-}
-
-void MoveProcessor::setMoveConstraint(MoveConstraint setConstraint){
-    constraint = setConstraint;
 }
 
 size_t MoveProcessor::getCurrentOuterCell() const{

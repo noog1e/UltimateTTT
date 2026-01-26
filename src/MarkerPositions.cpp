@@ -8,9 +8,9 @@ MarkerPositions::MarkerPositions(){}
 
 void MarkerPositions::checkBounds(size_t outer, size_t inner, PosUpdate& update){
     
-    if(outer < 0 || outer >= BL::NUM_CELLS){
+    if(outer >= BL::NUM_CELLS){
         update = PosUpdate::OUT_OF_BOUNDS;
-    }else if(inner < 0 || inner >= BL::NUM_CELLS){
+    }else if(inner >= BL::NUM_CELLS){
         update = PosUpdate::OUT_OF_BOUNDS;
     }
 }
