@@ -10,6 +10,7 @@ add_library(my_lib
     src/game.cpp
     src/GameState.cpp
     src/MarkerPositions.cpp
+    src/TurnManager.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)

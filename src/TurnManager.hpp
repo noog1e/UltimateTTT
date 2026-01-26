@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 enum class TurnOutcome{
     NORMAL, STAY, SKIP, ENDGAME
 };

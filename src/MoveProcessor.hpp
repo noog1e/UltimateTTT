@@ -20,7 +20,7 @@ class MoveProcessor{
     MoveConstraint getMoveConstraint() const;
 
     void applyPlayerMove(
-        const PlayerSlot& player, 
+        const BoardMarker marker, 
         MarkerPositions& positions, 
         GameState& gs, 
         size_t innerCell,
@@ -30,8 +30,6 @@ class MoveProcessor{
     private:
     size_t currentOuterCell = 0;
     MoveConstraint constraint = MoveConstraint::FORCED_OUTER_CELL;
-
-    BoardMarker convertPlayerMarker(PlayerMarker pm);
     void checkOuterCellTaken();
     
 };
