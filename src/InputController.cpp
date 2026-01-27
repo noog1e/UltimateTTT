@@ -14,11 +14,11 @@ bool GameInputController::integerInputError(const std::from_chars_result& result
 }
 
 bool GameInputController::pointerPosError(const std::from_chars_result& result, std::string_view line){
-    return result.ptr == line.data() + line.size();
+    return result.ptr != line.data() + line.size();
 }
 
 bool GameInputController::integerBoundsError(int input){
-    return input >= 0 && input < BoardLayout::NUM_CELLS;
+    return input < 0 || input >= BoardLayout::NUM_CELLS;
 }
 
 std::optional<size_t> GameInputController::getInput(){

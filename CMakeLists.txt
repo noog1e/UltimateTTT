@@ -12,6 +12,7 @@ add_library(my_lib
     src/MarkerPositions.cpp
     src/TurnManager.cpp
     src/MoveProcessor.cpp
+    src/InputController.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)
@@ -33,6 +34,7 @@ add_executable(tests
     tests/test_WinConditions.cpp
     tests/test_TurnManager.cpp
     tests/test_MoveProcessor.cpp
+    tests/test_InputController.cpp
 )
 
 target_link_libraries(tests
