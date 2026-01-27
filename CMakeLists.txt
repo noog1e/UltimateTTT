@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Main library / executable
 add_library(my_lib
-    src/board.cpp
-    src/game.cpp
+    src/Board.cpp
+    src/Game.cpp
     src/GameState.cpp
     src/MarkerPositions.cpp
     src/TurnManager.cpp
