@@ -20,7 +20,7 @@ TEST_CASE("Apply Player Move Test", "[move][apply]"){
 
     MoveProcessor move(outerCell);
     GameState gs;
-    MarkerPositions position;
+    MarkerPositions positions;
     BoardMarker nought = BoardMarker::NOUGHT;
     BoardMarker cross = BoardMarker::CROSS;
 
@@ -30,28 +30,65 @@ TEST_CASE("Apply Player Move Test", "[move][apply]"){
 
         size_t innerCell = 0;
 
-        move.applyPlayerMove(nought, position, gs, innerCell);
+        move.applyPlayerMove(nought, positions, gs, innerCell);
         
         REQUIRE(move.getCurrentOuterCell() == innerCell);
         REQUIRE(move.getMoveConstraint() == MoveConstraint::FORCED_OUTER_CELL);
     }
 
-    SECTION("Position Taken"){
+    SECTION("Positions Taken"){
         
         size_t innerCell = 0;
         PosUpdate update;
 
-        position.updateMarkerAtPos(outerCell, innerCell, nought, update);
+        positions.updateMarkerAtPos(outerCell, innerCell, nought, update);
 
-        move.applyPlayerMove(cross, position, gs, innerCell);
+        move.applyPlayerMove(cross, positions, gs, innerCell);
 
         REQUIRE(move.getCurrentOuterCell() == outerCell);
     }
+}
 
+TEST_CASE("Inner Cell move correlates with Occupied Outer Cell", "[move][occupied]"){
+    
+    size_t outerCell = 0;
 
+    GameState gs;
+    MarkerPositions positions;
 
-    SECTION("Inner Cell move correlates with Occupied Outer Cell"){
-            
+    winRow1(positions, gs, outerCell);
+
+    outerCell = 1;
+    MoveProcessor move(outerCell);
+
+    move.applyPlayerMove(BoardMarker::NOUGHT, positions, gs, 0);
+
+    //This shows if an outer cell has been captured or is in a tie state, 
+    //the current outer cell in MoveProcessor remains the same value.
+    //This is a key indicator combined with the MoveConstraint that the
+    //outer cell is occupied, and the next player gets a free move.
+    REQUIRE(move.getCurrentOuterCell() == outerCell);
+    REQUIRE(move.getMoveConstraint() == MoveConstraint::ANY);
+
+    const MatchEvaluation& eval = gs.getMatchEvaluation();
+    const OuterMES& outerMES = eval.outer;
+
+    SECTION("Moving to any unoccupied position as ANY state is triggered"){
+
+        size_t newOuterCell = 2;
+        move.setCurrentOuterCell(newOuterCell, outerMES);
+
+        REQUIRE(move.getCurrentOuterCell() == newOuterCell);
+        REQUIRE(move.getMoveConstraint() == MoveConstraint::FORCED_OUTER_CELL);
     }
 
+    SECTION("Moving to any occupied position as ANY state is triggered"){
+
+        size_t newOuterCell = 0;
+        move.setCurrentOuterCell(newOuterCell, outerMES);
+
+        REQUIRE(move.getCurrentOuterCell() == outerCell);
+        REQUIRE(move.getMoveConstraint() == MoveConstraint::ANY);
+    }
+    
 }

@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Main library / executable
 add_library(my_lib
-    tests/TestingUtilities.cpp
     src/board.cpp
     src/game.cpp
     src/GameState.cpp
@@ -28,6 +27,7 @@ FetchContent_MakeAvailable(Catch2)
 
 # Tests
 add_executable(tests
+    tests/TestingUtilities.cpp
     tests/test_GameState.cpp
     tests/test_MarkerPositions.cpp
     tests/test_WinConditions.cpp

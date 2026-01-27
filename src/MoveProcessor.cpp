@@ -15,6 +15,8 @@ void MoveProcessor::setCurrentOuterCell(size_t cell, const OuterMES& outerMES){
 
     assert(cell < BoardLayout::NUM_CELLS);
 
+    if(constraint == MoveConstraint::ANY) constraint = MoveConstraint::FORCED_OUTER_CELL;
+
     if(outerMES[cell].matchOutcome != MatchOutcome::ONGOING){
         constraint = MoveConstraint::ANY;
     } else{
