@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Main library / executable
 add_library(my_lib
+    tests/TestingUtilities.cpp
     src/board.cpp
     src/game.cpp
     src/GameState.cpp

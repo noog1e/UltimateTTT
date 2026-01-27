@@ -1,35 +1,7 @@
-#include <catch2/catch_test_macros.hpp>
+#include "TestingUtilities.hpp"
 #include "MarkerPositions.hpp"
 #include "BoardLayout.hpp"
-
-void fillMarkerPositions(MarkerPositions& positions, BoardMarker marker){
-
-    PosUpdate update;
-
-    for(size_t i=0; i < BoardLayout::NUM_CELLS; i++){
-
-        for(size_t j=0; j < BoardLayout::NUM_CELLS; j++){
-
-            positions.updateMarkerAtPos(i, j, marker, update);
-        }
-    }
-}
-
-void requireAllPositionsAs(MarkerPositions& positions, BoardMarker marker){
-
-    const OuterPos& outPos = positions.getMarkerPositions();
-
-    for(size_t i=0; i < BoardLayout::NUM_CELLS; i++){
-
-        const InnerPos& inPos = outPos[i];
-
-        for(size_t j=0; j < BoardLayout::NUM_CELLS; j++){
-
-            REQUIRE(inPos[j] == marker);
-        }
-    }
-
-}
+#include <catch2/catch_test_macros.hpp>
 
 TEST_CASE("Initialise Marker Positions object", "[marker][init]"){
 

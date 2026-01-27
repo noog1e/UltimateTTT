@@ -1,3 +1,4 @@
+#include "TestingUtilities.hpp"
 #include "MoveProcessor.hpp"
 #include "GameState.hpp"
 #include "MarkerPositions.hpp"
@@ -47,8 +48,10 @@ TEST_CASE("Apply Player Move Test", "[move][apply]"){
         REQUIRE(move.getCurrentOuterCell() == outerCell);
     }
 
+
+
     SECTION("Inner Cell move correlates with Occupied Outer Cell"){
-        
+            
     }
 
 }
