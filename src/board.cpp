@@ -250,6 +250,17 @@ DrawBoundsCheck Board::draw(const OuterPos& pos){
     return DrawBoundsCheck::IN_BOUNDS;
 }
 
+DrawBoundsCheck Board::draw(){
+    
+    if(drawInnerGrids() ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+    
+    if(drawOuterGrid() ==
+            DrawBoundsCheck::OO_BOUNDS) return DrawBoundsCheck::OO_BOUNDS;
+
+    return DrawBoundsCheck::IN_BOUNDS;
+}
+
 size_t Board::calculateInnerGrid_XOffset(int outerCol) const{
     return BL::SUBGRID_MARGIN_WIDTH + (outerCol * (BL::OUTER_CELL_WIDTH + BL::U_GRID_THICKNESS));
 }

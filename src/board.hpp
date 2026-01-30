@@ -27,6 +27,7 @@ class Board{
    size_t getWidth() const;
 
    DrawBoundsCheck draw(const OuterPos& pos);
+   DrawBoundsCheck draw();
 
    private:
 
