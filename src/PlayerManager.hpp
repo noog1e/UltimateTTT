@@ -18,19 +18,28 @@ struct Player{
     PlayerMarker marker = PlayerMarker::NONE;
 };
 
-constexpr int NUM_PLAYERS = 2;
+constexpr size_t NUM_PLAYERS = 2;
+constexpr size_t PlayerOne = 0;
+constexpr size_t PlayerTwo = 1;
+
+enum class NameUpdate{
+    VALID, DUPLICATES
+};
 
 class PlayerManager{
 
     public:
     PlayerManager();
 
-    void updateName(const std::string& name, size_t playerSlot);
+    NameUpdate updateNames(const std::string& name1, const std::string& name2);
     void updateType(EntityType e, size_t playerSlot);
-    void updateMarkers(PlayerMarker p1, PlayerMarker p2);
+    void updateMarker(PlayerMarker marker, size_t playerSlot);
     const Player& getPlayer(size_t playerSlot) const;
 
     private:
     std::array<Player, NUM_PLAYERS> players = {};
+
+    size_t oppositePlayer(size_t playerSlot);
+    PlayerMarker oppositeMarker(PlayerMarker marker);
 
 };

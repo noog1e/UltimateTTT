@@ -5,11 +5,14 @@
 
 PlayerManager::PlayerManager(){}
 
-void PlayerManager::updateName(const std::string& name, size_t playerSlot){
+NameUpdate PlayerManager::updateNames(const std::string& name1, const std::string& name2){
 
-    assert(playerSlot < NUM_PLAYERS);
+    if(name1 == name2) return NameUpdate::DUPLICATES;
+    
+    players[PlayerOne].name = name1;
+    players[PlayerTwo].name = name2;
 
-    players[playerSlot].name = name;
+    return NameUpdate::VALID;
 }
 
 void PlayerManager::updateType(EntityType e, size_t playerSlot){
@@ -19,14 +22,15 @@ void PlayerManager::updateType(EntityType e, size_t playerSlot){
     players[playerSlot].type = e;
 }
 
-void PlayerManager::updateMarkers(PlayerMarker p1, PlayerMarker p2){
+void PlayerManager::updateMarker(PlayerMarker marker, size_t playerSlot){
 
-    assert(p1 == PlayerMarker::NONE);
-    assert(p2 == PlayerMarker::NONE);
-    assert(p1 == p2);
+    assert(marker != PlayerMarker::NONE);
 
-    players[0].marker = p1;
-    players[1].marker = p2;
+    size_t op = oppositePlayer(playerSlot);
+    PlayerMarker om = oppositeMarker(marker);
+
+    players[playerSlot].marker = marker;
+    players[op].marker = om;
 }
 
 const Player& PlayerManager::getPlayer(size_t playerSlot) const{
@@ -34,4 +38,12 @@ const Player& PlayerManager::getPlayer(size_t playerSlot) const{
     assert(playerSlot < NUM_PLAYERS);
 
     return players[playerSlot];
+}
+
+size_t PlayerManager::oppositePlayer(size_t playerSlot){
+    return playerSlot == PlayerOne ? PlayerTwo : PlayerOne;
+}
+
+PlayerMarker PlayerManager::oppositeMarker(PlayerMarker marker){
+    return marker == PlayerMarker::CROSS ? PlayerMarker::NOUGHT : PlayerMarker::CROSS;
 }

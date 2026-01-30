@@ -17,14 +17,15 @@ void GameSetup::entityTypes(EntityType p1, EntityType p2){
     setup = SetupState::Naming;
 }
 
-void GameSetup::playerNames(const std::string& p1, const std::string& p2){
+NameUpdate GameSetup::playerNames(const std::string& p1, const std::string& p2){
     
     assert(setup == SetupState::Naming);
     
-    pm.updateName(p1, 0);
-    pm.updateName(p2, 1);
+    NameUpdate u = pm.updateNames(p1, p2);
     
-    setup = SetupState::TurnManager;
+    if(u == NameUpdate::VALID) setup = SetupState::TurnManager;
+
+    return u;
 }
 
 size_t GameSetup::coinToss(){
@@ -49,11 +50,11 @@ TurnManager GameSetup::turnManager(){
     return tm;
 }
 
-void GameSetup::playerMarkers(PlayerMarker p1, PlayerMarker p2){
+void GameSetup::playerMarkers(PlayerMarker marker, size_t playerSlot){
 
     assert(setup == SetupState::Markers);
 
-    pm.updateMarkers(p1, p2);
+    pm.updateMarker(marker, playerSlot);
 
     setup = SetupState::Completed;
 }

@@ -13,9 +13,9 @@ class GameSetup{
     GameSetup();
 
     void entityTypes(EntityType p1, EntityType p2);
-    void playerNames(const std::string& p1, const std::string& p2);
-    void playerMarkers(PlayerMarker p1, PlayerMarker p2);
+    NameUpdate playerNames(const std::string& p1, const std::string& p2);
     TurnManager turnManager();
+    void playerMarkers(PlayerMarker marker, size_t playerSlot);
     PlayerManager extractPlayerManager();
 
     const SetupState getSetupState();
