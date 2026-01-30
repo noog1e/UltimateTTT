@@ -1,4 +1,5 @@
 #include "PlayerManager.hpp"
+#include "MarkerPositions.hpp"
 #include <cassert>
 #include <cstddef>
 #include <string>
@@ -22,12 +23,12 @@ void PlayerManager::updateType(EntityType e, size_t playerSlot){
     players[playerSlot].type = e;
 }
 
-void PlayerManager::updateMarker(PlayerMarker marker, size_t playerSlot){
+void PlayerManager::updateMarker(BoardMarker marker, size_t playerSlot){
 
-    assert(marker != PlayerMarker::NONE);
+    assert(marker != BoardMarker::NONE);
 
     size_t op = oppositePlayer(playerSlot);
-    PlayerMarker om = oppositeMarker(marker);
+    BoardMarker om = oppositeMarker(marker);
 
     players[playerSlot].marker = marker;
     players[op].marker = om;
@@ -44,6 +45,6 @@ size_t PlayerManager::oppositePlayer(size_t playerSlot){
     return playerSlot == PlayerOne ? PlayerTwo : PlayerOne;
 }
 
-PlayerMarker PlayerManager::oppositeMarker(PlayerMarker marker){
-    return marker == PlayerMarker::CROSS ? PlayerMarker::NOUGHT : PlayerMarker::CROSS;
+BoardMarker PlayerManager::oppositeMarker(BoardMarker marker){
+    return marker == BoardMarker::CROSS ? BoardMarker::NOUGHT : BoardMarker::CROSS;
 }

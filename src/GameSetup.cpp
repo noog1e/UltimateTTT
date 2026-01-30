@@ -10,6 +10,8 @@ GameSetup::GameSetup(){}
 void GameSetup::entityTypes(EntityType p1, EntityType p2){
     
     assert(setup == SetupState::Entity);
+    assert(p1 != EntityType::UNASSIGNED);
+    assert(p2 != EntityType::UNASSIGNED);
 
     pm.updateType(p1, 0);
     pm.updateType(p2, 1);
@@ -50,9 +52,10 @@ TurnManager GameSetup::turnManager(){
     return tm;
 }
 
-void GameSetup::playerMarkers(PlayerMarker marker, size_t playerSlot){
+void GameSetup::playerMarkers(BoardMarker marker, size_t playerSlot){
 
     assert(setup == SetupState::Markers);
+    assert(marker != BoardMarker::NONE);
 
     pm.updateMarker(marker, playerSlot);
 

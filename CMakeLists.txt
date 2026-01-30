@@ -13,6 +13,8 @@ add_library(my_lib
     src/TurnManager.cpp
     src/MoveProcessor.cpp
     src/InputController.cpp
+    src/PlayerManager.cpp
+    src/GameSetup.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)
@@ -35,6 +37,7 @@ add_executable(tests
     tests/test_TurnManager.cpp
     tests/test_MoveProcessor.cpp
     tests/test_InputController.cpp
+    tests/test_PlayerManager.cpp
 )
 
 target_link_libraries(tests

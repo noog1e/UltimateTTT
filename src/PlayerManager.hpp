@@ -1,5 +1,6 @@
 #pragma once
 
+#include "MarkerPositions.hpp"
 #include <array>
 #include <string>
 #include <cstddef>
@@ -8,14 +9,10 @@ enum class EntityType{
     HUMAN, AI, UNASSIGNED
 };
 
-enum class PlayerMarker{
-    NOUGHT, CROSS, NONE
-};
-
 struct Player{
     std::string name = "UNASSIGNED";
     EntityType type = EntityType::UNASSIGNED;
-    PlayerMarker marker = PlayerMarker::NONE;
+    BoardMarker marker = BoardMarker::NONE;
 };
 
 constexpr size_t NUM_PLAYERS = 2;
@@ -33,13 +30,13 @@ class PlayerManager{
 
     NameUpdate updateNames(const std::string& name1, const std::string& name2);
     void updateType(EntityType e, size_t playerSlot);
-    void updateMarker(PlayerMarker marker, size_t playerSlot);
+    void updateMarker(BoardMarker marker, size_t playerSlot);
     const Player& getPlayer(size_t playerSlot) const;
 
     private:
     std::array<Player, NUM_PLAYERS> players = {};
 
     size_t oppositePlayer(size_t playerSlot);
-    PlayerMarker oppositeMarker(PlayerMarker marker);
+    BoardMarker oppositeMarker(BoardMarker marker);
 
 };
