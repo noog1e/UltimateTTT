@@ -38,6 +38,7 @@ add_executable(tests
     tests/test_MoveProcessor.cpp
     tests/test_InputController.cpp
     tests/test_PlayerManager.cpp
+    tests/test_GameSetup.cpp
 )
 
 target_link_libraries(tests

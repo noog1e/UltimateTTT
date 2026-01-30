@@ -21,7 +21,7 @@ class GameSetup{
     const SetupState getSetupState();
 
     private:
-    SetupState setup;
+    SetupState setup = SetupState::Entity;
     PlayerManager pm;
 
     size_t coinToss();
