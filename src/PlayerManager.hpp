@@ -2,28 +2,20 @@
 
 #include <array>
 #include <string>
+#include <cstddef>
 
 enum class EntityType{
-    HUMAN, AI
+    HUMAN, AI, UNASSIGNED
 };
 
 enum class PlayerMarker{
-    NOUGHT, CROSS
-};
-
-struct Entity{
-    std::string name;
-    EntityType type;
-};
-
-enum class Slot{
-    ONE, TWO, COUNT
+    NOUGHT, CROSS, NONE
 };
 
 struct Player{
-    Entity player;
-    Slot slot;
-    PlayerMarker marker;
+    std::string name = "UNASSIGNED";
+    EntityType type = EntityType::UNASSIGNED;
+    PlayerMarker marker = PlayerMarker::NONE;
 };
 
 constexpr int NUM_PLAYERS = 2;
@@ -33,10 +25,12 @@ class PlayerManager{
     public:
     PlayerManager();
 
-    void addPlayer(const Player& newPlayer);
-    const Player& getPlayer(Slot playerSlot);
+    void updateName(const std::string& name, size_t playerSlot);
+    void updateType(EntityType e, size_t playerSlot);
+    void updateMarkers(PlayerMarker p1, PlayerMarker p2);
+    const Player& getPlayer(size_t playerSlot) const;
 
     private:
-    std::array<Player, NUM_PLAYERS> players;
+    std::array<Player, NUM_PLAYERS> players = {};
 
 };
