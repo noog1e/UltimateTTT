@@ -25,7 +25,8 @@ class Game{
         const TM& tm, 
         const MPRO& mpro, 
         const Board& board,
-        const PM& pm);
+        const PM& pm
+    );
 
     private:
 
