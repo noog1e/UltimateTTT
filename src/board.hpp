@@ -5,10 +5,6 @@
 #include <array>
 #include <cstddef>
 
-enum class DrawBoundsCheck{
-   IN_BOUNDS, OO_BOUNDS
-};
-
 enum class Spacing{
    NONE, SINGLE, DOUBLE
 };
@@ -21,13 +17,11 @@ class Board{
    Board();
 
    void clear();
+   void drawPositionUpdate(const OuterPos& pos);
 
    const Board2DArray& getBoard() const;
    size_t getHeight() const;
    size_t getWidth() const;
-
-   DrawBoundsCheck draw(const OuterPos& pos);
-   DrawBoundsCheck draw();
 
    private:
 
@@ -35,29 +29,32 @@ class Board{
    size_t boardHeight = BoardLayout::U_HEIGHT;
    size_t boardWidth = BoardLayout::U_WIDTH;
 
+   //Overall Draw
+   void draw();
+
    //Line drawing
-   DrawBoundsCheck drawVerticalLine(size_t xO, size_t yO, int height, char unicode, Spacing spacing);
-   DrawBoundsCheck drawHorizontalLine(size_t xO, size_t yO, int width, char unicode, Spacing spacing);  
-   DrawBoundsCheck drawInnerGridVerticalLines(size_t xO, size_t yO);
-   DrawBoundsCheck drawInnerGridHorizontalLines(size_t xO, size_t yO);
-   DrawBoundsCheck drawOuterGridVerticalLines();
-   DrawBoundsCheck drawOuterGridHorizontalLines();
+   void drawVerticalLine(size_t xO, size_t yO, size_t height, char unicode, Spacing spacing);
+   void drawHorizontalLine(size_t xO, size_t yO, size_t width, char unicode, Spacing spacing);  
+   void drawInnerGridVerticalLines(size_t xO, size_t yO);
+   void drawInnerGridHorizontalLines(size_t xO, size_t yO);
+   void drawOuterGridVerticalLines();
+   void drawOuterGridHorizontalLines();
    
-   //Grid drawing
-   DrawBoundsCheck drawInnerGrid(size_t xO, size_t yO);
-   DrawBoundsCheck drawInnerGrids();
-   DrawBoundsCheck drawOuterGrid();
+   //Grid drawing (setup)
+   void drawInnerGrid(size_t xO, size_t yO);
+   void drawInnerGrids();
+   void drawOuterGrid();
    
    //Marker drawing
-   DrawBoundsCheck drawMarkerPositions(const OuterPos& pos);
-   DrawBoundsCheck drawCellMarkers(const InnerPos& pos, int outerRow, int outerColumn);
+   void drawMarkerPositions(const OuterPos& pos);
+   void drawCellMarkers(const InnerPos& pos, size_t outerRow, size_t outerColumn);
    char drawPositionChar(BoardMarker marker) const;
 
    //Geometry
-   size_t calculateInnerGrid_XOffset(int outerCol) const;
-   size_t calculateInnerGrid_YOffset(int outerRow) const;
-   size_t calculateMarkerPositions_XOffset(size_t inner_xO, int innerCol) const;
-   size_t calculateMarkerPositions_YOffset(size_t inner_yO, int innerRow) const;
+   size_t calculateInnerGrid_XOffset(size_t outerCol) const;
+   size_t calculateInnerGrid_YOffset(size_t outerRow) const;
+   size_t calculateMarkerPositions_XOffset(size_t inner_xO, size_t innerCol) const;
+   size_t calculateMarkerPositions_YOffset(size_t inner_yO, size_t innerRow) const;
    
 };
 
