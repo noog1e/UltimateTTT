@@ -39,3 +39,20 @@ void MarkerPositions::resetPositions(){
         pos[i].fill(BoardMarker::NONE);
     }
 }
+
+char drawPositionChar(BoardMarker marker){
+
+    switch(marker){
+
+        case BoardMarker::CROSS:
+        return 'x'; //Make custom markers for Cross and Nought later?
+
+        case BoardMarker::NOUGHT:
+        return 'o';
+
+        default:
+        break;
+    }
+
+    return ' ';
+}

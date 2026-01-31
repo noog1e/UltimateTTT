@@ -21,11 +21,7 @@ Board::Board(){
 
 void Board::clear(){
 
-    for(auto& row : board){
-        row.fill(SPACE);
-    }
-
-    //TO FIX - Dont need to kill all the lines, just the markers
+    clearMarkerPositions();
 }
 
 const Board2DArray& Board::getBoard() const{
@@ -134,21 +130,17 @@ void Board::drawOuterGrid(){
 }
 
 
-void Board::drawMarkerPositions(const OuterPos& pos){
-    
-    size_t outerCell = 0;
+void Board::clearMarkerPositions(){
 
     for(size_t i = 0; i < BL::CELLS_PER_AXIS; i++){
 
         for(size_t j = 0; j < BL::CELLS_PER_AXIS; j++){
-
-            outerCell = (BL::CELLS_PER_AXIS * i) + j; 
-            drawCellMarkers(pos[outerCell], j, i);
+            clearCellMarkers(j, i);
         }
     }
 }
 
-void Board::drawCellMarkers(const InnerPos& pos, size_t outerColumn, size_t outerRow){
+void Board::clearCellMarkers(size_t outerColumn, size_t outerRow){
 
     assert(outerColumn >= BL::CELLS_PER_AXIS);
     assert(outerRow >= BL::CELLS_PER_AXIS);
@@ -169,34 +161,44 @@ void Board::drawCellMarkers(const InnerPos& pos, size_t outerColumn, size_t oute
 
             //std::cout << "x: " << x1O << " y: " << y1O << "\n\n";     //DEBUG
 
-            board[y1O][x1O] = drawPositionChar(pos[innerCell]);
+            board[y1O][x1O] = SPACE;
         }        
     }
 }
 
-char Board::drawPositionChar(BoardMarker marker) const{
-
-    switch(marker){
-
-        case BoardMarker::CROSS:
-        return 'x'; //Make custom markers for Cross and Nought later?
-
-        case BoardMarker::NOUGHT:
-        return 'o';
-
-        default:
-        break;
-    }
-
-    return SPACE;
+size_t Board::calculateColumn(size_t cell){
+    return cell % 3;
 }
 
-void Board::drawPositionUpdate(const OuterPos& pos){
+size_t Board::calculateRow(size_t cell){
+    
+    if(cell < 3){
+        return 0;
+    }else if(cell >= 3 && cell <= 5){
+        return 1;
+    }
 
+    return 2;
+}
 
-    drawMarkerPositions(pos);
+void Board::drawPositionUpdate(size_t outerCell, size_t innerCell, char marker){
 
-    //NEED TO FIX SO THAT IT DOESNT NEED OUTERPOS
+    assert(innerCell >= BL::NUM_CELLS);
+    assert(outerCell >= BL::NUM_CELLS);
+
+    size_t outerColumn = calculateColumn(outerCell);
+    size_t outerRow = calculateRow(outerCell);
+
+    size_t xO = calculateInnerGrid_XOffset(outerColumn); 
+    size_t yO = calculateInnerGrid_YOffset(outerRow);
+
+    size_t innerColumn = calculateColumn(innerCell);
+    size_t innerRow = calculateRow(innerCell);
+
+    size_t x1O = calculateMarkerPositions_XOffset(xO, innerColumn);
+    size_t y1O = calculateMarkerPositions_YOffset(yO, innerRow);
+
+    board[y1O][x1O] = marker;
 
 }
 

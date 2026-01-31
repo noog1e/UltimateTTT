@@ -17,7 +17,7 @@ class Board{
    Board();
 
    void clear();
-   void drawPositionUpdate(const OuterPos& pos);
+   void drawPositionUpdate(size_t outerCell, size_t innerCell, char marker);
 
    const Board2DArray& getBoard() const;
    size_t getHeight() const;
@@ -45,17 +45,17 @@ class Board{
    void drawInnerGrids();
    void drawOuterGrid();
    
-   //Marker drawing
-   void drawMarkerPositions(const OuterPos& pos);
-   void drawCellMarkers(const InnerPos& pos, size_t outerRow, size_t outerColumn);
-   char drawPositionChar(BoardMarker marker) const;
+   //Marker clearing
+   void clearMarkerPositions();
+   void clearCellMarkers(size_t outerRow, size_t outerColumn);
 
    //Geometry
    size_t calculateInnerGrid_XOffset(size_t outerCol) const;
    size_t calculateInnerGrid_YOffset(size_t outerRow) const;
    size_t calculateMarkerPositions_XOffset(size_t inner_xO, size_t innerCol) const;
    size_t calculateMarkerPositions_YOffset(size_t inner_yO, size_t innerRow) const;
-   
+   size_t calculateColumn(size_t cell);
+   size_t calculateRow(size_t cell);
 };
 
 
