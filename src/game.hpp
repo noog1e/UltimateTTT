@@ -7,6 +7,7 @@
 #include "TurnManager.hpp"
 #include "MoveProcessor.hpp"
 #include "Renderer.hpp"
+#include "UserInterface.hpp"
 #include <string>
 #include <array>
 #include <cstddef>
@@ -16,22 +17,31 @@ using GS = GameState;
 using TM = TurnManager;
 using MPRO = MoveProcessor;
 using PM = PlayerManager;
+using UI = GameplayUI;
 
 class Game{
 
     public:
     Game(
-        const MPOS& mpos, 
-        const GS& gs, 
-        const TM& tm, 
-        const MPRO& mpro, 
-        const Board& board,
+        const MPOS& pos, 
+        const GS& s, 
+        const TM& t, 
+        const MPRO& m, 
+        const Board& b,
         const PM& pm,
-        const Renderer& ren
+        const Renderer& rd,
+        const UI& ui
     );
 
     private:
-
+    MPOS positions; 
+    GS state; 
+    TM turns; 
+    MPRO moves; 
+    Board board;
+    PM players;
+    Renderer render;
+    UI ui;
         
 
 
