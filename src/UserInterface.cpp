@@ -1,9 +1,42 @@
 #include "UserInterface.hpp"
 #include <string>
+#include <chrono>
+#include <thread>
+
+GameSetupUI::GameSetupUI(){}
+
+void GameSetupUI::promptEntityTypes(int playerNum, Renderer& render){
+    render.printLine("Player " + std::to_string(playerNum) + ": Human [1] / AI [2] ? ");
+}
+
+void GameSetupUI::promptPlayerNames(int playerNum, Renderer& render){
+    render.printLine("Enter Player " +std::to_string(playerNum) + " name:");
+}
+
+void GameSetupUI::coinFlipping(Renderer& render){
+    render.printLine("Flipping coin...");
+    delay(100);
+}
+
+void GameSetupUI::firstPlayer(std::string playerName, Renderer& render){
+    render.printLine(playerName + " goes first!");
+}
+
+void GameSetupUI::markerSelection(std::string playerName, Renderer& render){
+    render.printLine(playerName + " choose your marker: CROSS [1] / NOUGHT [2] ?");
+}
+
+void GameSetupUI::setupConfirmation(Renderer& render){
+    render.printLine("Let the game begin!");
+}
+
+void GameSetupUI::delay(int milliseconds){
+    std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+}
 
 GameplayUI::GameplayUI(){}
 
-void GameplayUI::board(const Board& board, Renderer& render){
+void GameplayUI::printBoard(const Board& board, Renderer& render){
 
     const BoardView& bv = board.getBoard(); 
 
