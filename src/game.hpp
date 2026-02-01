@@ -30,7 +30,7 @@ class Game{
         const Board& b,
         const PM& pm,
         const Renderer& rd,
-        const UI& ui
+        const UI& u
     );
 
     private:
@@ -42,7 +42,4 @@ class Game{
     PM players;
     Renderer render;
     UI ui;
-        
-
-
 };
