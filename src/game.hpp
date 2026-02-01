@@ -6,6 +6,7 @@
 #include "GameState.hpp"
 #include "TurnManager.hpp"
 #include "MoveProcessor.hpp"
+#include "Renderer.hpp"
 #include <string>
 #include <array>
 #include <cstddef>
@@ -25,7 +26,8 @@ class Game{
         const TM& tm, 
         const MPRO& mpro, 
         const Board& board,
-        const PM& pm
+        const PM& pm,
+        const Renderer& ren
     );
 
     private:

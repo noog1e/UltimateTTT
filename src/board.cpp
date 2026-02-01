@@ -24,7 +24,7 @@ void Board::clear(){
     clearMarkerPositions();
 }
 
-const Board2DArray& Board::getBoard() const{
+const BoardView& Board::getBoard() const{
     return board;
 }
 
@@ -36,9 +36,18 @@ size_t Board::getWidth() const{
     return boardWidth;
 }
 
+void Board::drawEmpty(){
+
+    for(auto& row : board){
+        for(auto& elem : row){
+            elem = SPACE;
+        }
+    }
+}
+
 void Board::drawVerticalLine(size_t xO, size_t yO, size_t height, char unicode, Spacing spacing){
 
-    assert (height > boardHeight);
+    assert (height <= boardHeight);
 
     //size_t space = static_cast<size_t>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
@@ -50,7 +59,7 @@ void Board::drawVerticalLine(size_t xO, size_t yO, size_t height, char unicode, 
 
 void Board::drawHorizontalLine(size_t xO, size_t yO, size_t width, char unicode, Spacing spacing){
 
-    assert (width > boardWidth);
+    assert (width <= boardWidth);
     //size_t space = static_cast<size_t>(spacing) + 1; //TODO figure out how to do spacing (currently not used)
 
     for(size_t col = 0; col < width; col++){
@@ -142,8 +151,8 @@ void Board::clearMarkerPositions(){
 
 void Board::clearCellMarkers(size_t outerColumn, size_t outerRow){
 
-    assert(outerColumn >= BL::CELLS_PER_AXIS);
-    assert(outerRow >= BL::CELLS_PER_AXIS);
+    assert(outerColumn < BL::CELLS_PER_AXIS);
+    assert(outerRow < BL::CELLS_PER_AXIS);
 
     size_t xO = calculateInnerGrid_XOffset(outerColumn); 
     size_t yO = calculateInnerGrid_YOffset(outerRow);
@@ -183,8 +192,8 @@ size_t Board::calculateRow(size_t cell){
 
 void Board::drawPositionUpdate(size_t outerCell, size_t innerCell, char marker){
 
-    assert(innerCell >= BL::NUM_CELLS);
-    assert(outerCell >= BL::NUM_CELLS);
+    assert(innerCell < BL::NUM_CELLS);
+    assert(outerCell < BL::NUM_CELLS);
 
     size_t outerColumn = calculateColumn(outerCell);
     size_t outerRow = calculateRow(outerCell);
@@ -221,6 +230,7 @@ size_t Board::calculateMarkerPositions_YOffset(size_t inner_yO, size_t innerRow)
 }
 
 void Board::draw(){
+    drawEmpty();
     drawInnerGrids();
     drawOuterGrid();
 }

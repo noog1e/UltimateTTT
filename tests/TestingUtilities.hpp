@@ -2,6 +2,8 @@
 
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
+#include "Board.hpp"
+#include "Renderer.hpp"
 #include <cstddef>
 
 void fillMarkerPositions(MarkerPositions& positions, BoardMarker marker);
@@ -25,3 +27,6 @@ void winCol3(MarkerPositions& positions, GameState& gs, size_t outerCell);
 void winDiag1(MarkerPositions& positions, GameState& gs, size_t outerCell);
 void winDiag2(MarkerPositions& positions, GameState& gs, size_t outerCell);
 void tieMatch(MarkerPositions& positions, GameState& gs);
+void printBoard(const Board& board, Renderer& render);
+char drawPositionChar(BoardMarker marker);
+

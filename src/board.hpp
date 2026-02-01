@@ -9,7 +9,7 @@ enum class Spacing{
    NONE, SINGLE, DOUBLE
 };
 
-using Board2DArray = std::array<std::array<char, BoardLayout::U_WIDTH>, BoardLayout::U_HEIGHT>;
+using BoardView = std::array<std::array<char, BoardLayout::U_WIDTH>, BoardLayout::U_HEIGHT>;
 
 class Board{
 
@@ -19,13 +19,13 @@ class Board{
    void clear();
    void drawPositionUpdate(size_t outerCell, size_t innerCell, char marker);
 
-   const Board2DArray& getBoard() const;
+   const BoardView& getBoard() const;
    size_t getHeight() const;
    size_t getWidth() const;
 
    private:
 
-   Board2DArray board;
+   BoardView board;
    size_t boardHeight = BoardLayout::U_HEIGHT;
    size_t boardWidth = BoardLayout::U_WIDTH;
 
@@ -33,6 +33,7 @@ class Board{
    void draw();
 
    //Line drawing
+   void drawEmpty();
    void drawVerticalLine(size_t xO, size_t yO, size_t height, char unicode, Spacing spacing);
    void drawHorizontalLine(size_t xO, size_t yO, size_t width, char unicode, Spacing spacing);  
    void drawInnerGridVerticalLines(size_t xO, size_t yO);

@@ -2,6 +2,8 @@
 #include "MarkerPositions.hpp"
 #include "GameState.hpp"
 #include "BoardLayout.hpp"
+#include "Board.hpp"
+#include "Renderer.hpp"
 #include <cstddef>
 #include <iostream>
 #include <catch2/catch_test_macros.hpp>
@@ -152,4 +154,32 @@ void tieMatch(MarkerPositions& positions, GameState& gs){
     winRow1(positions, gs, 6);
     winRow1(positions, gs, 7);
     winRow2(positions, gs, 8);
+}
+
+void printBoard(const Board& board, Renderer& render){
+    
+    const BoardView& bv = board.getBoard(); 
+
+    for(size_t i = 0; i < board.getHeight(); i++){
+
+        std::string_view row(bv[i].data(), bv[i].size());
+        render.printLine(row);
+    }
+}
+
+char drawPositionChar(BoardMarker marker){
+
+    switch(marker){
+
+        case BoardMarker::CROSS:
+        return 'x'; //Make custom markers for Cross and Nought later?
+
+        case BoardMarker::NOUGHT:
+        return 'o';
+
+        default:
+        break;
+    }
+
+    return ' ';
 }

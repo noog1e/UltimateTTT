@@ -15,6 +15,7 @@ add_library(my_lib
     src/InputController.cpp
     src/PlayerManager.cpp
     src/GameSetup.cpp
+    src/Renderer.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)
@@ -30,6 +31,7 @@ FetchContent_MakeAvailable(Catch2)
 
 # Tests
 add_executable(tests
+    tests/test_Board.cpp
     tests/TestingUtilities.cpp
     tests/test_GameState.cpp
     tests/test_MarkerPositions.cpp
