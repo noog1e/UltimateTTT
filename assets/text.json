@@ -1,0 +1,39 @@
+{
+    "MENU":{
+        "PlayGame" : "Play Game [1]",
+        "HowToPlayBtn" : "How To Play [2]",
+        "Exit" : "Exit [3]",
+        "HowToPlayTxt" : [
+            "--- THE BOARD ---",
+            "A 3x3 grid where each cell contains its own smaller 3x3 grid.",
+            "",
+            "--- HOW TO MOVE ---",
+            "1. The first player chooses any cell to start.",
+            "2. Your move 'sends' the opponent to the outer cell that matches your inner cell choice.",
+            "3. Winning an inner grid claims that entire outer cell.",
+            "",
+            "--- RULES ---",
+            "• First player is decided by a coin toss.",
+            "• If you are sent to an outer cell that is already won or full, you can move ANYWHERE."
+        ]
+    },
+
+    "GAME":{
+        "EntityTypes" : "Player {ID}: Human [1] | AI [2] ?",
+        "PlayerNames" : "Enter Player {ID} name:",
+        "CoinFlip" : "Flipping Coin...",
+        "FirstPlayer" : "{NAME} goes first!",
+        "MarkerSelection" : "{NAME} choose your marker: CROSS [1] | NOUGHT [2] ?",
+        "SetupConfirmed" : "Let the game begin!",
+        "CurrentPlayer" : "{Name}, it is your turn",
+        "CurrentOuter" : "Currently in OUTER {ID}. Select INNER:",
+        "CellSelected" : "{NAME} chose INNER {ID} in OUTER {ID}",
+        "FreeMove" : "OUTER {ID} blocked. {NAME} can move ANYWHERE this turn!",
+        "InvalidMove" : "Invalid move, please try again!",
+        "PositionNA" : "Position taken, please try again!",
+        "LocalWin" : "{NAME} won OUTER {ID}!",
+        "LocalDraw" : "OUTER {ID} is a draw",
+        "GameWin" : "{NAME} wins the game!",
+        "GameDraw" : "Game DRAW! Nobody WINS!"
+    }
+}
