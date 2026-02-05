@@ -4,53 +4,48 @@
 #include <string>
 #include <cstddef>
 #include <map>
+#include <optional>
 
-static const std::map<std::string, TextOptions> stringToEnum = {
-    {"PlayGame",        TextOptions::PlayGame},
-    {"HowToPlayBtn",    TextOptions::HowToPlayBtn},
-    {"Exit",            TextOptions::Exit},
-    {"HowToPlayTxt",    TextOptions::HowToPlayTxt},
-    {"EntityTypes",     TextOptions::EntityTypes},
-    {"PlayerNames",     TextOptions::PlayerNames},
-    {"CoinFlip",        TextOptions::CoinFlip},
-    {"FirstPlayer",     TextOptions::FirstPlayer},
-    {"MarkerSelection", TextOptions::MarkerSelection},
-    {"SetupConfirmed",  TextOptions::SetupConfirmed},
-    {"CurrentPlayer",   TextOptions::CurrentPlayer},
-    {"CurrentOuter",    TextOptions::CurrentOuter},
-    {"CellSelected",    TextOptions::CellSelected},
-    {"FreeMove",        TextOptions::FreeMove},
-    {"InvalidMove",     TextOptions::InvalidMove},
-    {"PositionNA",      TextOptions::PositionNA},
-    {"LocalWin",        TextOptions::LocalWin},
-    {"LocalDraw",       TextOptions::LocalDraw},
-    {"GameWin",         TextOptions::GameWin},
-    {"GameDraw",        TextOptions::GameDraw}
-};
+using json = nlohmann::json;
 
 TextManager::TextManager(){}
 
-std::string TextManager::replaceString(std::string source, const std::string& replacement, const std::string& target){
+void TextManager::clearDictionary(){
+    dict.clear();
+}
+
+bool TextManager::replaceString(std::string& source, const std::string& replacement, const std::string& target){
 
     size_t index = source.find(target);
     
     if(index != std::string::npos){
         source.replace(index, target.length(), replacement);
+        return true;
     }
 
-    return source;
+    return false;
 }
 
-void TextManager::loadFileToString(const json& jsonFile, std::string_view sub){
-    
-    auto category = jsonFile[sub];
+bool TextManager::loadJSONCategoryToDictionary(const json& jsonFile, std::string_view sub){
+
+    if(!jsonFile.contains(sub)) return false;
+        
+    for(auto& [key, value] : jsonFile[sub].items()){
+        TextOptions enumKey = json(key).get<TextOptions>();
+        dict[enumKey] = value;
+    }
+
+    return true;
+}
+
+void TextManager::loadJSONToDictionary(const json& jsonFile){
+
+    for(auto& [key, value] : jsonFile.items()){
+        TextOptions enumKey = json(key).get<TextOptions>();
+        dict[enumKey] = value;
+    }
 }
 
 std::string TextManager::getText(TextOptions key){
-    
-}
-
-TextOptions TextManager::bridgeStringToEnum(const std::string& key){
-    auto it = stringToEnum.find(key);
-    return (it != stringToEnum.end()) ? it->second : TextOptions::Unknown;
+    return dict.at(key);
 }

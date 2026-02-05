@@ -34,20 +34,45 @@ enum class TextOptions{
     Unknown
 };
 
+NLOHMANN_JSON_SERIALIZE_ENUM(TextOptions, {
+    {PlayGame, "PlayGame"},
+    {HowToPlayBtn, "HowToPlayBtn"},
+    {Exit, "Exit"},
+    {HowToPlayTxt, "HowToPlayTxt"},
+    {EntityTypes, "EntityTypes"},
+    {PlayerNames, "PlayerNames"},
+    {CoinFlip, "CoinFlip"},
+    {FirstPlayer, "FirstPlayer"},
+    {MarkerSelection, "MarkerSelection"},
+    {SetupConfirmed, "SetupConfirmed"},
+    {CurrentPlayer, "CurrentPlayer"},
+    {CurrentOuter, "CurrentOuter"},
+    {CellSelected, "CellSelected"},
+    {FreeMove, "FreeMove"},
+    {InvalidMove, "InvalidMove"},
+    {PositionNA, "PositionNA"},
+    {LocalWin, "LocalWin"},
+    {LocalDraw, "LocalDraw"},
+    {GameWin, "GameWin"},
+    {GameDraw, "GameDraw"},
+    {Unknown, nullptr}
+});
+
 class TextManager{
 
     public:
     TextManager();
     
-    std::string replaceString(std::string source, const std::string& replacement, const std::string& target);
+    void clearDictionary();
+    
+    bool replaceString(std::string& source, const std::string& replacement, const std::string& target);
 
-    void loadFileToString(const json& jsonFile, std::string_view sub);
+    bool loadJSONCategoryToDictionary(const json& jsonFile, std::string_view sub);
+    void loadJSONToDictionary(const json& jsonFile);
 
     std::string getText(TextOptions key);
 
     private:
     std::map<TextOptions, std::string> dict;
-
-    TextOptions bridgeStringToEnum(const std::string& key);
 
 };
