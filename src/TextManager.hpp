@@ -8,7 +8,14 @@
 
 using json = nlohmann::json;
 
-static constexpr char JSON_NAME[] = "{NAME}";
+namespace Placeholders{
+
+    using namespace std::literals;
+
+    static constexpr std::string_view Name = "{NAME}"sv;
+    static constexpr std::string_view Id = "{ID}"sv;
+    static constexpr std::string_view Cell = "{CELL}"sv;
+}
 
 enum class TextOptions{
     PlayGame,
@@ -65,7 +72,7 @@ class TextManager{
     
     void clearDictionary();
     
-    bool replaceString(std::string& source, const std::string& replacement, const std::string& target);
+    bool replaceString(std::string& source, std::string_view replacement, std::string_view target);
 
     bool loadJSONCategoryToDictionary(const json& jsonFile, std::string_view sub);
     void loadJSONToDictionary(const json& jsonFile);

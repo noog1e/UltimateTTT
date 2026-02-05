@@ -14,7 +14,7 @@ void TextManager::clearDictionary(){
     dict.clear();
 }
 
-bool TextManager::replaceString(std::string& source, const std::string& replacement, const std::string& target){
+bool TextManager::replaceString(std::string& source, std::string_view replacement, std::string_view target){
 
     size_t index = source.find(target);
     

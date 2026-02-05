@@ -1,4 +1,6 @@
 #include "UserInterface.hpp"
+#include "TextManager.hpp"
+#include "Renderer.hpp"
 #include <string>
 #include <chrono>
 #include <thread>
@@ -7,24 +9,32 @@ GameSetupUI::GameSetupUI(){}
 
 void GameSetupUI::promptEntityTypes(int playerNum, Renderer& render, TextManager& textM){
 
+    std::string source = textM.getText(TextOptions::EntityTypes);
+    textM.replaceString(source, std::to_string(playerNum), Placeholders::Id);
     
-    render.printLine("Player " + std::to_string(playerNum) + ": Human [1] / AI [2] ? ");
+    render.printLine(source);
 }
 
 void GameSetupUI::promptPlayerNames(int playerNum, Renderer& render, TextManager& textM){
-    render.printLine("Enter Player " +std::to_string(playerNum) + " name:");
+    std::string source = textM.getText(TextOptions::PlayerNames);
+    textM.replaceString(source, std::to_string(playerNum), Placeholders::Id);
+    
+    render.printLine(source);
 }
 
 void GameSetupUI::coinFlipping(Renderer& render, TextManager& textM){
-    render.printLine("Flipping coin...");
+    render.printLine(textM.getText(TextOptions::CoinFlip));
     delay(100);
 }
 
-void GameSetupUI::firstPlayer(std::string playerName, Renderer& render, TextManager& textM){
-    render.printLine(playerName + " goes first!");
+void GameSetupUI::firstPlayer(std::string_view playerName, Renderer& render, TextManager& textM){
+    std::string source = textM.getText(TextOptions::PlayerNames);
+    textM.replaceString(source, playerName, Placeholders::Id);
+    
+    render.printLine(source);
 }
 
-void GameSetupUI::markerSelection(std::string playerName, Renderer& render, TextManager& textM){
+void GameSetupUI::markerSelection(std::string_view playerName, Renderer& render, TextManager& textM){
     render.printLine(playerName + " choose your marker: CROSS [1] / NOUGHT [2] ?");
 }
 

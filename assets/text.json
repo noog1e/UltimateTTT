@@ -26,13 +26,13 @@
         "MarkerSelection" : "{NAME} choose your marker: CROSS [1] | NOUGHT [2] ?",
         "SetupConfirmed" : "Let the game begin!",
         "CurrentPlayer" : "{Name}, it is your turn",
-        "CurrentOuter" : "Currently in OUTER {ID}. Select INNER:",
-        "CellSelected" : "{NAME} chose INNER {ID} in OUTER {ID}",
-        "FreeMove" : "OUTER {ID} blocked. {NAME} can move ANYWHERE this turn!",
+        "CurrentOuter" : "Currently in OUTER {CELL}. Select INNER:",
+        "CellSelected" : "{NAME} chose INNER {CELL} in OUTER {CELL}",
+        "FreeMove" : "OUTER {CELL} blocked. {NAME} can move ANYWHERE this turn!",
         "InvalidMove" : "Invalid move, please try again!",
         "PositionNA" : "Position taken, please try again!",
-        "LocalWin" : "{NAME} won OUTER {ID}!",
-        "LocalDraw" : "OUTER {ID} is a draw",
+        "LocalWin" : "{NAME} won OUTER {CELL}!",
+        "LocalDraw" : "OUTER {CELL} is a draw",
         "GameWin" : "{NAME} wins the game!",
         "GameDraw" : "Game DRAW! Nobody WINS!"
     }
