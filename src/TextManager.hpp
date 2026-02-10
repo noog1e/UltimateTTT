@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LoadAssets.hpp"
+#include "AssetLoader.hpp"
 #include "json.hpp"
 #include <map>
 #include <string>
@@ -42,27 +42,27 @@ enum class TextOptions{
 };
 
 NLOHMANN_JSON_SERIALIZE_ENUM(TextOptions, {
-    {PlayGame, "PlayGame"},
-    {HowToPlayBtn, "HowToPlayBtn"},
-    {Exit, "Exit"},
-    {HowToPlayTxt, "HowToPlayTxt"},
-    {EntityTypes, "EntityTypes"},
-    {PlayerNames, "PlayerNames"},
-    {CoinFlip, "CoinFlip"},
-    {FirstPlayer, "FirstPlayer"},
-    {MarkerSelection, "MarkerSelection"},
-    {SetupConfirmed, "SetupConfirmed"},
-    {CurrentPlayer, "CurrentPlayer"},
-    {CurrentOuter, "CurrentOuter"},
-    {CellSelected, "CellSelected"},
-    {FreeMove, "FreeMove"},
-    {InvalidMove, "InvalidMove"},
-    {PositionNA, "PositionNA"},
-    {LocalWin, "LocalWin"},
-    {LocalDraw, "LocalDraw"},
-    {GameWin, "GameWin"},
-    {GameDraw, "GameDraw"},
-    {Unknown, nullptr}
+    {TextOptions::PlayGame,         "PlayGame"},
+    {TextOptions::HowToPlayBtn,     "HowToPlayBtn"},
+    {TextOptions::Exit,             "Exit"},
+    {TextOptions::HowToPlayTxt,     "HowToPlayTxt"},
+    {TextOptions::EntityTypes,      "EntityTypes"},
+    {TextOptions::PlayerNames,      "PlayerNames"},
+    {TextOptions::CoinFlip,         "CoinFlip"},
+    {TextOptions::FirstPlayer,      "FirstPlayer"},
+    {TextOptions::MarkerSelection,  "MarkerSelection"},
+    {TextOptions::SetupConfirmed,   "SetupConfirmed"},
+    {TextOptions::CurrentPlayer,    "CurrentPlayer"},
+    {TextOptions::CurrentOuter,     "CurrentOuter"},
+    {TextOptions::CellSelected,     "CellSelected"},
+    {TextOptions::FreeMove,         "FreeMove"},
+    {TextOptions::InvalidMove,      "InvalidMove"},
+    {TextOptions::PositionNA,       "PositionNA"},
+    {TextOptions::LocalWin,         "LocalWin"},
+    {TextOptions::LocalDraw,        "LocalDraw"},
+    {TextOptions::GameWin,          "GameWin"},
+    {TextOptions::GameDraw,         "GameDraw"},
+    {TextOptions::Unknown,           nullptr}
 });
 
 class TextManager{

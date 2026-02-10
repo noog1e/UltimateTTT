@@ -1,5 +1,5 @@
 #include "TextManager.hpp"
-#include "LoadAssets.hpp"
+#include "AssetLoader.hpp"
 #include "json.hpp"
 #include <string>
 #include <cstddef>

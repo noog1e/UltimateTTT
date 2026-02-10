@@ -11,9 +11,15 @@ std::optional<json> AssetLoader::loadJSON(const std::filesystem::path& filepath)
 
     std::ifstream ifs(filepath);
 
-    if(ifs && json::accept(ifs)){
-        return json::parse(ifs);
-    } 
+    if(!ifs) return std::nullopt;
+    
+    json j = json();
 
-    return std::nullopt;
+    try{
+        j = json::parse(ifs);
+    }catch(const json::parse_error& e){
+        return std::nullopt;
+    }
+
+    return j;
 }

@@ -16,6 +16,8 @@ add_library(my_lib
     src/PlayerManager.cpp
     src/GameSetup.cpp
     src/Renderer.cpp
+    src/AssetLoader.cpp
+    src/TextManager.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)
@@ -41,6 +43,7 @@ add_executable(tests
     tests/test_InputController.cpp
     tests/test_PlayerManager.cpp
     tests/test_GameSetup.cpp
+    tests/test_AssetLoader.cpp
 )
 
 target_link_libraries(tests
