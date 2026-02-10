@@ -1,13 +1,13 @@
-#include "LoadAssets.hpp"
+#include "AssetLoader.hpp"
 #include "json.hpp"
 #include <string>
 #include <filesystem>
 #include <fstream>
 #include <optional>
 
-LoadAssets::LoadAssets(){}
+AssetLoader::AssetLoader(){}
 
-std::optional<json> LoadAssets::loadJSON(const std::filesystem::path& filepath){
+std::optional<json> AssetLoader::loadJSON(const std::filesystem::path& filepath){
 
     std::ifstream ifs(filepath);
 

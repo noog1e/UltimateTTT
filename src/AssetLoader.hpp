@@ -7,10 +7,10 @@
 
 using json = nlohmann::json;
 
-class LoadAssets{
+class AssetLoader{
 
     public:
-    LoadAssets();
+    AssetLoader();
 
     std::optional<json> loadJSON(const std::filesystem::path& filepath);
 
