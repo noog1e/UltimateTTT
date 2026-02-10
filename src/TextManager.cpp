@@ -33,9 +33,23 @@ bool TextManager::loadJSONCategoryToDictionary(const json& jsonFile, std::string
 
     if(it == jsonFile.end()) return false;
         
-    for(auto& [key, value] : jsonFile[sub].items()){
+    for(auto& [key, value] : it->items()){
+        
         TextOptions enumKey = json(key).get<TextOptions>();
-        dict[enumKey] = value;
+
+        if(value.is_array()){
+
+            std::string join = std::string();
+            for(const auto& line : value){
+
+                join += line.get<std::string>() + "\n";
+            }
+
+            dict[enumKey] = join;
+
+        }else{
+            dict[enumKey] = value.get<std::string>();
+        }
     }
 
     return true;

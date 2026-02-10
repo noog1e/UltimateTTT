@@ -44,6 +44,7 @@ add_executable(tests
     tests/test_PlayerManager.cpp
     tests/test_GameSetup.cpp
     tests/test_AssetLoader.cpp
+    tests/test_TextManager.cpp
 )
 
 target_link_libraries(tests

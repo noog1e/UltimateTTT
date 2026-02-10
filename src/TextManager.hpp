@@ -17,6 +17,13 @@ namespace Placeholders{
     static constexpr std::string_view Cell = "{CELL}"sv;
 }
 
+namespace Categories{
+
+    using namespace std::literals;
+    static constexpr std::string_view Menu = "MENU"sv;
+    static constexpr std::string_view Game = "GAME"sv;
+}
+
 enum class TextOptions{
     PlayGame,
     HowToPlayBtn,
