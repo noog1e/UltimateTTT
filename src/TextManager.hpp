@@ -72,14 +72,14 @@ class TextManager{
     
     void clearDictionary();
     
-    bool replaceString(std::string& source, std::string_view replacement, std::string_view target);
-
     bool loadJSONCategoryToDictionary(const json& jsonFile, std::string_view sub);
     void loadJSONToDictionary(const json& jsonFile);
 
     std::string getText(TextOptions key);
+    std::string getText(TextOptions key, std::string_view replacement, std::string_view target);
+
+    void replaceString(std::string& source, std::string_view replacement, std::string_view target);
 
     private:
     std::map<TextOptions, std::string> dict;
-
 };

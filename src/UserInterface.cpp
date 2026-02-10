@@ -8,17 +8,12 @@
 GameSetupUI::GameSetupUI(){}
 
 void GameSetupUI::promptEntityTypes(int playerNum, Renderer& render, TextManager& textM){
-
-    std::string source = textM.getText(TextOptions::EntityTypes);
-    textM.replaceString(source, std::to_string(playerNum), Placeholders::Id);
-    
+    std::string source = textM.getText(TextOptions::EntityTypes, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
 }
 
 void GameSetupUI::promptPlayerNames(int playerNum, Renderer& render, TextManager& textM){
-    std::string source = textM.getText(TextOptions::PlayerNames);
-    textM.replaceString(source, std::to_string(playerNum), Placeholders::Id);
-    
+    std::string source = textM.getText(TextOptions::PlayerNames, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
 }
 
@@ -28,18 +23,17 @@ void GameSetupUI::coinFlipping(Renderer& render, TextManager& textM){
 }
 
 void GameSetupUI::firstPlayer(std::string_view playerName, Renderer& render, TextManager& textM){
-    std::string source = textM.getText(TextOptions::PlayerNames);
-    textM.replaceString(source, playerName, Placeholders::Id);
-    
+    std::string source = textM.getText(TextOptions::FirstPlayer, playerName, Placeholders::Id);
     render.printLine(source);
 }
 
 void GameSetupUI::markerSelection(std::string_view playerName, Renderer& render, TextManager& textM){
-    render.printLine(playerName + " choose your marker: CROSS [1] / NOUGHT [2] ?");
+    std::string source = textM.getText(TextOptions::MarkerSelection, playerName, Placeholders::Id);    
+    render.printLine(source);
 }
 
 void GameSetupUI::confirmSetup(Renderer& render, TextManager& textM){
-    render.printLine("Let the game begin!");
+    render.printLine(textM.getText(TextOptions::SetupConfirmed));
 }
 
 void GameSetupUI::delay(int milliseconds){
@@ -61,37 +55,54 @@ void GameplayUI::printBoard(const Board& board, Renderer& render, TextManager& t
 }
 
 void GameplayUI::currentPlayerTurn(const Player& player, Renderer& render, TextManager& textM){
-    render.printLine("It is " + player.name + "'s turn");
+    std::string source = textM.getText(TextOptions::CurrentPlayer, player.name, Placeholders::Id);    
+    render.printLine(source);
 }
 
 void GameplayUI::currentOuterPosition(size_t outerCell, Renderer& render, TextManager& textM){
-    render.printLine("Currently in OUTER " + std::to_string(outerCell) + ". Select INNER:");
+    std::string source = textM.getText(TextOptions::CurrentOuter, std::to_string(outerCell), Placeholders::Cell);  
+    render.printLine(source);
 }
 
-void GameplayUI::playerSelectedCell(const Player& player, size_t outerCell, size_t innerCell, Renderer& render, TextManager& textM){
-    render.printLine(player.name + " chose INNER " + std::to_string(innerCell) + " in OUTER " + std::to_string(outerCell));
+void GameplayUI::playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell, Renderer& render, TextManager& textM){
+
+    std::string source = textM.getText(TextOptions::CellSelected);
+
+    textM.replaceString(source, player.name, Placeholders::Name);
+    textM.replaceString(source, std::to_string(innerCell), Placeholders::Cell);
+    textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
+    
+    render.printLine(source);
 }
 
 void GameplayUI::invalidMove(size_t inputPos, Renderer& render, TextManager& textM){
-    render.printLine("Invalid move, please try again!");
+    render.printLine(textM.getText(TextOptions::InvalidMove));
 }
 
 void GameplayUI::positionUnavailable(size_t inputPos, Renderer& render, TextManager& textM){
-    render.printLine("Position taken, please try again!");
+    render.printLine(textM.getText(TextOptions::PositionNA));
 }
 
 void GameplayUI::localWin(const Player& player, size_t outerCell, Renderer& render, TextManager& textM){
-    render.printLine(player.name + " won OUTER " + std::to_string(outerCell));
+
+    std::string source = textM.getText(TextOptions::LocalWin);
+
+    textM.replaceString(source, player.name, Placeholders::Name);
+    textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
+
+    render.printLine(source);
 }
 
 void GameplayUI::localDraw(size_t outerCell, Renderer& render, TextManager& textM){
-    render.printLine("OUTER " + std::to_string(outerCell) + " is a Draw");
+    std::string source = textM.getText(TextOptions::LocalDraw, std::to_string(outerCell), Placeholders::Cell);
+    render.printLine(source);
 }
 
 void GameplayUI::gameWin(const Player& player, Renderer& render, TextManager& textM){
-    render.printLine(player.name + " Wins!");
+    std::string source = textM.getText(TextOptions::GameWin, player.name, Placeholders::Name);
+    render.printLine(source);
 }
 
 void GameplayUI::gameDraw(Renderer& render, TextManager& textM){
-    render.printLine("Game Draw! Nobody wins!");
+    render.printLine(textM.getText(TextOptions::GameDraw));
 }
