@@ -10,36 +10,41 @@
 class GameSetupUI{
 
     public:
-    GameSetupUI();
+    GameSetupUI(Renderer& r, TextManager& t);
 
-    void promptEntityTypes(int playerNum, Renderer& render, TextManager& textM);
-    void promptPlayerNames(int playerNum, Renderer& render, TextManager& textM);
+    void promptEntityTypes(int playerNum);
+    void promptPlayerNames(int playerNum);
     void coinFlipping(Renderer& render, TextManager& textM);
-    void firstPlayer(std::string_view playerName, Renderer& render, TextManager& textM);
-    void markerSelection(std::string_view playerName, Renderer& render, TextManager& textM);
+    void firstPlayer(std::string_view playerName);
+    void markerSelection(std::string_view playerName);
     void confirmSetup(Renderer& render, TextManager& textM);
 
     private:
+    Renderer& render;
+    TextManager& textM;
+
     void delay(int milliseconds);
 };
 
 class GameplayUI{
 
     public:
-    GameplayUI();
+    GameplayUI(Renderer& r, TextManager& t);
 
-    void printBoard(const Board& board, Renderer& render, TextManager& textM);
-    void currentPlayerTurn(const Player& player, Renderer& render, TextManager& textM);
-    void currentOuterPosition(size_t outerCell, Renderer& render, TextManager& textM);
-    void playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell, Renderer& render, TextManager& textM);
-    void invalidMove(size_t inputPos, Renderer& render, TextManager& textM);
-    void positionUnavailable(size_t inputPos, Renderer& render, TextManager& textM);
-    void localWin(const Player& player, size_t outerCell, Renderer& render, TextManager& textM);
-    void localDraw(size_t outerCell, Renderer& render, TextManager& textM);
-    void gameWin(const Player& player, Renderer& render, TextManager& textM);
+    void printBoard(const Board& board);
+    void currentPlayerTurn(const Player& player);
+    void currentOuterPosition(size_t outerCell);
+    void playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell);
+    void invalidMove(size_t inputPos);
+    void positionUnavailable(size_t inputPos);
+    void localWin(const Player& player, size_t outerCell);
+    void localDraw(size_t outerCell);
+    void gameWin(const Player& player);
     void gameDraw(Renderer& render, TextManager& textM);
 
     private:
+    Renderer& render;
+    TextManager& textM;
 
 };
 

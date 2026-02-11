@@ -5,14 +5,14 @@
 #include <chrono>
 #include <thread>
 
-GameSetupUI::GameSetupUI(){}
+GameSetupUI::GameSetupUI(Renderer& r, TextManager& t) : render(r), textM(t){}
 
-void GameSetupUI::promptEntityTypes(int playerNum, Renderer& render, TextManager& textM){
+void GameSetupUI::promptEntityTypes(int playerNum){
     std::string source = textM.getText(TextOptions::EntityTypes, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
 }
 
-void GameSetupUI::promptPlayerNames(int playerNum, Renderer& render, TextManager& textM){
+void GameSetupUI::promptPlayerNames(int playerNum){
     std::string source = textM.getText(TextOptions::PlayerNames, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
 }
@@ -22,12 +22,12 @@ void GameSetupUI::coinFlipping(Renderer& render, TextManager& textM){
     delay(100);
 }
 
-void GameSetupUI::firstPlayer(std::string_view playerName, Renderer& render, TextManager& textM){
+void GameSetupUI::firstPlayer(std::string_view playerName){
     std::string source = textM.getText(TextOptions::FirstPlayer, playerName, Placeholders::Id);
     render.printLine(source);
 }
 
-void GameSetupUI::markerSelection(std::string_view playerName, Renderer& render, TextManager& textM){
+void GameSetupUI::markerSelection(std::string_view playerName){
     std::string source = textM.getText(TextOptions::MarkerSelection, playerName, Placeholders::Id);    
     render.printLine(source);
 }
@@ -40,9 +40,9 @@ void GameSetupUI::delay(int milliseconds){
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
-GameplayUI::GameplayUI(){}
+GameplayUI::GameplayUI(Renderer& r, TextManager& t) : render(r), textM(t){}
 
-void GameplayUI::printBoard(const Board& board, Renderer& render, TextManager& textM){
+void GameplayUI::printBoard(const Board& board){
 
     const BoardView& bv = board.getBoard(); 
 
@@ -54,17 +54,17 @@ void GameplayUI::printBoard(const Board& board, Renderer& render, TextManager& t
 
 }
 
-void GameplayUI::currentPlayerTurn(const Player& player, Renderer& render, TextManager& textM){
+void GameplayUI::currentPlayerTurn(const Player& player){
     std::string source = textM.getText(TextOptions::CurrentPlayer, player.name, Placeholders::Id);    
     render.printLine(source);
 }
 
-void GameplayUI::currentOuterPosition(size_t outerCell, Renderer& render, TextManager& textM){
+void GameplayUI::currentOuterPosition(size_t outerCell){
     std::string source = textM.getText(TextOptions::CurrentOuter, std::to_string(outerCell), Placeholders::Cell);  
     render.printLine(source);
 }
 
-void GameplayUI::playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell, Renderer& render, TextManager& textM){
+void GameplayUI::playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell){
 
     std::string source = textM.getText(TextOptions::CellSelected);
 
@@ -75,15 +75,15 @@ void GameplayUI::playerSelectedCell(const Player& player, size_t innerCell, size
     render.printLine(source);
 }
 
-void GameplayUI::invalidMove(size_t inputPos, Renderer& render, TextManager& textM){
+void GameplayUI::invalidMove(size_t inputPos){
     render.printLine(textM.getText(TextOptions::InvalidMove));
 }
 
-void GameplayUI::positionUnavailable(size_t inputPos, Renderer& render, TextManager& textM){
+void GameplayUI::positionUnavailable(size_t inputPos){
     render.printLine(textM.getText(TextOptions::PositionNA));
 }
 
-void GameplayUI::localWin(const Player& player, size_t outerCell, Renderer& render, TextManager& textM){
+void GameplayUI::localWin(const Player& player, size_t outerCell){
 
     std::string source = textM.getText(TextOptions::LocalWin);
 
@@ -93,12 +93,12 @@ void GameplayUI::localWin(const Player& player, size_t outerCell, Renderer& rend
     render.printLine(source);
 }
 
-void GameplayUI::localDraw(size_t outerCell, Renderer& render, TextManager& textM){
+void GameplayUI::localDraw(size_t outerCell){
     std::string source = textM.getText(TextOptions::LocalDraw, std::to_string(outerCell), Placeholders::Cell);
     render.printLine(source);
 }
 
-void GameplayUI::gameWin(const Player& player, Renderer& render, TextManager& textM){
+void GameplayUI::gameWin(const Player& player){
     std::string source = textM.getText(TextOptions::GameWin, player.name, Placeholders::Name);
     render.printLine(source);
 }
