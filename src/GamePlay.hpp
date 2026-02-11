@@ -19,18 +19,16 @@ using MPRO = MoveProcessor;
 using PM = PlayerManager;
 using UI = GameplayUI;
 
-class Game{
+class GamePlay{
 
     public:
-    Game(
+    GamePlay(
         const MPOS& pos, 
         const GS& s, 
         const TM& t, 
         const MPRO& m, 
         const Board& b,
-        const PM& pm,
-        const Renderer& rd,
-        const UI& u
+        const PM& pm
     );
 
     private:
@@ -40,6 +38,4 @@ class Game{
     MPRO moves; 
     Board board;
     PM players;
-    Renderer render;
-    UI ui;
 };
