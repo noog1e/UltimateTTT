@@ -1,8 +1,8 @@
 {
     "MENU":{
-        "PlayGame" : "Play Game [1]",
-        "HowToPlayBtn" : "How To Play [2]",
-        "Exit" : "Exit [3]",
+        "PlayGame" :        "[1] Play Game",
+        "HowToPlayBtn" :    "[2] How To Play",
+        "Exit" :            "[3] Exit",
         "HowToPlayTxt" : [
             "--- THE BOARD ---",
             "A 3x3 grid where each cell contains its own smaller 3x3 grid.",
@@ -19,21 +19,22 @@
     },
 
     "GAME":{
-        "EntityTypes" : "Player {ID}: Human [1] | AI [2] ?",
-        "PlayerNames" : "Enter Player {ID} name:",
-        "CoinFlip" : "Flipping Coin...",
-        "FirstPlayer" : "{NAME} goes first!",
-        "MarkerSelection" : "{NAME} choose your marker: CROSS [1] | NOUGHT [2] ?",
-        "SetupConfirmed" : "Let the game begin!",
-        "CurrentPlayer" : "{Name}, it is your turn",
-        "CurrentOuter" : "Currently in OUTER {CELL}. Select INNER:",
-        "CellSelected" : "{NAME} chose INNER {CELL} in OUTER {CELL}",
-        "FreeMove" : "OUTER {CELL} blocked. {NAME} can move ANYWHERE this turn!",
-        "InvalidMove" : "Invalid move, please try again!",
-        "PositionNA" : "Position taken, please try again!",
-        "LocalWin" : "{NAME} won OUTER {CELL}!",
-        "LocalDraw" : "OUTER {CELL} is a draw",
-        "GameWin" : "{NAME} wins the game!",
-        "GameDraw" : "Game DRAW! Nobody WINS!"
+        "EntityTypes" :     "Player {ID}:\n[1] Human\n[2] AI\n>> ",
+        "PlayerNames" :     "Enter Player {ID} name:",
+        "CoinFlip" :        "Flipping Coin...",
+        "FirstPlayer" :     "{NAME} goes first!",
+        "MarkerSelection" : "{NAME} choose your marker:\n[1] CROSS\n[2] NOUGHT\n>> ",
+        "SetupConfirmed" :  "Let the game begin!",
+        "CurrentPlayer" :   "It is {Name} turn",
+        "CurrentOuter" :    "Currently in OUTER {CELL}",
+        "CellSelected" :    "{NAME} chose INNER {CELL} in OUTER {CELL}",
+        "FreeMove" :        "OUTER {CELL} blocked. {NAME} can move ANYWHERE this turn!",
+        "InvalidMove" :     "Invalid move, please try again!",
+        "PositionNA" :      "Position taken, please try again!",
+        "LocalWin" :        "{NAME} won OUTER {CELL}!",
+        "LocalDraw" :       "OUTER {CELL} is a draw",
+        "GameWin" :         "{NAME} wins the game!",
+        "GameDraw" :        "Game DRAW! Nobody WINS!",
+        "CellPrompt" :      "Select Cell [0 <=> 8]:\n>> "
     }
 }

@@ -4,6 +4,10 @@
 #include <cstddef>
 #include <array>
 
+enum class PosUpdate{
+    VALID, OCCUPIED
+};
+
 enum class BoardMarker{
     NOUGHT, CROSS, NONE
 };

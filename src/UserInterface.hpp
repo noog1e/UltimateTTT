@@ -14,10 +14,10 @@ class GameSetupUI{
 
     void promptEntityTypes(int playerNum);
     void promptPlayerNames(int playerNum);
-    void coinFlipping(Renderer& render, TextManager& textM);
+    void coinFlipping();
     void firstPlayer(std::string_view playerName);
     void markerSelection(std::string_view playerName);
-    void confirmSetup(Renderer& render, TextManager& textM);
+    void confirmSetup();
 
     private:
     Renderer& render;
@@ -40,7 +40,8 @@ class GameplayUI{
     void localWin(const Player& player, size_t outerCell);
     void localDraw(size_t outerCell);
     void gameWin(const Player& player);
-    void gameDraw(Renderer& render, TextManager& textM);
+    void gameDraw();
+    void cellPrompt();
 
     private:
     Renderer& render;

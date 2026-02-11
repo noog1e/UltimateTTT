@@ -18,13 +18,6 @@ class MoveProcessor{
     size_t getCurrentOuterCell() const;
     MoveConstraint getMoveConstraint() const;
 
-    void applyPlayerMove(
-        const BoardMarker marker, 
-        MarkerPositions& positions, 
-        GameState& gs, 
-        size_t innerCell
-    );
-
     private:
     size_t currentOuterCell;
     MoveConstraint constraint = MoveConstraint::FORCED_OUTER_CELL;

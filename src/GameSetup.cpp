@@ -66,9 +66,19 @@ PlayerManager GameSetup::extractPlayerManager(){
 
     assert(setup == SetupState::Completed);
 
-    setup = SetupState::Extracted;
+    setup = SetupState::ExtractedPM;
 
     return pm;
+}
+
+MoveProcessor GameSetup::startingCell(size_t cell){
+
+    assert(setup == SetupState::MoveProcessor);
+
+    MoveProcessor mv(cell);
+    setup = SetupState::MoveProcessor;
+
+    return mv;
 }
 
 const SetupState GameSetup::getSetupState(){

@@ -17,7 +17,7 @@ void GameSetupUI::promptPlayerNames(int playerNum){
     render.printLine(source);
 }
 
-void GameSetupUI::coinFlipping(Renderer& render, TextManager& textM){
+void GameSetupUI::coinFlipping(){
     render.printLine(textM.getText(TextOptions::CoinFlip));
     delay(100);
 }
@@ -32,7 +32,7 @@ void GameSetupUI::markerSelection(std::string_view playerName){
     render.printLine(source);
 }
 
-void GameSetupUI::confirmSetup(Renderer& render, TextManager& textM){
+void GameSetupUI::confirmSetup(){
     render.printLine(textM.getText(TextOptions::SetupConfirmed));
 }
 
@@ -52,6 +52,7 @@ void GameplayUI::printBoard(const Board& board){
         render.printLine(row);
     }
 
+    render.printLine("");
 }
 
 void GameplayUI::currentPlayerTurn(const Player& player){
@@ -103,6 +104,10 @@ void GameplayUI::gameWin(const Player& player){
     render.printLine(source);
 }
 
-void GameplayUI::gameDraw(Renderer& render, TextManager& textM){
+void GameplayUI::gameDraw(){
     render.printLine(textM.getText(TextOptions::GameDraw));
+}
+
+void GameplayUI::cellPrompt(){
+    render.printLine(textM.getText(TextOptions::CellPrompt));
 }

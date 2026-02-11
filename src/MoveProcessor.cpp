@@ -36,21 +36,3 @@ MoveConstraint MoveProcessor::getMoveConstraint() const{
 /*BoardMarker convertPlayerMarker(PlayerMarker pm){
     return pm == PlayerMarker::CROSS ? BoardMarker::CROSS : BoardMarker::NOUGHT;
 } MOVE THIS*/ 
-
-void MoveProcessor::applyPlayerMove(const BoardMarker marker, MarkerPositions& positions, GameState& gs, size_t innerCell){
-    
-    assert(constraint == MoveConstraint::FORCED_OUTER_CELL);
-
-    PosUpdate update;
-
-    positions.updateMarkerAtPos(currentOuterCell, innerCell, marker, update);
-
-    if(update == PosUpdate::VALID){
-
-        const InnerPos& innerPos = positions.getMarkerPositions()[currentOuterCell];
-        gs.updateGameState(innerPos, currentOuterCell, innerCell);
-
-        const MatchEvaluation& eval = gs.getMatchEvaluation();
-        setCurrentOuterCell(innerCell, eval.outer);
-    }
-}

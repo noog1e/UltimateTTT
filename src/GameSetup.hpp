@@ -1,10 +1,17 @@
 #pragma once
 #include "PlayerManager.hpp"
 #include "TurnManager.hpp"
+#include "MoveProcessor.hpp"
 #include <cstddef>
 
 enum class SetupState{
-    Entity, Naming, TurnManager, Markers, Completed, Extracted
+    Entity, 
+    Naming, 
+    TurnManager, 
+    Markers, 
+    Completed, 
+    ExtractedPM,
+    MoveProcessor
 };
 
 class GameSetup{
@@ -17,6 +24,7 @@ class GameSetup{
     TurnManager turnManager();
     void playerMarkers(BoardMarker marker, size_t playerSlot);
     PlayerManager extractPlayerManager();
+    MoveProcessor startingCell(size_t cell);
 
     const SetupState getSetupState();
 

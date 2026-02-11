@@ -45,6 +45,7 @@ enum class TextOptions{
     LocalDraw,
     GameWin,
     GameDraw,
+    CellPrompt,
     Unknown
 };
 
@@ -69,6 +70,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(TextOptions, {
     {TextOptions::LocalDraw,        "LocalDraw"},
     {TextOptions::GameWin,          "GameWin"},
     {TextOptions::GameDraw,         "GameDraw"},
+    {TextOptions::CellPrompt,      "CellPrompt"}
     {TextOptions::Unknown,           nullptr}
 });
 

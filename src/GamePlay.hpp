@@ -8,9 +8,7 @@
 #include "MoveProcessor.hpp"
 #include "Renderer.hpp"
 #include "UserInterface.hpp"
-#include <string>
-#include <array>
-#include <cstddef>
+#include "InputController.hpp"
 
 using MPOS = MarkerPositions;
 using GS = GameState;
@@ -18,6 +16,7 @@ using TM = TurnManager;
 using MPRO = MoveProcessor;
 using PM = PlayerManager;
 using UI = GameplayUI;
+using GIC = GameInputController;
 
 class GamePlay{
 
@@ -28,8 +27,12 @@ class GamePlay{
         const TM& t, 
         const MPRO& m, 
         const Board& b,
-        const PM& pm
+        const PM& pm,
+        const UI& ui,
+        const GIC& g
     );
+
+    void play();
 
     private:
     MPOS positions; 
@@ -38,4 +41,9 @@ class GamePlay{
     MPRO moves; 
     Board board;
     PM players;
+    UI display;
+    GIC input;
+
+    void selectCell();
+    PosUpdate applyPlayerMove(BoardMarker marker, size_t innerCell);
 };
