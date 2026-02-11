@@ -76,6 +76,13 @@ void GameplayUI::playerSelectedCell(const Player& player, size_t innerCell, size
     render.printLine(source);
 }
 
+void GameplayUI::freeMove(size_t outerCell, const Player& player){
+    std::string source = textM.getText(TextOptions::FreeMove);
+
+    textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
+    textM.replaceString(source, player.name, Placeholders::Name);
+}
+
 void GameplayUI::invalidMove(size_t inputPos){
     render.printLine(textM.getText(TextOptions::InvalidMove));
 }

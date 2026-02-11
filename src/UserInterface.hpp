@@ -35,6 +35,7 @@ class GameplayUI{
     void currentPlayerTurn(const Player& player);
     void currentOuterPosition(size_t outerCell);
     void playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell);
+    void freeMove(size_t outerCell, const Player& player);
     void invalidMove(size_t inputPos);
     void positionUnavailable(size_t inputPos);
     void localWin(const Player& player, size_t outerCell);
@@ -54,9 +55,11 @@ class MainMenuUI{
     public:
     MainMenuUI();
 
-    void homePage(Renderer& render, TextManager& textM);
+    void homePage();
     void howToPlay();
 
     private:
+    Renderer& render;
+    TextManager& textM;
 
 };

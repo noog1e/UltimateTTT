@@ -44,6 +44,12 @@ class GamePlay{
     UI display;
     GIC input;
 
-    void selectCell();
+    void selectInnerCell();
     PosUpdate applyPlayerMove(BoardMarker marker, size_t innerCell);
+
+    void freeMove();
+    void selectOuterCell();
+
+    char convertMarkerToChar(BoardMarker marker);
+
 };
