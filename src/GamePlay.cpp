@@ -23,9 +23,7 @@ GamePlay::GamePlay(
 
 void GamePlay::play(){
 
-    bool gameOver = false;
-
-    while(!gameOver){
+    while(true){
 
         display.printBoard(board);
 
@@ -37,6 +35,11 @@ void GamePlay::play(){
         display.currentOuterPosition(moves.getCurrentOuterCell());
 
         selectInnerCell();
+
+        if(gameOver()){
+            gameEnding();
+            break;
+        }
 
         turns.nextPlayer(TurnOutcome::NORMAL);
     }
@@ -62,12 +65,37 @@ void GamePlay::selectInnerCell(){
             if(update == PosUpdate::OCCUPIED){
                 display.positionUnavailable(inputopt.value());
             }else{
+
+                if(outerCellOver(outerCell)){
+                    outerCellEnding(outerCell);
+                }
+
                 board.drawPositionUpdate(outerCell, inputopt.value(), convertMarkerToChar(pmarker));
                 validated = true;
             }
         }
 
     }while(!validated);
+}
+
+bool GamePlay::outerCellOver(size_t outerCell){
+
+    const MatchEvaluation& eval = state.getMatchEvaluation();
+
+    return eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING;
+}
+
+void GamePlay::outerCellEnding(size_t outerCell){
+    
+    const MatchEvaluation& eval = state.getMatchEvaluation();
+ 
+    assert(eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING);
+
+    if(eval.outer[outerCell].matchOutcome == MatchOutcome::DRAW){
+        display.localDraw(outerCell);
+    }else{
+        display.localWin(players.getPlayer(turns.currentPlayer()), outerCell);
+    }
 }
 
 PosUpdate GamePlay::applyPlayerMove(BoardMarker marker, size_t innerCell){
@@ -119,6 +147,23 @@ void GamePlay::selectOuterCell(){
         }
         
     }while(!validated);
+}
+
+bool GamePlay::gameOver(){
+    return state.getMatchEvaluation().overall.matchOutcome != MatchOutcome::ONGOING;
+}
+
+void GamePlay::gameEnding(){
+    
+    MatchOutcome outcome = state.getMatchEvaluation().overall.matchOutcome;
+
+    assert(outcome != MatchOutcome::ONGOING);
+
+    if(outcome == MatchOutcome::DRAW){
+        display.gameDraw();
+    }else{
+        display.gameWin(players.getPlayer(turns.currentPlayer()));
+    }
 }
 
 char GamePlay::convertMarkerToChar(BoardMarker marker){

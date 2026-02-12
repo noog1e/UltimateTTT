@@ -50,6 +50,11 @@ class GamePlay{
     void freeMove();
     void selectOuterCell();
 
-    char convertMarkerToChar(BoardMarker marker);
+    bool outerCellOver(size_t outerCell);
+    void outerCellEnding(size_t outerCell);
 
+    bool gameOver();
+    void gameEnding();
+
+    char convertMarkerToChar(BoardMarker marker);
 };
