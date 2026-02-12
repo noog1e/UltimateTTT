@@ -7,27 +7,27 @@
 #include <string>
 #include <optional>
 
-GameInputController::GameInputController(){}
+InputController::InputController(){}
 
-bool GameInputController::integerInputError(const std::from_chars_result& result){
+bool InputController::integerInputError(const std::from_chars_result& result){
     return result.ec != std::errc{};
 }
 
-bool GameInputController::pointerPosError(const std::from_chars_result& result, std::string_view line){
+bool InputController::pointerPosError(const std::from_chars_result& result, std::string_view line){
     return result.ptr != line.data() + line.size();
 }
 
-bool GameInputController::integerBoundsError(int input){
+bool InputController::integerBoundsError(int input){
     return input < 0 || input >= BoardLayout::NUM_CELLS;
 }
 
-std::optional<size_t> GameInputController::readSizeInRange(size_t min, size_t max){
+std::optional<size_t> InputController::readSizeInRange(size_t min, size_t max){
 
     auto val = readSize();
     return (val && *val >= min && *val <= max) ? val : std::nullopt;
 }
 
-std::optional<size_t> GameInputController::readSize(){
+std::optional<size_t> InputController::readSize(){
 
     std::string line;
     int input = 0;
@@ -44,7 +44,7 @@ std::optional<size_t> GameInputController::readSize(){
     return static_cast<size_t>(input);
 }
 
-std::string GameInputController::readString(){
+std::string InputController::readString(){
 
     std::string line;
 

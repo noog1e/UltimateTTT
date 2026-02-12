@@ -5,10 +5,10 @@
 #include <charconv>
 #include <optional>
 
-class GameInputController{
+class InputController{
 
     public:
-    GameInputController();
+    InputController();
     
     std::optional<size_t> readSizeInRange(size_t min, size_t max);
     std::optional<size_t> readSize();

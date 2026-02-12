@@ -15,8 +15,8 @@ using GS = GameState;
 using TM = TurnManager;
 using MPRO = MoveProcessor;
 using PM = PlayerManager;
-using UI = GameplayUI;
-using GIC = GameInputController;
+using UI = UserInterface;
+using IC = InputController;
 
 class GamePlay{
 
@@ -28,8 +28,8 @@ class GamePlay{
         const MPRO& m, 
         const Board& b,
         const PM& pm,
-        const UI& ui,
-        const GIC& g
+        UI& ui,
+        IC& g
     );
 
     void play();
@@ -41,8 +41,8 @@ class GamePlay{
     MPRO moves; 
     Board board;
     PM players;
-    UI display;
-    GIC input;
+    UI& display;
+    IC& input;
 
     void selectInnerCell();
     PosUpdate applyPlayerMove(BoardMarker marker, size_t innerCell);

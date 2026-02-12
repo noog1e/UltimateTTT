@@ -17,8 +17,8 @@ GamePlay::GamePlay(
         const MPRO& m, 
         const Board& b,
         const PM& pm,
-        const UI& ui,
-        const GIC& g
+        UI& ui,
+        IC& g
     ) : positions(pos), state(s), turns(t), moves(m), board(b), players(pm), display(ui), input(g){}
 
 void GamePlay::play(){
@@ -56,10 +56,10 @@ void GamePlay::selectInnerCell(){
     do{
 
         display.cellPrompt();
-        inputopt = input.getInput();
+        inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
-            display.invalidMove(inputopt.value());
+            display.invalidOption(inputopt.value());
         } else{
             applyPlayerMove(pmarker, inputopt.value());
             if(update == PosUpdate::OCCUPIED){
@@ -130,10 +130,10 @@ void GamePlay::selectOuterCell(){
     do{
 
         display.cellPrompt();
-        inputopt = input.getInput();
+        inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
-            display.invalidMove(inputopt.value());
+            display.invalidOption(inputopt.value());
         } else{
 
             const MatchEvaluation& eval = state.getMatchEvaluation();

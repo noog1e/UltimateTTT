@@ -7,36 +7,30 @@
 #include <string>
 #include <cstddef>
 
-class GameSetupUI{
+class UserInterface{
 
     public:
-    GameSetupUI(Renderer& r, TextManager& t);
+    UserInterface(Renderer& r, TextManager& t);
 
-    void promptEntityTypes(int playerNum);
-    void promptPlayerNames(int playerNum);
+    //Main Menu
+    void homePage();
+    void howToPlay();
+
+    //GameSetup
+    void promptEntityTypes(size_t playerNum);
+    void promptPlayerNames(size_t playerNum);
     void coinFlipping();
     void firstPlayer(std::string_view playerName);
     void markerSelection(std::string_view playerName);
     void confirmSetup();
 
-    private:
-    Renderer& render;
-    TextManager& textM;
-
-    void delay(int milliseconds);
-};
-
-class GameplayUI{
-
-    public:
-    GameplayUI(Renderer& r, TextManager& t);
-
+    //GamePlay
     void printBoard(const Board& board);
     void currentPlayerTurn(const Player& player);
     void currentOuterPosition(size_t outerCell);
     void playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell);
     void freeMove(size_t outerCell, const Player& player);
-    void invalidMove(size_t inputPos);
+    void invalidOption(size_t inputPos);
     void positionUnavailable(size_t inputPos);
     void localWin(const Player& player, size_t outerCell);
     void localDraw(size_t outerCell);
@@ -48,18 +42,5 @@ class GameplayUI{
     Renderer& render;
     TextManager& textM;
 
-};
-
-class MainMenuUI{
-
-    public:
-    MainMenuUI();
-
-    void homePage();
-    void howToPlay();
-
-    private:
-    Renderer& render;
-    TextManager& textM;
-
+    void delay(int milliseconds);
 };

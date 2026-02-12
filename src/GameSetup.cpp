@@ -52,12 +52,12 @@ TurnManager GameSetup::turnManager(){
     return tm;
 }
 
-void GameSetup::playerMarkers(BoardMarker marker, size_t playerSlot){
+void GameSetup::playerMarkers(BoardMarker marker, size_t firstPlayer){
 
     assert(setup == SetupState::Markers);
     assert(marker != BoardMarker::NONE);
 
-    pm.updateMarker(marker, playerSlot);
+    pm.updateMarker(marker, firstPlayer);
 
     setup = SetupState::Completed;
 }
