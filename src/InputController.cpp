@@ -21,19 +21,34 @@ bool GameInputController::integerBoundsError(int input){
     return input < 0 || input >= BoardLayout::NUM_CELLS;
 }
 
-std::optional<size_t> GameInputController::getInput(){
+std::optional<size_t> GameInputController::readSizeInRange(size_t min, size_t max){
+
+    auto val = readSize();
+    return (val && *val >= min && *val <= max) ? val : std::nullopt;
+}
+
+std::optional<size_t> GameInputController::readSize(){
 
     std::string line;
     int input = 0;
 
-    std::getline(std::cin, line);
+    if(std::getline(std::cin, line)) return std::nullopt;
         
     std::from_chars_result result = 
         std::from_chars(line.data(), line.data() + line.size(), input);
     
-    if(integerInputError(result)) return std::nullopt;
-    if(pointerPosError(result, line)) return std::nullopt;
-    if(integerBoundsError(input)) return std::nullopt;
+    if(integerInputError(result) || pointerPosError(result, line) || input < 0){
+        return std::nullopt;
+    } 
 
     return static_cast<size_t>(input);
+}
+
+std::string GameInputController::readString(){
+
+    std::string line;
+
+    std::getline(std::cin, line);
+
+    return line;
 }
