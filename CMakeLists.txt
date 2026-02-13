@@ -8,16 +8,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(my_lib
     src/Board.cpp
     src/Game.cpp
+    src/GamePlay.cpp
     src/GameState.cpp
+    src/GameSetup.cpp
     src/MarkerPositions.cpp
     src/TurnManager.cpp
     src/MoveProcessor.cpp
     src/InputController.cpp
     src/PlayerManager.cpp
-    src/GameSetup.cpp
     src/Renderer.cpp
     src/AssetLoader.cpp
     src/TextManager.cpp
+    src/UserInterface.cpp
 )
 
 target_include_directories(my_lib PUBLIC src)
@@ -33,6 +35,7 @@ FetchContent_MakeAvailable(Catch2)
 
 # Tests
 add_executable(tests
+    tests/test_Game.cpp
     tests/test_Board.cpp
     tests/TestingUtilities.cpp
     tests/test_GameState.cpp

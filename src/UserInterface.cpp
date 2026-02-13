@@ -45,8 +45,6 @@ void UserInterface::delay(int milliseconds){
     std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
 }
 
-UserInterface::UserInterface(Renderer& r, TextManager& t) : render(r), textM(t){}
-
 void UserInterface::printBoard(const Board& board){
 
     const BoardView& bv = board.getBoard(); 
@@ -60,8 +58,8 @@ void UserInterface::printBoard(const Board& board){
     render.printLine("");
 }
 
-void UserInterface::currentPlayerTurn(const Player& player){
-    std::string source = textM.getText(TextOptions::CurrentPlayer, player.name, Placeholders::Id);    
+void UserInterface::currentPlayerTurn(std::string_view playerName){
+    std::string source = textM.getText(TextOptions::CurrentPlayer, playerName, Placeholders::Id);    
     render.printLine(source);
 }
 
@@ -70,37 +68,37 @@ void UserInterface::currentOuterPosition(size_t outerCell){
     render.printLine(source);
 }
 
-void UserInterface::playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell){
+void UserInterface::playerSelectedCell(std::string_view playerName, size_t innerCell, size_t outerCell){
 
     std::string source = textM.getText(TextOptions::CellSelected);
 
-    textM.replaceString(source, player.name, Placeholders::Name);
+    textM.replaceString(source, playerName, Placeholders::Name);
     textM.replaceString(source, std::to_string(innerCell), Placeholders::Cell);
     textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
     
     render.printLine(source);
 }
 
-void UserInterface::freeMove(size_t outerCell, const Player& player){
+void UserInterface::freeMove(size_t outerCell, std::string_view playerName){
     std::string source = textM.getText(TextOptions::FreeMove);
 
     textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
-    textM.replaceString(source, player.name, Placeholders::Name);
+    textM.replaceString(source, playerName, Placeholders::Name);
 }
 
-void UserInterface::invalidOption(size_t inputPos){
+void UserInterface::invalidOption(){
     render.printLine(textM.getText(TextOptions::InvalidOption));
 }
 
-void UserInterface::positionUnavailable(size_t inputPos){
+void UserInterface::positionUnavailable(){
     render.printLine(textM.getText(TextOptions::PositionNA));
 }
 
-void UserInterface::localWin(const Player& player, size_t outerCell){
+void UserInterface::localWin(std::string_view playerName, size_t outerCell){
 
     std::string source = textM.getText(TextOptions::LocalWin);
 
-    textM.replaceString(source, player.name, Placeholders::Name);
+    textM.replaceString(source, playerName, Placeholders::Name);
     textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
 
     render.printLine(source);
@@ -111,8 +109,8 @@ void UserInterface::localDraw(size_t outerCell){
     render.printLine(source);
 }
 
-void UserInterface::gameWin(const Player& player){
-    std::string source = textM.getText(TextOptions::GameWin, player.name, Placeholders::Name);
+void UserInterface::gameWin(std::string_view playerName){
+    std::string source = textM.getText(TextOptions::GameWin, playerName, Placeholders::Name);
     render.printLine(source);
 }
 

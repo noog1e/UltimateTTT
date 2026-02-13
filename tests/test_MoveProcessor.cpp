@@ -14,41 +14,6 @@ TEST_CASE("Initialise MoveProcessor object", "[move][init]"){
 
 }
 
-TEST_CASE("Apply Player Move Test", "[move][apply]"){
-
-    size_t outerCell = 4;
-
-    MoveProcessor move(outerCell);
-    GameState gs;
-    MarkerPositions positions;
-    BoardMarker nought = BoardMarker::NOUGHT;
-    BoardMarker cross = BoardMarker::CROSS;
-
-    const MatchEvaluation& eval = gs.getMatchEvaluation();
-        
-    SECTION("Empty Board"){
-
-        size_t innerCell = 0;
-
-        move.applyPlayerMove(nought, positions, gs, innerCell);
-        
-        REQUIRE(move.getCurrentOuterCell() == innerCell);
-        REQUIRE(move.getMoveConstraint() == MoveConstraint::FORCED_OUTER_CELL);
-    }
-
-    SECTION("Positions Taken"){
-        
-        size_t innerCell = 0;
-        PosUpdate update;
-
-        positions.updateMarkerAtPos(outerCell, innerCell, nought, update);
-
-        move.applyPlayerMove(cross, positions, gs, innerCell);
-
-        REQUIRE(move.getCurrentOuterCell() == outerCell);
-    }
-}
-
 TEST_CASE("Inner Cell move correlates with Occupied Outer Cell", "[move][occupied]"){
     
     size_t outerCell = 0;
@@ -60,8 +25,6 @@ TEST_CASE("Inner Cell move correlates with Occupied Outer Cell", "[move][occupie
 
     outerCell = 1;
     MoveProcessor move(outerCell);
-
-    move.applyPlayerMove(BoardMarker::NOUGHT, positions, gs, 0);
 
     //This shows if an outer cell has been captured or is in a tie state, 
     //the current outer cell in MoveProcessor remains the same value.

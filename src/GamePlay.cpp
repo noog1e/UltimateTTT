@@ -28,7 +28,7 @@ void GamePlay::play(){
             freeMove();
         }
 
-        display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()));
+        display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()).name);
         display.currentOuterPosition(moves.getCurrentOuterCell());
 
         selectInnerCell();
@@ -56,11 +56,11 @@ void GamePlay::selectInnerCell(){
         inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
-            display.invalidOption(inputopt.value());
+            display.invalidOption();
         } else{
             applyPlayerMove(pmarker, inputopt.value());
             if(update == PosUpdate::OCCUPIED){
-                display.positionUnavailable(inputopt.value());
+                display.positionUnavailable();
             }else{
 
                 if(outerCellOver(outerCell)){
@@ -91,7 +91,7 @@ void GamePlay::outerCellEnding(size_t outerCell){
     if(eval.outer[outerCell].matchOutcome == MatchOutcome::DRAW){
         display.localDraw(outerCell);
     }else{
-        display.localWin(players.getPlayer(turns.currentPlayer()), outerCell);
+        display.localWin(players.getPlayer(turns.currentPlayer()).name, outerCell);
     }
 }
 
@@ -116,7 +116,7 @@ PosUpdate GamePlay::applyPlayerMove(BoardMarker marker, size_t innerCell){
 
 void GamePlay::freeMove(){
 
-    display.freeMove(moves.getCurrentOuterCell(), players.getPlayer(turns.currentPlayer()));
+    display.freeMove(moves.getCurrentOuterCell(), players.getPlayer(turns.currentPlayer()).name);
     selectOuterCell();
 }
 
@@ -130,7 +130,7 @@ void GamePlay::selectOuterCell(){
         inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
-            display.invalidOption(inputopt.value());
+            display.invalidOption();
         } else{
 
             const MatchEvaluation& eval = state.getMatchEvaluation();
@@ -139,7 +139,7 @@ void GamePlay::selectOuterCell(){
                 moves.setCurrentOuterCell(inputopt.value(), eval.outer);
                 validated = true;
             }else{
-                display.positionUnavailable(inputopt.value());
+                display.positionUnavailable();
             }
         }
         
@@ -159,7 +159,7 @@ void GamePlay::gameEnding(){
     if(outcome == MatchOutcome::DRAW){
         display.gameDraw();
     }else{
-        display.gameWin(players.getPlayer(turns.currentPlayer()));
+        display.gameWin(players.getPlayer(turns.currentPlayer()).name);
     }
 }
 

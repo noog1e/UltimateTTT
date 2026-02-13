@@ -5,9 +5,9 @@
 
 TEST_CASE("User Input", "[input][valid]"){
 
-    GameInputController gic;
+    InputController gic;
 
-    std::optional<size_t> index = gic.getInput();
+    std::optional<size_t> index = gic.readSize();
 
     REQUIRE(index.has_value());
     REQUIRE(index.value() < BoardLayout::NUM_CELLS);

@@ -99,6 +99,8 @@ std::string Game::enterPlayerName(size_t playerNum){
 
     ui.promptPlayerNames(playerNum);
     name = input.readString();
+
+    return name;
 }
 
 void Game::setBoardMarker(GameSetup& setup, std::string_view playerName, size_t playerNum){
@@ -128,7 +130,7 @@ MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerNam
             inputval = *inputopt;
             break;
         }else{
-            ui.invalidOption(*inputopt);
+            ui.invalidOption();
         }
     }    
 
@@ -146,7 +148,7 @@ size_t Game::optionSelection(size_t numOptions){
             inputval = *inputopt;
             break;
         }else{
-            ui.invalidOption(*inputopt);
+            ui.invalidOption();
         }
     }
 

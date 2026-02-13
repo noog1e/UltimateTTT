@@ -6,6 +6,7 @@
 #include <system_error>
 #include <string>
 #include <optional>
+#include <iostream>
 
 InputController::InputController(){}
 
@@ -24,6 +25,9 @@ bool InputController::integerBoundsError(int input){
 std::optional<size_t> InputController::readSizeInRange(size_t min, size_t max){
 
     auto val = readSize();
+
+    if(!val.has_value()) return std::nullopt;
+
     return (val && *val >= min && *val <= max) ? val : std::nullopt;
 }
 
@@ -31,8 +35,7 @@ std::optional<size_t> InputController::readSize(){
 
     std::string line;
     int input = 0;
-
-    if(std::getline(std::cin, line)) return std::nullopt;
+    if(!std::getline(std::cin, line)) return std::nullopt;
         
     std::from_chars_result result = 
         std::from_chars(line.data(), line.data() + line.size(), input);

@@ -60,7 +60,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(TextOptions, {
     {TextOptions::CoinFlip,         "CoinFlip"},
     {TextOptions::FirstPlayer,      "FirstPlayer"},
     {TextOptions::MarkerSelection,  "MarkerSelection"},
-    {TextOptions::StartingCell,     "StartingCell"}
+    {TextOptions::StartingCell,     "StartingCell"},
     {TextOptions::SetupConfirmed,   "SetupConfirmed"},
     {TextOptions::CurrentPlayer,    "CurrentPlayer"},
     {TextOptions::CurrentOuter,     "CurrentOuter"},
@@ -72,7 +72,7 @@ NLOHMANN_JSON_SERIALIZE_ENUM(TextOptions, {
     {TextOptions::LocalDraw,        "LocalDraw"},
     {TextOptions::GameWin,          "GameWin"},
     {TextOptions::GameDraw,         "GameDraw"},
-    {TextOptions::CellPrompt,      "CellPrompt"}
+    {TextOptions::CellPrompt,      "CellPrompt"},
     {TextOptions::Unknown,           nullptr}
 });
 

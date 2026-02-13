@@ -29,7 +29,7 @@ TEST_CASE("Full Run Through", "[setup][run]"){
     REQUIRE(setup.getSetupState() == SetupState::Completed);
     
     PlayerManager pm = setup.extractPlayerManager();
-    REQUIRE(setup.getSetupState() == SetupState::Extracted);
+    REQUIRE(setup.getSetupState() == SetupState::ExtractedPM);
 
     REQUIRE((pm.getPlayer(PlayerOne).marker == BoardMarker::CROSS || 
              pm.getPlayer(PlayerOne).marker == BoardMarker::NOUGHT));

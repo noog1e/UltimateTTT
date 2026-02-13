@@ -2,7 +2,6 @@
 
 #include "Board.hpp"
 #include "Renderer.hpp"
-#include "PlayerManager.hpp"
 #include "TextManager.hpp"
 #include <string>
 #include <cstddef>
@@ -27,15 +26,15 @@ class UserInterface{
 
     //GamePlay
     void printBoard(const Board& board);
-    void currentPlayerTurn(const Player& player);
+    void currentPlayerTurn(std::string_view playerName);
     void currentOuterPosition(size_t outerCell);
-    void playerSelectedCell(const Player& player, size_t innerCell, size_t outerCell);
-    void freeMove(size_t outerCell, const Player& player);
-    void invalidOption(size_t inputPos);
-    void positionUnavailable(size_t inputPos);
-    void localWin(const Player& player, size_t outerCell);
+    void playerSelectedCell(std::string_view playerName, size_t innerCell, size_t outerCell);
+    void freeMove(size_t outerCell, std::string_view playerName);
+    void invalidOption();
+    void positionUnavailable();
+    void localWin(std::string_view playerName, size_t outerCell);
     void localDraw(size_t outerCell);
-    void gameWin(const Player& player);
+    void gameWin(std::string_view playerName);
     void gameDraw();
     void cellPrompt();
 
