@@ -1,7 +1,11 @@
-#include "board.hpp"
+#include "Game.hpp"
 #include <iostream>
 
 int main(){
 
-    return 0;
+    Game game;
+
+    game.startGame();
+
+    exit (0);
 }

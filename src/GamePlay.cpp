@@ -11,15 +11,12 @@
 #include <cassert>
 
 GamePlay::GamePlay(        
-        const MPOS& pos, 
-        const GS& s, 
         const TM& t, 
         const MPRO& m, 
-        const Board& b,
         const PM& pm,
         UI& ui,
         IC& g
-    ) : positions(pos), state(s), turns(t), moves(m), board(b), players(pm), display(ui), input(g){}
+    ) : turns(t), moves(m), players(pm), display(ui), input(g){}
 
 void GamePlay::play(){
 

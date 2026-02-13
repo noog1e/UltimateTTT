@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "GameSetup.hpp"
+#include "GamePlay.hpp"
 #include "InputController.hpp"
 #include "AssetLoader.hpp"
 #include "TextManager.hpp"
@@ -13,18 +14,37 @@ const std::filesystem::path textAssetPathJSON = "../assets/ui_text.json";
 
 Game::Game() : ui(render, textM){}
 
-void Game::gameSetup(){
+void Game::startGame(){
 
-    if(loadGamePlayAssets()){
-       
-        GameSetup setup;
-        UserInterface ui = UserInterface(render, textM);
+    auto gameopt = gameSetup();
 
-        setEntityTypes(setup);
-        setPlayerNames(setup);
-        
-        TurnManager tm = setup.turnManager();
+    if(gameopt){
+        gameopt.value().play();
     }
+}
+
+std::optional<GamePlay> Game::gameSetup(){
+
+    if(!loadGamePlayAssets()){
+        std::cerr << "Assets not loaded properly\n";
+        return std::nullopt;
+    }
+       
+    GameSetup setup;
+
+    setEntityTypes(setup);
+    std::string startingPlayer = setPlayerNames(setup);
+    TurnManager tm = setup.turnManager();
+    setBoardMarker(setup, startingPlayer, tm.currentPlayer());
+    PlayerManager pm = setup.extractPlayerManager();
+    MoveProcessor mv = setStartingCell(setup, startingPlayer);
+
+    if(setup.getSetupState() != SetupState::Completed)
+        return std::nullopt;
+        
+    GamePlay gameplay(tm, mv, pm, ui, input);
+
+    return gameplay;
 }
 
 bool Game::loadGamePlayAssets(){
@@ -59,7 +79,7 @@ void Game::setEntityTypes(GameSetup& setup){
     setup.entityTypes(static_cast<EntityType>(player1 - 1), static_cast<EntityType>(player2 - 1));
 }
 
-void Game::setPlayerNames(GameSetup& setup){
+std::string Game::setPlayerNames(GameSetup& setup){
 
     std::string player1 = enterPlayerName(1);
     
@@ -69,6 +89,8 @@ void Game::setPlayerNames(GameSetup& setup){
         std::string player2 = enterPlayerName(2);
         u = setup.playerNames(player1, player2);
     }
+
+    return player1;
 }
 
 std::string Game::enterPlayerName(size_t playerNum){
@@ -77,6 +99,40 @@ std::string Game::enterPlayerName(size_t playerNum){
 
     ui.promptPlayerNames(playerNum);
     name = input.readString();
+}
+
+void Game::setBoardMarker(GameSetup& setup, std::string_view playerName, size_t playerNum){
+
+    size_t numOptions = 2;
+
+    ui.markerSelection(playerName);
+    size_t selection = optionSelection(numOptions);
+
+    setup.playerMarkers(static_cast<BoardMarker>(selection-1), playerNum);
+}
+
+MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerName){
+
+    Board tempBoard;
+
+    ui.printBoard(tempBoard);
+    ui.startingCell(playerName);
+    ui.cellPrompt();
+
+    size_t inputval = 0;
+
+    while(1){
+        auto inputopt = input.readSizeInRange(0, 8);
+        
+        if(inputopt){
+            inputval = *inputopt;
+            break;
+        }else{
+            ui.invalidOption(*inputopt);
+        }
+    }    
+
+    return setup.startingCell(inputval);;
 }
 
 size_t Game::optionSelection(size_t numOptions){

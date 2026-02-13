@@ -5,7 +5,10 @@
 #include "InputController.hpp"
 #include "AssetLoader.hpp"
 #include "GameSetup.hpp"
+#include "GamePlay.hpp"
 #include "UserInterface.hpp"
+#include <string>
+#include <optional>
 
 class Game{
 
@@ -21,12 +24,14 @@ class Game{
     InputController input = InputController();
     AssetLoader loader = AssetLoader();
 
-    void gameSetup();
+    std::optional<GamePlay> gameSetup();
     bool loadGamePlayAssets();
     void setEntityTypes(GameSetup& setup);
-    size_t optionSelection(size_t numOptions);
-    void setPlayerNames(GameSetup& setup);
+    std::string setPlayerNames(GameSetup& setup);
     std::string enterPlayerName(size_t playerNum);
+    void setBoardMarker(GameSetup& setup, std::string_view playerName, size_t playerNum);
+    MoveProcessor setStartingCell(GameSetup& setup, std::string_view playerName);
+    size_t optionSelection(size_t numOptions);
 
     void playGame();
 };

@@ -59,12 +59,12 @@ void GameSetup::playerMarkers(BoardMarker marker, size_t firstPlayer){
 
     pm.updateMarker(marker, firstPlayer);
 
-    setup = SetupState::Completed;
+    setup = SetupState::PlayerManager;
 }
 
 PlayerManager GameSetup::extractPlayerManager(){
 
-    assert(setup == SetupState::Completed);
+    assert(setup == SetupState::PlayerManager);
 
     setup = SetupState::ExtractedPM;
 
@@ -73,10 +73,10 @@ PlayerManager GameSetup::extractPlayerManager(){
 
 MoveProcessor GameSetup::startingCell(size_t cell){
 
-    assert(setup == SetupState::MoveProcessor);
+    assert(setup == SetupState::StartingCell);
 
     MoveProcessor mv(cell);
-    setup = SetupState::MoveProcessor;
+    setup = SetupState::Completed;
 
     return mv;
 }

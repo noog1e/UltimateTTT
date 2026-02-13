@@ -22,11 +22,8 @@ class GamePlay{
 
     public:
     GamePlay(
-        const MPOS& pos, 
-        const GS& s, 
         const TM& t, 
         const MPRO& m, 
-        const Board& b,
         const PM& pm,
         UI& ui,
         IC& g
@@ -35,11 +32,11 @@ class GamePlay{
     void play();
 
     private:
-    MPOS positions; 
-    GS state; 
+    MPOS positions = MPOS(); 
+    GS state = GS(); 
     TM turns; 
     MPRO moves; 
-    Board board;
+    Board board = Board();
     PM players;
     UI& display;
     IC& input;

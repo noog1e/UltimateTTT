@@ -23,12 +23,17 @@ void UserInterface::coinFlipping(){
 }
 
 void UserInterface::firstPlayer(std::string_view playerName){
-    std::string source = textM.getText(TextOptions::FirstPlayer, playerName, Placeholders::Id);
+    std::string source = textM.getText(TextOptions::FirstPlayer, playerName, Placeholders::Name);
     render.printLine(source);
 }
 
 void UserInterface::markerSelection(std::string_view playerName){
-    std::string source = textM.getText(TextOptions::MarkerSelection, playerName, Placeholders::Id);    
+    std::string source = textM.getText(TextOptions::MarkerSelection, playerName, Placeholders::Name);    
+    render.printLine(source);
+}
+
+void UserInterface::startingCell(std::string_view playerName){
+    std::string source = textM.getText(TextOptions::StartingCell, playerName, Placeholders::Name);    
     render.printLine(source);
 }
 

@@ -22,6 +22,7 @@ class UserInterface{
     void coinFlipping();
     void firstPlayer(std::string_view playerName);
     void markerSelection(std::string_view playerName);
+    void startingCell(std::string_view playerName);
     void confirmSetup();
 
     //GamePlay

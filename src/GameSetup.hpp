@@ -9,9 +9,14 @@ enum class SetupState{
     Naming, 
     TurnManager, 
     Markers, 
-    Completed, 
+    PlayerManager, 
     ExtractedPM,
-    MoveProcessor
+    StartingCell,
+    Completed
+};
+
+struct SetupComponents{
+
 };
 
 class GameSetup{
