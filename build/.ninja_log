@@ -242,3 +242,11 @@
 29	2127	7927410738135118	CMakeFiles/my_lib.dir/src/UserInterface.cpp.obj	6c144c5fd8727d9f
 2128	3171	7927410759106623	libmy_lib.a	cc3a7b1a63432548
 3172	4298	7927410769599466	tests.exe	323ded5127f4b2a8
+24	1489	7927430877659699	CMakeFiles/tests.dir/tests/test_GameSetup.cpp.obj	120aea02bc471a0f
+20	2301	7927430877659699	CMakeFiles/tests.dir/tests/test_Game.cpp.obj	efae8669b7ed6c24
+34	786	7927431041896521	CMakeFiles/my_lib.dir/src/GameSetup.cpp.obj	d2327b545df9a9b7
+40	1502	7927431041969452	CMakeFiles/tests.dir/tests/test_GameSetup.cpp.obj	120aea02bc471a0f
+29	2040	7927431041828149	CMakeFiles/my_lib.dir/src/Game.cpp.obj	b9686979cefed310
+37	2593	7927431041896521	CMakeFiles/tests.dir/tests/test_Game.cpp.obj	efae8669b7ed6c24
+2040	3110	7927431061965566	libmy_lib.a	cc3a7b1a63432548
+3111	4336	7927431072664307	tests.exe	323ded5127f4b2a8

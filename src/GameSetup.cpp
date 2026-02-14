@@ -81,6 +81,10 @@ MoveProcessor GameSetup::startingCell(size_t cell){
     return mv;
 }
 
-const SetupState GameSetup::getSetupState(){
+SetupState GameSetup::getSetupState(){
     return setup;
+}
+
+const Player& GameSetup::getStartingPlayer(size_t startingPlayer){
+    return pm.getPlayer(startingPlayer);
 }

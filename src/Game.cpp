@@ -33,11 +33,13 @@ std::optional<GamePlay> Game::gameSetup(){
     GameSetup setup;
 
     setEntityTypes(setup);
-    std::string startingPlayer = setPlayerNames(setup);
+    setPlayerNames(setup);
     TurnManager tm = setup.turnManager();
-    setBoardMarker(setup, startingPlayer, tm.currentPlayer());
+    Player startingPlayer = setup.getStartingPlayer(tm.currentPlayer());
+    
+    setBoardMarker(setup, startingPlayer.name, tm.currentPlayer());
     PlayerManager pm = setup.extractPlayerManager();
-    MoveProcessor mv = setStartingCell(setup, startingPlayer);
+    MoveProcessor mv = setStartingCell(setup, startingPlayer.name);
 
     if(setup.getSetupState() != SetupState::Completed)
         return std::nullopt;
@@ -79,7 +81,7 @@ void Game::setEntityTypes(GameSetup& setup){
     setup.entityTypes(static_cast<EntityType>(player1 - 1), static_cast<EntityType>(player2 - 1));
 }
 
-std::string Game::setPlayerNames(GameSetup& setup){
+void Game::setPlayerNames(GameSetup& setup){
 
     std::string player1 = enterPlayerName(1);
     
@@ -89,8 +91,6 @@ std::string Game::setPlayerNames(GameSetup& setup){
         std::string player2 = enterPlayerName(2);
         u = setup.playerNames(player1, player2);
     }
-
-    return player1;
 }
 
 std::string Game::enterPlayerName(size_t playerNum){

@@ -27,7 +27,7 @@ class Game{
     std::optional<GamePlay> gameSetup();
     bool loadGamePlayAssets();
     void setEntityTypes(GameSetup& setup);
-    std::string setPlayerNames(GameSetup& setup);
+    void setPlayerNames(GameSetup& setup);
     std::string enterPlayerName(size_t playerNum);
     void setBoardMarker(GameSetup& setup, std::string_view playerName, size_t playerNum);
     MoveProcessor setStartingCell(GameSetup& setup, std::string_view playerName);
