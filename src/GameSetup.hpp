@@ -9,8 +9,7 @@ enum class SetupState{
     Naming, 
     TurnManager, 
     Markers, 
-    PlayerManager, 
-    ExtractedPM,
+    PlayerManager,
     StartingCell,
     Completed
 };

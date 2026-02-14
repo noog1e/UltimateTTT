@@ -66,7 +66,7 @@ PlayerManager GameSetup::extractPlayerManager(){
 
     assert(setup == SetupState::PlayerManager);
 
-    setup = SetupState::ExtractedPM;
+    setup = SetupState::StartingCell;
 
     return pm;
 }

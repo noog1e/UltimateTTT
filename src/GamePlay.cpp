@@ -58,7 +58,7 @@ void GamePlay::selectInnerCell(){
         if(!inputopt){
             display.invalidOption();
         } else{
-            applyPlayerMove(pmarker, inputopt.value());
+            update = applyPlayerMove(pmarker, inputopt.value());
             if(update == PosUpdate::OCCUPIED){
                 display.positionUnavailable();
             }else{

@@ -39,5 +39,5 @@ class MarkerPositions{
         return o;
    }();
 
-   void checkPosition(size_t outer, size_t inner, PosUpdate& update);
+   void checkMarkerNone(size_t outer, size_t inner, PosUpdate& update);
 };

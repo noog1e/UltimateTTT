@@ -7,8 +7,8 @@ namespace BL = BoardLayout;
 
 MarkerPositions::MarkerPositions(){}
 
-void MarkerPositions::checkPosition(size_t outer, size_t inner, PosUpdate& update){
-    
+void MarkerPositions::checkMarkerNone(size_t outer, size_t inner, PosUpdate& update){
+
     BoardMarker posMarker = pos[outer][inner];
     
     if(posMarker == BoardMarker::NONE){
@@ -23,7 +23,7 @@ void MarkerPositions::updateMarkerAtPos(size_t outer, size_t inner, BoardMarker 
     assert(outer < BL::NUM_CELLS);
     assert(inner < BL::NUM_CELLS);
     
-    if(marker != BoardMarker::NONE) checkPosition(outer, inner, update); //May implement a version where a placement takeback exists
+    if(marker != BoardMarker::NONE) checkMarkerNone(outer, inner, update); //May implement a version where a placement takeback exists
     if(update == PosUpdate::VALID){
         pos[outer][inner] = marker;
     }
