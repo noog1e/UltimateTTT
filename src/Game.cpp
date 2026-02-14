@@ -124,7 +124,7 @@ MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerNam
     size_t inputval = 0;
 
     while(1){
-        auto inputopt = input.readSizeInRange(0, 8);
+        auto inputopt = input.readSizeInRange(1, BoardLayout::NUM_CELLS);
         
         if(inputopt){
             inputval = *inputopt;
@@ -134,7 +134,7 @@ MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerNam
         }
     }    
 
-    return setup.startingCell(inputval);;
+    return setup.startingCell(inputval - 1);;
 }
 
 size_t Game::optionSelection(size_t numOptions){

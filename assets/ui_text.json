@@ -19,23 +19,23 @@
     },
 
     "GAME":{
-        "EntityTypes" :     "Player {ID}:\n[1] Human\n[2] AI\n>> ",
+        "EntityTypes" :     "Player {ID}:\n[1] Human\n[2] AI",
         "PlayerNames" :     "Enter Player {ID} name:",
         "CoinFlip" :        "Flipping Coin...",
         "FirstPlayer" :     "{NAME} goes first!",
-        "MarkerSelection" : "{NAME} choose your marker:\n[1] CROSS\n[2] NOUGHT\n>> ",
+        "MarkerSelection" : "{NAME} choose your marker:\n[1] CROSS\n[2] NOUGHT",
         "StartingCell" :    "{NAME} which outer cell will you start?",
         "SetupConfirmed" :  "Let the game begin!",
         "CurrentPlayer" :   "It is {NAME} turn",
         "CurrentOuter" :    "Currently in OUTER {CELL}",
         "CellSelected" :    "{NAME} chose INNER {CELL} in OUTER {CELL}",
         "FreeMove" :        "OUTER {CELL} blocked. {NAME} can move ANYWHERE this turn!",
-        "InvalidOption" :   "Invalid selection, please try again!\n>> ",
-        "PositionNA" :      "Position taken, please try again!\n>> ",
+        "InvalidOption" :   "Invalid selection, please try again!",
+        "PositionNA" :      "Position taken, please try again! ",
         "LocalWin" :        "{NAME} won OUTER {CELL}!",
         "LocalDraw" :       "OUTER {CELL} is a draw",
         "GameWin" :         "{NAME} wins the game!",
         "GameDraw" :        "Game DRAW! Nobody WINS!",
-        "CellPrompt" :      "Select Cell [0 <=> 8]:\n>> "
+        "CellPrompt" :      "Select Cell [1 <=> 9]:"
     }
 }

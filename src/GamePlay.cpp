@@ -53,12 +53,12 @@ void GamePlay::selectInnerCell(){
     do{
 
         display.cellPrompt();
-        inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
+        inputopt = input.readSizeInRange(1, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
             display.invalidOption();
         } else{
-            update = applyPlayerMove(pmarker, inputopt.value());
+            update = applyPlayerMove(pmarker, inputopt.value() - 1);
             if(update == PosUpdate::OCCUPIED){
                 display.positionUnavailable();
             }else{
@@ -67,7 +67,7 @@ void GamePlay::selectInnerCell(){
                     outerCellEnding(outerCell);
                 }
 
-                board.drawPositionUpdate(outerCell, inputopt.value(), convertMarkerToChar(pmarker));
+                board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
                 validated = true;
             }
         }
@@ -127,7 +127,7 @@ void GamePlay::selectOuterCell(){
     do{
 
         display.cellPrompt();
-        inputopt = input.readSizeInRange(0, BoardLayout::NUM_CELLS);
+        inputopt = input.readSizeInRange(1, BoardLayout::NUM_CELLS);
 
         if(!inputopt){
             display.invalidOption();
@@ -135,8 +135,8 @@ void GamePlay::selectOuterCell(){
 
             const MatchEvaluation& eval = state.getMatchEvaluation();
 
-            if(eval.outer[inputopt.value()].matchOutcome == MatchOutcome::ONGOING){
-                moves.setCurrentOuterCell(inputopt.value(), eval.outer);
+            if(eval.outer[inputopt.value() - 1].matchOutcome == MatchOutcome::ONGOING){
+                moves.setCurrentOuterCell(inputopt.value() - 1, eval.outer);
                 validated = true;
             }else{
                 display.positionUnavailable();

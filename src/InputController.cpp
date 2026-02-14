@@ -18,10 +18,6 @@ bool InputController::pointerPosError(const std::from_chars_result& result, std:
     return result.ptr != line.data() + line.size();
 }
 
-bool InputController::integerBoundsError(int input){
-    return input < 0 || input >= BoardLayout::NUM_CELLS;
-}
-
 std::optional<size_t> InputController::readSizeInRange(size_t min, size_t max){
 
     auto val = readSize();

@@ -43,4 +43,5 @@ class UserInterface{
     TextManager& textM;
 
     void delay(int milliseconds);
+    void inputArrows();
 };

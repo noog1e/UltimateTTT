@@ -17,6 +17,5 @@ class InputController{
     private:
     bool integerInputError(const std::from_chars_result& result);
     bool pointerPosError(const std::from_chars_result& result, std::string_view line);
-    bool integerBoundsError(int input);
 };
 

@@ -7,14 +7,20 @@
 
 UserInterface::UserInterface(Renderer& r, TextManager& t) : render(r), textM(t){}
 
+void UserInterface::inputArrows(){
+    render.printLine(">> ", false);
+}
+
 void UserInterface::promptEntityTypes(size_t playerNum){
     std::string source = textM.getText(TextOptions::EntityTypes, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
+    inputArrows();
 }
 
 void UserInterface::promptPlayerNames(size_t playerNum){
     std::string source = textM.getText(TextOptions::PlayerNames, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
+    inputArrows();
 }
 
 void UserInterface::coinFlipping(){
@@ -30,6 +36,7 @@ void UserInterface::firstPlayer(std::string_view playerName){
 void UserInterface::markerSelection(std::string_view playerName){
     std::string source = textM.getText(TextOptions::MarkerSelection, playerName, Placeholders::Name);    
     render.printLine(source);
+    inputArrows();
 }
 
 void UserInterface::startingCell(std::string_view playerName){
@@ -120,4 +127,5 @@ void UserInterface::gameDraw(){
 
 void UserInterface::cellPrompt(){
     render.printLine(textM.getText(TextOptions::CellPrompt));
+    inputArrows();
 }
