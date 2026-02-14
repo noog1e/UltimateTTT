@@ -26,7 +26,7 @@
         "MarkerSelection" : "{NAME} choose your marker:\n[1] CROSS\n[2] NOUGHT",
         "StartingCell" :    "{NAME} which outer cell will you start?",
         "SetupConfirmed" :  "Let the game begin!",
-        "CurrentPlayer" :   "It is {NAME} turn",
+        "CurrentPlayer" :   "It is {NAME}'s turn",
         "CurrentOuter" :    "Currently in OUTER {CELL}",
         "CellSelected" :    "{NAME} chose INNER {CELL} in OUTER {CELL}",
         "FreeMove" :        "OUTER {CELL} blocked. {NAME} can move ANYWHERE this turn!",

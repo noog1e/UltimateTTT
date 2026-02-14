@@ -29,7 +29,7 @@ void GamePlay::play(){
         }
 
         display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()).name);
-        display.currentOuterPosition(moves.getCurrentOuterCell());
+        display.currentOuterPosition(moves.getCurrentOuterCell() + 1);
 
         selectInnerCell();
 

@@ -66,7 +66,7 @@ void UserInterface::printBoard(const Board& board){
 }
 
 void UserInterface::currentPlayerTurn(std::string_view playerName){
-    std::string source = textM.getText(TextOptions::CurrentPlayer, playerName, Placeholders::Id);    
+    std::string source = textM.getText(TextOptions::CurrentPlayer, playerName, Placeholders::Name);    
     render.printLine(source);
 }
 
