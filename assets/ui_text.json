@@ -23,7 +23,7 @@
         "PlayerNames" :     "Enter Player {ID} name:",
         "CoinFlip" :        "Flipping Coin...",
         "FirstPlayer" :     "{NAME} goes first!",
-        "MarkerSelection" : "{NAME} choose your marker:\n[1] CROSS\n[2] NOUGHT",
+        "MarkerSelection" : "{NAME} choose your marker:\n[1] NOUGHT\n[2] CROSS",
         "StartingCell" :    "{NAME} which outer cell will you start?",
         "SetupConfirmed" :  "Let the game begin!",
         "CurrentPlayer" :   "It is {NAME}'s turn",

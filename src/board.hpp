@@ -18,6 +18,7 @@ class Board{
 
    void clear();
    void drawPositionUpdate(size_t outerCell, size_t innerCell, char marker);
+   void drawFillOuterCell(size_t outerCell, char marker);
 
    const BoardView& getBoard() const;
    size_t getHeight() const;

@@ -24,6 +24,36 @@ void Board::clear(){
     clearMarkerPositions();
 }
 
+void Board::drawPositionUpdate(size_t outerCell, size_t innerCell, char marker){
+
+    assert(innerCell < BL::NUM_CELLS);
+    assert(outerCell < BL::NUM_CELLS);
+
+    size_t outerColumn = calculateColumn(outerCell);
+    size_t outerRow = calculateRow(outerCell);
+
+    size_t xO = calculateInnerGrid_XOffset(outerColumn); 
+    size_t yO = calculateInnerGrid_YOffset(outerRow);
+
+    size_t innerColumn = calculateColumn(innerCell);
+    size_t innerRow = calculateRow(innerCell);
+
+    size_t x1O = calculateMarkerPositions_XOffset(xO, innerColumn);
+    size_t y1O = calculateMarkerPositions_YOffset(yO, innerRow);
+
+    board[y1O][x1O] = marker;
+
+}
+
+void Board::drawFillOuterCell(size_t outerCell, char marker){
+    assert(outerCell < BL::NUM_CELLS);
+
+    for(size_t i=0; i < BL::NUM_CELLS; i++){
+
+        drawPositionUpdate(outerCell, i, marker);
+    }
+}
+
 const BoardView& Board::getBoard() const{
     return board;
 }
@@ -188,27 +218,6 @@ size_t Board::calculateRow(size_t cell){
     }
 
     return 2;
-}
-
-void Board::drawPositionUpdate(size_t outerCell, size_t innerCell, char marker){
-
-    assert(innerCell < BL::NUM_CELLS);
-    assert(outerCell < BL::NUM_CELLS);
-
-    size_t outerColumn = calculateColumn(outerCell);
-    size_t outerRow = calculateRow(outerCell);
-
-    size_t xO = calculateInnerGrid_XOffset(outerColumn); 
-    size_t yO = calculateInnerGrid_YOffset(outerRow);
-
-    size_t innerColumn = calculateColumn(innerCell);
-    size_t innerRow = calculateRow(innerCell);
-
-    size_t x1O = calculateMarkerPositions_XOffset(xO, innerColumn);
-    size_t y1O = calculateMarkerPositions_YOffset(yO, innerRow);
-
-    board[y1O][x1O] = marker;
-
 }
 
 size_t Board::calculateInnerGrid_XOffset(size_t outerCol) const{

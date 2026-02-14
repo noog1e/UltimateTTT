@@ -20,9 +20,19 @@ GamePlay::GamePlay(
 
 void GamePlay::play(){
 
+    size_t prevOuterCell = 0;
+    std::string_view prevPlayer;
+
     while(true){
 
         display.printBoard(board);
+
+        if(gameOver()){
+            gameEnding();
+            break;
+        }else if(outerCellOver(prevOuterCell)){
+            outerCellEnding(prevOuterCell, prevPlayer);
+        }
 
         if(moves.getMoveConstraint() == MoveConstraint::ANY){
             freeMove();
@@ -31,18 +41,14 @@ void GamePlay::play(){
         display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()).name);
         display.currentOuterPosition(moves.getCurrentOuterCell() + 1);
 
-        selectInnerCell();
-
-        if(gameOver()){
-            gameEnding();
-            break;
-        }
+        prevPlayer = players.getPlayer(turns.currentPlayer()).name;
+        prevOuterCell = selectInnerCell();
 
         turns.nextPlayer(TurnOutcome::NORMAL);
     }
 }
 
-void GamePlay::selectInnerCell(){
+size_t GamePlay::selectInnerCell(){
 
     std::optional<size_t> inputopt;
     PosUpdate update;
@@ -64,15 +70,18 @@ void GamePlay::selectInnerCell(){
             }else{
 
                 if(outerCellOver(outerCell)){
-                    outerCellEnding(outerCell);
+                    board.drawFillOuterCell(outerCell, convertMarkerToChar(pmarker));
+                }else{
+                    board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
                 }
 
-                board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
                 validated = true;
             }
         }
 
     }while(!validated);
+
+    return outerCell;
 }
 
 bool GamePlay::outerCellOver(size_t outerCell){
@@ -82,16 +91,16 @@ bool GamePlay::outerCellOver(size_t outerCell){
     return eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING;
 }
 
-void GamePlay::outerCellEnding(size_t outerCell){
+void GamePlay::outerCellEnding(size_t outerCell, std::string_view player){
     
     const MatchEvaluation& eval = state.getMatchEvaluation();
  
     assert(eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING);
 
     if(eval.outer[outerCell].matchOutcome == MatchOutcome::DRAW){
-        display.localDraw(outerCell);
+        display.localDraw(outerCell + 1);
     }else{
-        display.localWin(players.getPlayer(turns.currentPlayer()).name, outerCell);
+        display.localWin(player, outerCell + 1);
     }
 }
 

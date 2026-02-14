@@ -14,10 +14,6 @@ enum class SetupState{
     Completed
 };
 
-struct SetupComponents{
-
-};
-
 class GameSetup{
 
     public:
