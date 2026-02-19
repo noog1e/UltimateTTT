@@ -4,8 +4,13 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <windows.h>
 
-UserInterface::UserInterface(Renderer& r, TextManager& t) : render(r), textM(t){}
+UserInterface::UserInterface(Renderer& r, TextManager& t) : render(r), textM(t){
+    #ifdef _WIN32
+        enableVirtualTerminal();
+    #endif
+}
 
 void UserInterface::inputArrows(){
     render.printLine(">> ", false);
@@ -25,12 +30,13 @@ void UserInterface::promptPlayerNames(size_t playerNum){
 
 void UserInterface::coinFlipping(){
     render.printLine(textM.getText(TextOptions::CoinFlip));
-    delay(500);
+    delay(800);
 }
 
 void UserInterface::firstPlayer(std::string_view playerName){
     std::string source = textM.getText(TextOptions::FirstPlayer, playerName, Placeholders::Name);
     render.printLine(source);
+    delay(1200);
 }
 
 void UserInterface::markerSelection(std::string_view playerName){
@@ -96,10 +102,16 @@ void UserInterface::freeMove(size_t outerCell, std::string_view playerName){
 
 void UserInterface::invalidOption(){
     render.printLine(textM.getText(TextOptions::InvalidOption));
+    delay(800);
+    clearLines(2);
+    inputArrows();
 }
 
 void UserInterface::positionUnavailable(){
     render.printLine(textM.getText(TextOptions::PositionNA));
+    delay(800);
+    clearLines(2);
+    inputArrows();
 }
 
 void UserInterface::localWin(std::string_view playerName, size_t outerCell){
@@ -129,4 +141,36 @@ void UserInterface::gameDraw(){
 void UserInterface::cellPrompt(){
     render.printLine(textM.getText(TextOptions::CellPrompt));
     inputArrows();
+}
+
+void UserInterface::clear(){
+    render.printLine("\033[H\033[J", false);
+    std::cout << std::flush;
+}
+
+void UserInterface::clearLines(size_t count){
+
+    for(size_t i=0; i < count; i++){
+        render.printLine("\033[1A\033[2K", false);
+        std::cout << std::flush;
+    }
+}
+
+void UserInterface::enableVirtualTerminal(){
+    HANDLE hOut =  GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwMode = 0;  
+    GetConsoleMode(hOut, &dwMode);
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+}
+
+void UserInterface::numberOuterCells(Board& board){
+    
+    size_t middleIn = 4;
+
+    for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
+
+        char cellChar = (i+1) + '0';
+        board.drawPositionUpdate(i, middleIn, cellChar);
+    }
 }

@@ -16,6 +16,7 @@ Game::Game() : ui(render, textM){}
 
 void Game::startGame(){
 
+    ui.clear();
     auto gameopt = gameSetup();
 
     if(gameopt){
@@ -34,10 +35,14 @@ std::optional<GamePlay> Game::gameSetup(){
 
     setEntityTypes(setup);
     setPlayerNames(setup);
+    
     ui.coinFlipping();
+    
     TurnManager tm = setup.turnManager();
     Player startingPlayer = setup.getStartingPlayer(tm.currentPlayer());
+
     ui.firstPlayer(startingPlayer.name);
+    ui.clear();
     
     setBoardMarker(setup, startingPlayer.name, tm.currentPlayer());
     PlayerManager pm = setup.extractPlayerManager();
@@ -72,20 +77,24 @@ bool Game::loadGamePlayAssets(){
 
 void Game::setEntityTypes(GameSetup& setup){
 
-    size_t numOptions = 2;
-
-    ui.promptEntityTypes(1);
-    size_t player1 = optionSelection(numOptions);
-
-    ui.promptEntityTypes(2);
-    size_t player2 = optionSelection(numOptions);
+    size_t player1 = enterEntityType(1);
+    ui.clear();
+    size_t player2 = enterEntityType(2);
+    ui.clear();
 
     setup.entityTypes(static_cast<EntityType>(player1 - 1), static_cast<EntityType>(player2 - 1));
+}
+
+size_t Game::enterEntityType(size_t playerNum){
+    size_t numOptions = 2;
+    ui.promptEntityTypes(playerNum);
+    return optionSelection(numOptions);
 }
 
 void Game::setPlayerNames(GameSetup& setup){
 
     std::string player1 = enterPlayerName(1);
+    ui.clear();
     
     NameUpdate u = NameUpdate::DUPLICATES;
     
@@ -93,6 +102,8 @@ void Game::setPlayerNames(GameSetup& setup){
         std::string player2 = enterPlayerName(2);
         u = setup.playerNames(player1, player2);
     }
+
+    ui.clear();
 }
 
 std::string Game::enterPlayerName(size_t playerNum){
@@ -113,11 +124,14 @@ void Game::setBoardMarker(GameSetup& setup, std::string_view playerName, size_t 
     size_t selection = optionSelection(numOptions);
 
     setup.playerMarkers(static_cast<BoardMarker>(selection-1), playerNum);
+
+    ui.clear();
 }
 
 MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerName){
 
     Board tempBoard;
+    ui.numberOuterCells(tempBoard);
 
     ui.printBoard(tempBoard);
     ui.startingCell(playerName);
@@ -135,6 +149,8 @@ MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerNam
             ui.invalidOption();
         }
     }    
+
+    ui.clear();
 
     return setup.startingCell(inputval - 1);;
 }

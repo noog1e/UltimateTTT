@@ -26,6 +26,7 @@ void GamePlay::play(){
 
     while(true){
 
+        display.clear();
         display.printBoard(board);
 
         if(gameOver()){
@@ -53,37 +54,19 @@ void GamePlay::play(){
 size_t GamePlay::selectInnerCell(){
 
     std::optional<size_t> inputopt;
-    PosUpdate update;
-    bool validated = false;
     size_t outerCell = moves.getCurrentOuterCell();
     BoardMarker pmarker = players.getPlayer(turns.currentPlayer()).marker;
 
-    do{
+    display.cellPrompt();
+    inputopt = cellSelection(pmarker);
 
-        display.cellPrompt();
-        inputopt = input.readSizeInRange(1, BoardLayout::NUM_CELLS);
+    if(outerCellOver(outerCell)){
 
-        if(!inputopt){
-            display.invalidOption();
-        } else{
-            update = applyPlayerMove(pmarker, inputopt.value() - 1);
-            if(update == PosUpdate::OCCUPIED){
-                display.positionUnavailable();
-            }else{
-
-                if(outerCellOver(outerCell)){
-
-                    if(outerCellDraw(outerCell)) pmarker = BoardMarker::NONE;
-                    board.drawFillOuterCell(outerCell, convertMarkerToChar(pmarker));
-                }else{
-                    board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
-                }
-
-                validated = true;
-            }
-        }
-
-    }while(!validated);
+        if(outerCellDraw(outerCell)) pmarker = BoardMarker::NONE;
+        board.drawFillOuterCell(outerCell, convertMarkerToChar(pmarker));
+    }else{
+        board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
+    }
 
     return inputopt.value() - 1;
 }
@@ -149,6 +132,7 @@ void GamePlay::selectOuterCell(){
 
         if(!inputopt){
             display.invalidOption();
+            display.clearLines(1);
         } else{
 
             const MatchEvaluation& eval = state.getMatchEvaluation();
@@ -186,4 +170,31 @@ char GamePlay::convertMarkerToChar(BoardMarker marker){
     if(marker == BoardMarker::NONE) return '?';
 
     return marker == BoardMarker::CROSS ? 'x' : 'o';
+}
+
+size_t GamePlay::cellSelection(BoardMarker pmarker){
+    
+    size_t inputval = 0;
+    PosUpdate update;
+
+    while(1){
+        auto inputopt = input.readSizeInRange(1, BoardLayout::NUM_CELLS);
+
+        if(inputopt){
+
+            update = applyPlayerMove(pmarker, inputopt.value() - 1);
+
+            if(update == PosUpdate::OCCUPIED){
+                display.positionUnavailable();
+            }else{
+                inputval = *inputopt;
+                break;
+            }
+            
+        }else {
+            display.invalidOption();
+        }
+    }
+
+    return inputval;
 }

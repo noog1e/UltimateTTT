@@ -27,6 +27,7 @@ class Game{
     std::optional<GamePlay> gameSetup();
     bool loadGamePlayAssets();
     void setEntityTypes(GameSetup& setup);
+    size_t enterEntityType(size_t playerNum);
     void setPlayerNames(GameSetup& setup);
     std::string enterPlayerName(size_t playerNum);
     void setBoardMarker(GameSetup& setup, std::string_view playerName, size_t playerNum);

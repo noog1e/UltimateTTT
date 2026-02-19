@@ -55,4 +55,5 @@ class GamePlay{
     void gameEnding();
 
     char convertMarkerToChar(BoardMarker marker);
+    size_t cellSelection(BoardMarker pmarker);
 };
