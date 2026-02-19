@@ -19,6 +19,7 @@
     },
 
     "GAME":{
+        "GameStart" :       "Welcome to UTTT!",
         "EntityTypes" :     "Player {ID}:\n[1] Human\n[2] AI",
         "PlayerNames" :     "Enter Player {ID} name:",
         "CoinFlip" :        "Flipping Coin...",

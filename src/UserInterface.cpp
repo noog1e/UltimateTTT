@@ -16,6 +16,10 @@ void UserInterface::inputArrows(){
     render.printLine(">> ", false);
 }
 
+void UserInterface::gameStart(){
+    render.printLine(textM.getText(TextOptions::GameStart));
+}
+
 void UserInterface::promptEntityTypes(size_t playerNum){
     std::string source = textM.getText(TextOptions::EntityTypes, std::to_string(playerNum), Placeholders::Id);
     render.printLine(source);
@@ -164,8 +168,10 @@ void UserInterface::enableVirtualTerminal(){
     SetConsoleMode(hOut, dwMode);
 }
 
-void UserInterface::numberOuterCells(Board& board){
+void UserInterface::boardAllOuterNumbered(){
     
+    Board board;
+
     size_t middleIn = 4;
 
     for(size_t i = 0; i < BoardLayout::NUM_CELLS; i++){
@@ -173,4 +179,16 @@ void UserInterface::numberOuterCells(Board& board){
         char cellChar = (i+1) + '0';
         board.drawPositionUpdate(i, middleIn, cellChar);
     }
+
+    printBoard(board);
+}
+
+void UserInterface::boardOuterCellNumbered(Board board, size_t outerCell){
+
+    char cellChar = (outerCell + 1) + '0';
+
+    board.drawFillOuterCell(outerCell, cellChar);
+    printBoard(board);
+
+    delay(800);
 }

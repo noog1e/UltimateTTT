@@ -33,6 +33,8 @@ std::optional<GamePlay> Game::gameSetup(){
        
     GameSetup setup;
 
+    ui.gameStart();
+
     setEntityTypes(setup);
     setPlayerNames(setup);
     
@@ -77,12 +79,17 @@ bool Game::loadGamePlayAssets(){
 
 void Game::setEntityTypes(GameSetup& setup){
 
-    size_t player1 = enterEntityType(1);
+    /*size_t player1 = enterEntityType(1);
     ui.clear();
     size_t player2 = enterEntityType(2);
     ui.clear();
-
+    
     setup.entityTypes(static_cast<EntityType>(player1 - 1), static_cast<EntityType>(player2 - 1));
+
+    A possible future project
+    */ 
+
+    setup.entityTypes(EntityType::HUMAN, EntityType::HUMAN); //No AI at the moment
 }
 
 size_t Game::enterEntityType(size_t playerNum){
@@ -94,7 +101,7 @@ size_t Game::enterEntityType(size_t playerNum){
 void Game::setPlayerNames(GameSetup& setup){
 
     std::string player1 = enterPlayerName(1);
-    ui.clear();
+    ui.clearLines(2);
     
     NameUpdate u = NameUpdate::DUPLICATES;
     
@@ -130,10 +137,7 @@ void Game::setBoardMarker(GameSetup& setup, std::string_view playerName, size_t 
 
 MoveProcessor Game::setStartingCell(GameSetup& setup, std::string_view playerName){
 
-    Board tempBoard;
-    ui.numberOuterCells(tempBoard);
-
-    ui.printBoard(tempBoard);
+    ui.boardAllOuterNumbered();
     ui.startingCell(playerName);
     ui.cellPrompt();
 

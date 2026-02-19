@@ -13,13 +13,15 @@ class UserInterface{
 
     //Board
     void printBoard(const Board& board);
-    void numberOuterCells(Board& board);
+    void boardAllOuterNumbered();
+    void boardOuterCellNumbered(Board board, size_t outerCell);
 
     //Main Menu
     void homePage();
     void howToPlay();
 
     //GameSetup
+    void gameStart();
     void promptEntityTypes(size_t playerNum);
     void promptPlayerNames(size_t playerNum);
     void coinFlipping();

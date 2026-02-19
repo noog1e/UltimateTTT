@@ -27,6 +27,8 @@ void GamePlay::play(){
     while(true){
 
         display.clear();
+        display.boardOuterCellNumbered(board, moves.getCurrentOuterCell());
+        display.clear();
         display.printBoard(board);
 
         if(gameOver()){
