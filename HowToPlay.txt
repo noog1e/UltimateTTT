@@ -1,0 +1,11 @@
+--- THE BOARD --
+A 3x3 grid where each cell contains its own smaller 3x3 grid.
+            
+--- HOW TO MOVE ---
+1. The first player chooses any cell to start.
+2. Your move 'sends' the opponent to the outer cell that matches your inner cell choice.
+3. Winning an inner grid claims that entire outer cell.
+            
+--- RULES ---
+• First player is decided by a coin toss.
+• If you are sent to an outer cell that is already won or full, you can move ANYWHERE.

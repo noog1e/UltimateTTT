@@ -26,8 +26,11 @@ void GamePlay::play(){
 
     while(true){
 
-        display.clear();
-        display.boardOuterCellNumbered(board, moves.getCurrentOuterCell());
+        if(moves.getMoveConstraint() == MoveConstraint::FORCED_OUTER_CELL){  
+            display.clear();
+            display.boardOuterCellNumbered(board, moves.getCurrentOuterCell());
+        }
+
         display.clear();
         display.printBoard(board);
 
@@ -40,6 +43,7 @@ void GamePlay::play(){
 
         if(moves.getMoveConstraint() == MoveConstraint::ANY){
             freeMove(chosenOuterCell + 1);
+            display.clearLines(3);
         }
 
         display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()).name);
@@ -144,6 +148,7 @@ void GamePlay::selectOuterCell(){
                 validated = true;
             }else{
                 display.positionUnavailable();
+                display.clearLines(1);
             }
         }
         
