@@ -25,7 +25,7 @@ void UserInterface::promptPlayerNames(size_t playerNum){
 
 void UserInterface::coinFlipping(){
     render.printLine(textM.getText(TextOptions::CoinFlip));
-    delay(100);
+    delay(500);
 }
 
 void UserInterface::firstPlayer(std::string_view playerName){
@@ -91,6 +91,7 @@ void UserInterface::freeMove(size_t outerCell, std::string_view playerName){
 
     textM.replaceString(source, std::to_string(outerCell), Placeholders::Cell);
     textM.replaceString(source, playerName, Placeholders::Name);
+    render.printLine(source);
 }
 
 void UserInterface::invalidOption(){

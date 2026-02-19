@@ -44,10 +44,11 @@ class GamePlay{
     size_t selectInnerCell();
     PosUpdate applyPlayerMove(BoardMarker marker, size_t innerCell);
 
-    void freeMove();
+    void freeMove(size_t selectedCell);
     void selectOuterCell();
 
     bool outerCellOver(size_t outerCell);
+    bool outerCellDraw(size_t outerCell);
     void outerCellEnding(size_t outerCell, std::string_view player);
 
     bool gameOver();

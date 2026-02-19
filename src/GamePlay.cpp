@@ -21,6 +21,7 @@ GamePlay::GamePlay(
 void GamePlay::play(){
 
     size_t prevOuterCell = 0;
+    size_t chosenOuterCell = 0;
     std::string_view prevPlayer;
 
     while(true){
@@ -35,14 +36,15 @@ void GamePlay::play(){
         }
 
         if(moves.getMoveConstraint() == MoveConstraint::ANY){
-            freeMove();
+            freeMove(chosenOuterCell + 1);
         }
 
         display.currentPlayerTurn(players.getPlayer(turns.currentPlayer()).name);
         display.currentOuterPosition(moves.getCurrentOuterCell() + 1);
 
         prevPlayer = players.getPlayer(turns.currentPlayer()).name;
-        prevOuterCell = selectInnerCell();
+        prevOuterCell = moves.getCurrentOuterCell();
+        chosenOuterCell = selectInnerCell();
 
         turns.nextPlayer(TurnOutcome::NORMAL);
     }
@@ -70,6 +72,8 @@ size_t GamePlay::selectInnerCell(){
             }else{
 
                 if(outerCellOver(outerCell)){
+
+                    if(outerCellDraw(outerCell)) pmarker = BoardMarker::NONE;
                     board.drawFillOuterCell(outerCell, convertMarkerToChar(pmarker));
                 }else{
                     board.drawPositionUpdate(outerCell, inputopt.value() - 1, convertMarkerToChar(pmarker));
@@ -81,7 +85,7 @@ size_t GamePlay::selectInnerCell(){
 
     }while(!validated);
 
-    return outerCell;
+    return inputopt.value() - 1;
 }
 
 bool GamePlay::outerCellOver(size_t outerCell){
@@ -91,13 +95,18 @@ bool GamePlay::outerCellOver(size_t outerCell){
     return eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING;
 }
 
+bool GamePlay::outerCellDraw(size_t outerCell){
+    const MatchEvaluation& eval = state.getMatchEvaluation();
+    return eval.outer[outerCell].matchOutcome == MatchOutcome::DRAW;
+}
+
 void GamePlay::outerCellEnding(size_t outerCell, std::string_view player){
     
     const MatchEvaluation& eval = state.getMatchEvaluation();
  
     assert(eval.outer[outerCell].matchOutcome != MatchOutcome::ONGOING);
 
-    if(eval.outer[outerCell].matchOutcome == MatchOutcome::DRAW){
+    if(outerCellDraw(outerCell)){
         display.localDraw(outerCell + 1);
     }else{
         display.localWin(player, outerCell + 1);
@@ -123,9 +132,9 @@ PosUpdate GamePlay::applyPlayerMove(BoardMarker marker, size_t innerCell){
     return update;
 }
 
-void GamePlay::freeMove(){
+void GamePlay::freeMove(size_t selectedCell){
 
-    display.freeMove(moves.getCurrentOuterCell(), players.getPlayer(turns.currentPlayer()).name);
+    display.freeMove(selectedCell, players.getPlayer(turns.currentPlayer()).name);
     selectOuterCell();
 }
 
@@ -174,7 +183,7 @@ void GamePlay::gameEnding(){
 
 char GamePlay::convertMarkerToChar(BoardMarker marker){
 
-    if(marker == BoardMarker::NONE) return ' ';
+    if(marker == BoardMarker::NONE) return '?';
 
     return marker == BoardMarker::CROSS ? 'x' : 'o';
 }

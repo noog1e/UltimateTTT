@@ -34,8 +34,10 @@ std::optional<GamePlay> Game::gameSetup(){
 
     setEntityTypes(setup);
     setPlayerNames(setup);
+    ui.coinFlipping();
     TurnManager tm = setup.turnManager();
     Player startingPlayer = setup.getStartingPlayer(tm.currentPlayer());
+    ui.firstPlayer(startingPlayer.name);
     
     setBoardMarker(setup, startingPlayer.name, tm.currentPlayer());
     PlayerManager pm = setup.extractPlayerManager();
