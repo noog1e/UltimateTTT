@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"S:/Programming/UltimateTTT/release/_deps/catch2-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

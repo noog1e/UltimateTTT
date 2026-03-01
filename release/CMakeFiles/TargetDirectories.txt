@@ -1,0 +1,11 @@
+S:/Programming/UltimateTTT/release/CMakeFiles/my_lib.dir
+S:/Programming/UltimateTTT/release/CMakeFiles/tests.dir
+S:/Programming/UltimateTTT/release/CMakeFiles/my_app.dir
+S:/Programming/UltimateTTT/release/CMakeFiles/edit_cache.dir
+S:/Programming/UltimateTTT/release/CMakeFiles/rebuild_cache.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/CMakeFiles/edit_cache.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/CMakeFiles/rebuild_cache.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/src/CMakeFiles/Catch2.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/src/CMakeFiles/Catch2WithMain.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/src/CMakeFiles/edit_cache.dir
+S:/Programming/UltimateTTT/release/_deps/catch2-build/src/CMakeFiles/rebuild_cache.dir
