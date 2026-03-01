@@ -7,5 +7,5 @@ int main(){
 
     game.startGame();
 
-    exit (0);
+    exit(0);
 }

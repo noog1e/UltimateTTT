@@ -55,3 +55,12 @@ target_link_libraries(tests
     my_lib
     Catch2::Catch2WithMain
 )
+
+add_executable(my_app
+    src/main.cpp
+)
+
+target_link_libraries(my_app
+    PRIVATE
+    my_lib
+)
